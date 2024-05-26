@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       if (_pageController.hasClients) {
         int nextPage = _pageController.page!.toInt() + 1;
         if (nextPage >= imageSliders.length) {
-          nextPage = 0; // Loop back to the first item
+          nextPage = 0; 
         }
         _pageController
             .animateToPage(
@@ -151,15 +151,15 @@ class _LoginPageState extends State<LoginPage> {
                               BlocProvider.of<LoginPageBloc>(context).add(NavigateToSignup());
                             },
                             style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
+                              foregroundColor: WidgetStateProperty.resolveWith<Color>(
+                                (Set<WidgetState> states) {
                                   if (states.contains(MaterialState.pressed)) {
                                     return Colors.green.shade800;
                                   }
                                   return Colors.lightGreen;
                                 },
                               ),
-                              textStyle: MaterialStateProperty.all<TextStyle>(
+                              textStyle: WidgetStateProperty.all<TextStyle>(
                                 const TextStyle(
                                   fontSize: 15,
                                   shadows: [
