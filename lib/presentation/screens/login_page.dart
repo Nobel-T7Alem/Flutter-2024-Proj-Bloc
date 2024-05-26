@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       if (_pageController.hasClients) {
         int nextPage = _pageController.page!.toInt() + 1;
         if (nextPage >= imageSliders.length) {
-          nextPage = 0; 
+          nextPage = 0;
         }
         _pageController
             .animateToPage(
@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: ButtonStyle(
                               foregroundColor: WidgetStateProperty.resolveWith<Color>(
                                 (Set<WidgetState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
+                                  if (states.contains(WidgetState.pressed)) {
                                     return Colors.green.shade800;
                                   }
                                   return Colors.lightGreen;
