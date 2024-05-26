@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
               if (state is HomePageLoading) {
                 return Center(child: CircularProgressIndicator());
               } else if (state is HomePageLoaded) {
-                return LoginPage();
+                return LoginPage(); // Adjust as necessary for your logic
               } else if (state is HomePageError) {
                 return Center(child: Text(state.error));
               } else {

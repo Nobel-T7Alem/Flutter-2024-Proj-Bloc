@@ -3,16 +3,21 @@ import 'login_page_event.dart';
 import 'login_page_state.dart';
 
 class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
-  LoginPageBloc() : super(LoginPageInitial());
+  LoginPageBloc() : super(LoginPageInitial()) {
+    on<NavigateToAdminLogin>(_onNavigateToAdminLogin);
+    on<NavigateToUserLogin>(_onNavigateToUserLogin);
+    on<NavigateToSignup>(_onNavigateToSignup);
+  }
 
-  @override
-  Stream<LoginPageState> mapEventToState(LoginPageEvent event) async* {
-    if (event is NavigateToAdminLogin) {
-      yield LoginPageNavigationSuccess('/admin_login');
-    } else if (event is NavigateToUserLogin) {
-      yield LoginPageNavigationSuccess('/user_login');
-    } else if (event is NavigateToSignup) {
-      yield LoginPageNavigationSuccess('/signup');
-    }
+  void _onNavigateToAdminLogin(NavigateToAdminLogin event, Emitter<LoginPageState> emit) {
+    emit(LoginPageNavigationSuccess('/admin_login'));
+  }
+
+  void _onNavigateToUserLogin(NavigateToUserLogin event, Emitter<LoginPageState> emit) {
+    emit(LoginPageNavigationSuccess('/user_login'));
+  }
+
+  void _onNavigateToSignup(NavigateToSignup event, Emitter<LoginPageState> emit) {
+    emit(LoginPageNavigationSuccess('/signup'));
   }
 }

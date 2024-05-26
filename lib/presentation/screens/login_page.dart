@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/login/login_page_bloc.dart';
 import '../../blocs/login/login_page_event.dart';
 import '../../blocs/login/login_page_state.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -57,14 +58,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginPageBloc(),
-      child: Scaffold(
-        body: BlocListener<LoginPageBloc, LoginPageState>(
-          listener: (context, state) {
-            if (state is LoginPageNavigationSuccess) {
-              Navigator.pushNamed(context, state.route);
-            }
-          },
-          child: Stack(
+      child: BlocListener<LoginPageBloc, LoginPageState>(
+        listener: (context, state) {
+          if (state is LoginPageNavigationSuccess) {
+            context.go(state.route);
+          }
+        },
+        child: Scaffold(
+          body: Stack(
             children: [
               PageView(
                 controller: _pageController,
@@ -150,8 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                               BlocProvider.of<LoginPageBloc>(context).add(NavigateToSignup());
                             },
                             style: ButtonStyle(
-                              foregroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
+                              foregroundColor: MaterialStateProperty.resolveWith<Color>(
                                 (Set<MaterialState> states) {
                                   if (states.contains(MaterialState.pressed)) {
                                     return Colors.green.shade800;
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
