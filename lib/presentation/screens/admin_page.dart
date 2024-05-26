@@ -1,150 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../blocs/admin_page/admin_page_bloc.dart';
+import '../../blocs/admin_page/admin_page_event.dart';
+import '../../blocs/admin_page/admin_page_state.dart';
 
-class AdminPage extends StatefulWidget {
+class AdminPage extends StatelessWidget {
   const AdminPage({super.key});
 
   @override
-  _AdminPageState createState() => _AdminPageState();
-}
-
-class _AdminPageState extends State<AdminPage>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  final List<Post> _posts = [
-    Post(
-      title: "Event in Central Park",
-      content: "Details about the event...",
-      date: "2024-04-18",
-    ),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Admin Dashboard',
-          style: TextStyle(color: Colors.white),
+    return BlocProvider(
+      create: (context) => AdminPageBloc()..add(LoadAdminPage()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Admin Page'),
         ),
-        backgroundColor: Color.fromARGB(255, 51, 114, 53),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {},
-          ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(icon: Icon(Icons.person), text: 'Manage Users'),
-            Tab(icon: Icon(Icons.business), text: 'Manage Agencies'),
-            Tab(icon: Icon(Icons.post_add), text: 'Manage Posts'),
-          ],
-          indicatorColor: Colors.white,
-          unselectedLabelColor: Colors.white54,
-          labelColor: Colors.white,
-          indicatorWeight: 3,
+        body: BlocBuilder<AdminPageBloc, AdminPageState>(
+          builder: (context, state) {
+            if (state is AdminPageLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is AdminPageLoaded) {
+              return Center(child: Text(state.data));
+            } else if (state is AdminPageError) {
+              return Center(child: Text(state.error));
+            } else {
+              return Center(child: Text('Welcome to Admin Page'));
+            }
+          },
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildManageUsersTab(),
-          _buildManageAgenciesTab(),
-          _buildManagePostsTab(),
-        ],
       ),
     );
   }
-
-  Widget _buildManageUsersTab() {
-    return Center(
-      child: Text(
-        'Manage Users',
-        style: TextStyle(color: Colors.white, fontSize: 18),
-      ),
-    );
-  }
-
-  Widget _buildManageAgenciesTab() {
-    return Center(
-      child: Text(
-        'Manage Agencies',
-        style: TextStyle(color: Colors.white, fontSize: 18),
-      ),
-    );
-  }
-
-  Widget _buildManagePostsTab() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Your Posts',
-            style: Theme.of(context)
-                .textTheme
-                .headlineMedium
-                ?.copyWith(color: Colors.white),
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: _posts.length,
-            itemBuilder: (context, index) {
-              return Card(
-                color: Colors.green.shade900,
-                child: ListTile(
-                  title: Text(_posts[index].title,
-                      style: TextStyle(color: Colors.white)),
-                  subtitle: Text('Posted on ${_posts[index].date}',
-                      style: TextStyle(color: Colors.white70)),
-                  isThreeLine: true,
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        color: Colors.white,
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        color: Colors.red,
-                        onPressed: () {
-                          setState(() {
-                            _posts.removeAt(index);
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class Post {
-  String title;
-  String content;
-  String date;
-
-  Post({required this.title, required this.content, required this.date});
 }

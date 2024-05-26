@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../blocs/login/login_page_bloc.dart';
+import '../../blocs/login/login_page_event.dart';
+import '../../blocs/login/login_page_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -52,105 +55,87 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          PageView(
-            controller: _pageController,
-            children: imageSliders,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.black.withOpacity(0.5),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset('assets/images/sebawi2.png', width: 80),
-                const SizedBox(height: 400),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: 300,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      context.go('/admin_login');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightGreen.withOpacity(0.5),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      textStyle: const TextStyle(fontSize: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        side: BorderSide(color: Colors.green[800]!, width: 3),
-                      ),
-                      elevation: 5,
-                      shadowColor: Colors.greenAccent,
-                    ),
-                    child: const Text('Login as Admin'),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: 300,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      context.go('/user_login');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightGreen.withOpacity(0.5),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      textStyle: const TextStyle(fontSize: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        side: BorderSide(color: Colors.green[800]!, width: 3),
-                      ),
-                      elevation: 5,
-                      shadowColor: Colors.green[800]!,
-                    ),
-                    child: const Text('Login as Volunteer/Agency'),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'New to the Sebawi Community? ',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              offset: Offset(1.0, 1.0),
-                              blurRadius: 3.0,
-                              color: Colors.black,
-                            ),
-                          ],
-                        ),
-                      ),
-                      TextButton(
+    return BlocProvider(
+      create: (context) => LoginPageBloc(),
+      child: Scaffold(
+        body: BlocListener<LoginPageBloc, LoginPageState>(
+          listener: (context, state) {
+            if (state is LoginPageNavigationSuccess) {
+              Navigator.pushNamed(context, state.route);
+            }
+          },
+          child: Stack(
+            children: [
+              PageView(
+                controller: _pageController,
+                children: imageSliders,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black.withOpacity(0.5),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset('assets/images/sebawi2.png', width: 80),
+                    const SizedBox(height: 400),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
                         onPressed: () {
-                          context.go('/signup');
+                          BlocProvider.of<LoginPageBloc>(context).add(NavigateToAdminLogin());
                         },
-                        style: ButtonStyle(
-                          foregroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.pressed)) {
-                                return Colors.green.shade800;
-                              }
-                              return Colors.lightGreen;
-                            },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightGreen.withOpacity(0.5),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          textStyle: const TextStyle(fontSize: 20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(color: Colors.green[800]!, width: 3),
                           ),
-                          textStyle: MaterialStateProperty.all<TextStyle>(
-                            const TextStyle(
-                              fontSize: 15,
+                          elevation: 5,
+                          shadowColor: Colors.greenAccent,
+                        ),
+                        child: const Text('Login as Admin'),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<LoginPageBloc>(context).add(NavigateToUserLogin());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightGreen.withOpacity(0.5),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          textStyle: const TextStyle(fontSize: 20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(color: Colors.green[800]!, width: 3),
+                          ),
+                          elevation: 5,
+                          shadowColor: Colors.green[800]!,
+                        ),
+                        child: const Text('Login as Volunteer/Agency'),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'New to the Sebawi Community? ',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
                               shadows: [
                                 Shadow(
                                   offset: Offset(1.0, 1.0),
@@ -160,16 +145,44 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           ),
-                        ),
-                        child: const Text('Sign Up'),
+                          TextButton(
+                            onPressed: () {
+                              BlocProvider.of<LoginPageBloc>(context).add(NavigateToSignup());
+                            },
+                            style: ButtonStyle(
+                              foregroundColor:
+                                  MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return Colors.green.shade800;
+                                  }
+                                  return Colors.lightGreen;
+                                },
+                              ),
+                              textStyle: MaterialStateProperty.all<TextStyle>(
+                                const TextStyle(
+                                  fontSize: 15,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.0, 1.0),
+                                      blurRadius: 3.0,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            child: const Text('Sign Up'),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

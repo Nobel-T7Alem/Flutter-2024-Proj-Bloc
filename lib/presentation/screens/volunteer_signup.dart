@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../blocs/signup/signup_page_bloc.dart';
-import '../../blocs/signup/signup_page_event.dart';
-import '../../blocs/signup/signup_page_state.dart';
+import '../../blocs/volunteer_signup/volunteer_signup_bloc.dart';
+import '../../blocs/volunteer_signup/volunteer_signup_event.dart';
+import '../../blocs/volunteer_signup/volunteer_signup_state.dart';
 
-class SignupPage extends StatelessWidget {
-  const SignupPage({super.key});
+class VolunteerSignupPage extends StatelessWidget {
+  const VolunteerSignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignupPageBloc(),
+      create: (context) => VolunteerSignupBloc(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Signup Page'),
+          title: const Text('Volunteer Signup'),
         ),
-        body: BlocListener<SignupPageBloc, SignupPageState>(
+        body: BlocListener<VolunteerSignupBloc, VolunteerSignupState>(
           listener: (context, state) {
-            if (state is SignupPageSuccess) {
+            if (state is VolunteerSignupSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)),
               );
-            } else if (state is SignupPageFailure) {
+            } else if (state is VolunteerSignupFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.error)),
               );
             }
           },
-          child: BlocBuilder<SignupPageBloc, SignupPageState>(
+          child: BlocBuilder<VolunteerSignupBloc, VolunteerSignupState>(
             builder: (context, state) {
-              if (state is SignupPageLoading) {
+              if (state is VolunteerSignupLoading) {
                 return Center(child: CircularProgressIndicator());
               } else {
                 return Padding(
@@ -37,7 +37,7 @@ class SignupPage extends StatelessWidget {
                   child: Column(
                     children: [
                       TextField(
-                        decoration: InputDecoration(labelText: 'Username'),
+                        decoration: InputDecoration(labelText: 'Name'),
                       ),
                       TextField(
                         decoration: InputDecoration(labelText: 'Email'),
@@ -50,9 +50,9 @@ class SignupPage extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {
                           // Use your actual input fields to get values
-                          BlocProvider.of<SignupPageBloc>(context).add(
-                            SubmitSignup(
-                              'username',
+                          BlocProvider.of<VolunteerSignupBloc>(context).add(
+                            SubmitVolunteerSignup(
+                              'name',
                               'email@example.com',
                               'password',
                             ),
