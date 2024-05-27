@@ -7,7 +7,7 @@ abstract class LoginPageEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class NavigateToAdminLogin extends LoginPageEvent {}
+class NavigateToAdminPage extends LoginPageEvent {}
 
 class NavigateToUserLogin extends LoginPageEvent {}
 

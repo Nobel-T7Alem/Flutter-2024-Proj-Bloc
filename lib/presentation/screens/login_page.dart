@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       if (_pageController.hasClients) {
         int nextPage = _pageController.page!.toInt() + 1;
         if (nextPage >= imageSliders.length) {
-          nextPage = 0;
+          nextPage = 0; 
         }
         _pageController
             .animateToPage(
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 300,
                       child: ElevatedButton(
                         onPressed: () {
-                          BlocProvider.of<LoginPageBloc>(context).add(NavigateToAdminLogin());
+                          BlocProvider.of<LoginPageBloc>(context).add(NavigateToAdminPage());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.lightGreen.withOpacity(0.5),

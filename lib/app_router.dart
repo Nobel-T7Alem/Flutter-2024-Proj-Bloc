@@ -23,91 +23,82 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/signup',
-      name: "signup",
+      name: 'signup',
       builder: (context, state) => const SignupPage(),
     ),
     GoRoute(
       path: '/login',
-      name: "login",
+      name: 'login',
       builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
-      path: '/admin',
-      name: "admin",
-      builder: (context, state) => const AdminPage(),
-    ),
-    GoRoute(
-      path: '/user_login',
-      name: "user_login",
-      builder: (context, state) => const LoginUserPage(),
-    ),
-    GoRoute(
       path: '/admin_login',
-      name: "admin_login",
+      name: 'admin_login',
       builder: (context, state) => const AdminLoginPage(),
     ),
     GoRoute(
-      path: '/user_home',
-      name: "user_home",
-      builder: (context, state) => const UserHomePage(),
-    ),
-    GoRoute(
-      path: '/volunteer_signup',
-      name: "volunteer_signup",
-      builder: (context, state) => const VolunteerSignupPage(),
-    ),
-    GoRoute(
-      path: '/agency_signup',
-      name: "agency_signup",
-      builder: (context, state) => const AgencySignupPage(),
-    ),
-    GoRoute(
-      path: '/agency_home',
-      name: "agency_home",
-      builder: (context, state) => const AgencyHomePage(),
-    ),
-    GoRoute(
-      path: '/user_update',
-      name: "user_update",
-      builder: (context, state) => const UserUpdatePage(),
-    ),
-    GoRoute(
-      path: '/agency_update',
-      name: "agency_update",
-      builder: (context, state) => const AgencyUpdatePage(),
+      path: '/user_login',
+      name: 'user_login',
+      builder: (context, state) => const LoginUserPage(),
     ),
     GoRoute(
       path: '/admin_page',
-      name: "admin_page",
+      name: 'admin_page',
       builder: (context, state) => const AdminPage(),
     ),
+    GoRoute(
+      path: '/agency_home',
+      name: 'agency_home',
+      builder: (context, state) => const AgencyHomePage(),
+    ),
+    GoRoute(
+      path: '/agency_signup',
+      name: 'agency_signup',
+      builder: (context, state) => const AgencySignupPage(),
+    ),
+    GoRoute(
+      path: '/agency_update',
+      name: 'agency_update',
+      builder: (context, state) => const AgencyUpdatePage(),
+    ),
+    GoRoute(
+      path: '/user_home',
+      name: 'user_home',
+      builder: (context, state) => const UserHomePage(),
+    ),
+    GoRoute(
+      path: '/user_update',
+      name: 'user_update',
+      builder: (context, state) => const UserUpdatePage(),
+    ),
+    GoRoute(
+      path: '/volunteer_signup',
+      name: 'volunteer_signup',
+      builder: (context, state) => const VolunteerSignupPage(),
+    ),
   ],
-  errorBuilder: (context, state) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: Text(
-                'Error: ${state.error}',
-                style: const TextStyle(fontSize: 20),
-                textAlign: TextAlign.center,
-              ),
+  errorBuilder: (context, state) => Scaffold(
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Error: ${state.error}',
+            style: const TextStyle(fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.go('/');
+            },
+            child: const Text(
+              'Return to Home Page',
+              style: TextStyle(color: Colors.black),
             ),
-            ElevatedButton(
-              onPressed: () {
-                context.go('/');
-              },
-              child: const Text(
-                'Return to Home Page',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  },
+    ),
+  ),
 );
