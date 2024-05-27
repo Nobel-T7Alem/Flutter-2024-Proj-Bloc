@@ -11,10 +11,10 @@ class VolunteerSignupBloc extends Bloc<VolunteerSignupEvent, VolunteerSignupStat
       yield VolunteerSignupLoading();
       try {
         // Simulate a signup process
-        await Future.delayed(Duration(seconds: 2));
-        yield VolunteerSignupSuccess('Volunteer Signup Successful');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const VolunteerSignupSuccess('Volunteer Signup Successful');
       } catch (e) {
-        yield VolunteerSignupFailure('Volunteer Signup Failed');
+        yield const VolunteerSignupFailure('Volunteer Signup Failed');
       }
     }
   }

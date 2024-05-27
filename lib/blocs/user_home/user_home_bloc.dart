@@ -11,10 +11,10 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
       yield UserHomeLoading();
       try {
         // Simulate fetching data
-        await Future.delayed(Duration(seconds: 2));
-        yield UserHomeLoaded('User Home Page Data Loaded');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const UserHomeLoaded('User Home Page Data Loaded');
       } catch (e) {
-        yield UserHomeError('Failed to load user home page data');
+        yield const UserHomeError('Failed to load user home page data');
       }
     }
   }

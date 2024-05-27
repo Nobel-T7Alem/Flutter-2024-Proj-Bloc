@@ -18,13 +18,13 @@ class AgencyHomePage extends StatelessWidget {
         body: BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
           builder: (context, state) {
             if (state is AgencyHomeLoading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (state is AgencyHomeLoaded) {
               return Center(child: Text(state.data));
             } else if (state is AgencyHomeError) {
               return Center(child: Text(state.error));
             } else {
-              return Center(child: Text('Welcome to Agency Home Page'));
+              return const Center(child: Text('Welcome to Agency Home Page'));
             }
           },
         ),

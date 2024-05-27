@@ -11,10 +11,10 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
       yield AgencyHomeLoading();
       try {
         // Simulate fetching data
-        await Future.delayed(Duration(seconds: 2));
-        yield AgencyHomeLoaded('Agency Home Page Data Loaded');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const AgencyHomeLoaded('Agency Home Page Data Loaded');
       } catch (e) {
-        yield AgencyHomeError('Failed to load agency home page data');
+        yield const AgencyHomeError('Failed to load agency home page data');
       }
     }
   }

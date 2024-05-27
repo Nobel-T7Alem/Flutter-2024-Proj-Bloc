@@ -30,35 +30,35 @@ class SignupPage extends StatelessWidget {
           child: BlocBuilder<SignupPageBloc, SignupPageState>(
             builder: (context, state) {
               if (state is SignupPageLoading) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Username'),
                       ),
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Email'),
                       ),
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           // Use your actual input fields to get values
                           BlocProvider.of<SignupPageBloc>(context).add(
-                            SubmitSignup(
+                            const SubmitSignup(
                               'username',
                               'email@example.com',
                               'password',
                             ),
                           );
                         },
-                        child: Text('Sign Up'),
+                        child: const Text('Sign Up'),
                       ),
                     ],
                   ),

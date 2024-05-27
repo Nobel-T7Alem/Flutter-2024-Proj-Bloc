@@ -11,10 +11,10 @@ class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
       yield LoginUserLoading();
       try {
         // Simulate a login process
-        await Future.delayed(Duration(seconds: 2));
-        yield LoginUserSuccess('User Login Successful');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const LoginUserSuccess('User Login Successful');
       } catch (e) {
-        yield LoginUserFailure('User Login Failed');
+        yield const LoginUserFailure('User Login Failed');
       }
     }
   }

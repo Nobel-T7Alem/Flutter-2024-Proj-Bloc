@@ -2,6 +2,8 @@ import 'package:Sebawi/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class ProfileUpdateForm extends StatefulWidget {
+  const ProfileUpdateForm({super.key});
+
   @override
   _ProfileUpdateFormState createState() => _ProfileUpdateFormState();
 }
@@ -20,7 +22,7 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
       child: ListView(
         children: <Widget>[
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Name',
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -39,7 +41,7 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
             },
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: 'Username'),
+            decoration: const InputDecoration(labelText: 'Username'),
             obscureText: true,
             onSaved: (value) => _password = value!,
             validator: (value) {
@@ -50,7 +52,7 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
             },
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: 'Email'),
+            decoration: const InputDecoration(labelText: 'Email'),
             keyboardType: TextInputType.emailAddress,
             onSaved: (value) => _email = value!,
             validator: (value) {
@@ -64,7 +66,7 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
             },
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: 'Password'),
+            decoration: const InputDecoration(labelText: 'Password'),
             onSaved: (value) => _name = value!,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -73,7 +75,7 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
               return null;
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           CustomButton(
               buttonText: 'Update Profile',
               buttonColor: Colors.green,
@@ -83,11 +85,11 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
                   _formKey.currentState!.save();
                   // Save form data to server or database
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Profile updated')),
+                    const SnackBar(content: Text('Profile updated')),
                   );
                 }
               }),
-          SizedBox(height: 200),
+          const SizedBox(height: 200),
           TextButton(
             onPressed: () {
               // Add delete account logic
@@ -95,7 +97,7 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
             style: TextButton.styleFrom(
               foregroundColor: Colors.red, // Text color
             ),
-            child: Text('Delete Account'),
+            child: const Text('Delete Account'),
           ),
         ],
       ),

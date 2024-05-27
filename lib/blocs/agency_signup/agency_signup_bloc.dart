@@ -11,10 +11,10 @@ class AgencySignupBloc extends Bloc<AgencySignupEvent, AgencySignupState> {
       yield AgencySignupLoading();
       try {
         // Simulate a signup process
-        await Future.delayed(Duration(seconds: 2));
-        yield AgencySignupSuccess('Agency Signup Successful');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const AgencySignupSuccess('Agency Signup Successful');
       } catch (e) {
-        yield AgencySignupFailure('Agency Signup Failed');
+        yield const AgencySignupFailure('Agency Signup Failed');
       }
     }
   }

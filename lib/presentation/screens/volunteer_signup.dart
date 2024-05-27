@@ -30,35 +30,35 @@ class VolunteerSignupPage extends StatelessWidget {
           child: BlocBuilder<VolunteerSignupBloc, VolunteerSignupState>(
             builder: (context, state) {
               if (state is VolunteerSignupLoading) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Name'),
                       ),
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Email'),
                       ),
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           // Use your actual input fields to get values
                           BlocProvider.of<VolunteerSignupBloc>(context).add(
-                            SubmitVolunteerSignup(
+                            const SubmitVolunteerSignup(
                               'name',
                               'email@example.com',
                               'password',
                             ),
                           );
                         },
-                        child: Text('Sign Up'),
+                        child: const Text('Sign Up'),
                       ),
                     ],
                   ),

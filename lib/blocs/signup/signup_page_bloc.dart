@@ -11,10 +11,10 @@ class SignupPageBloc extends Bloc<SignupPageEvent, SignupPageState> {
       yield SignupPageLoading();
       try {
         // Simulate a signup process
-        await Future.delayed(Duration(seconds: 2));
-        yield SignupPageSuccess('Signup Successful');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const SignupPageSuccess('Signup Successful');
       } catch (e) {
-        yield SignupPageFailure('Signup Failed');
+        yield const SignupPageFailure('Signup Failed');
       }
     }
   }

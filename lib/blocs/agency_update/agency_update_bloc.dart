@@ -11,10 +11,10 @@ class AgencyUpdateBloc extends Bloc<AgencyUpdateEvent, AgencyUpdateState> {
       yield AgencyUpdateLoading();
       try {
         // Simulate an update process
-        await Future.delayed(Duration(seconds: 2));
-        yield AgencyUpdateSuccess('Agency Update Successful');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const AgencyUpdateSuccess('Agency Update Successful');
       } catch (e) {
-        yield AgencyUpdateFailure('Agency Update Failed');
+        yield const AgencyUpdateFailure('Agency Update Failed');
       }
     }
   }

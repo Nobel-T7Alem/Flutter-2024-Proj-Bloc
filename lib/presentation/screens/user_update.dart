@@ -30,34 +30,34 @@ class UserUpdatePage extends StatelessWidget {
           child: BlocBuilder<UserUpdateBloc, UserUpdateState>(
             builder: (context, state) {
               if (state is UserUpdateLoading) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Name'),
                       ),
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Email'),
                       ),
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Address'),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           // Use your actual input fields to get values
                           BlocProvider.of<UserUpdateBloc>(context).add(
-                            SubmitUserUpdate(
+                            const SubmitUserUpdate(
                               'name',
                               'email@example.com',
                               'address',
                             ),
                           );
                         },
-                        child: Text('Update'),
+                        child: const Text('Update'),
                       ),
                     ],
                   ),

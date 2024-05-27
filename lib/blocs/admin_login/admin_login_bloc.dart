@@ -11,10 +11,10 @@ class AdminLoginBloc extends Bloc<AdminLoginEvent, AdminLoginState> {
       yield AdminLoginLoading();
       try {
         // Simulate a login process
-        await Future.delayed(Duration(seconds: 2));
-        yield AdminLoginSuccess('Admin Login Successful');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const AdminLoginSuccess('Admin Login Successful');
       } catch (e) {
-        yield AdminLoginFailure('Admin Login Failed');
+        yield const AdminLoginFailure('Admin Login Failed');
       }
     }
   }

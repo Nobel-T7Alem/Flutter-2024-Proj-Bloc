@@ -11,10 +11,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     emit(HomePageLoading());
     try {
       
-      await Future.delayed(Duration(seconds: 2));
-      emit(HomePageLoaded('Home Page Data Loaded'));
+      await Future.delayed(const Duration(seconds: 2));
+      emit(const HomePageLoaded('Home Page Data Loaded'));
     } catch (e) {
-      emit(HomePageError('Failed to load home page data'));
+      emit(const HomePageError('Failed to load home page data'));
     }
   }
 }

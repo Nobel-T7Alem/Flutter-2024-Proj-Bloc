@@ -11,10 +11,10 @@ class AdminPageBloc extends Bloc<AdminPageEvent, AdminPageState> {
       yield AdminPageLoading();
       try {
         // Simulate fetching data
-        await Future.delayed(Duration(seconds: 2));
-        yield AdminPageLoaded('Admin Page Data Loaded');
+        await Future.delayed(const Duration(seconds: 2));
+        yield const AdminPageLoaded('Admin Page Data Loaded');
       } catch (e) {
-        yield AdminPageError('Failed to load admin page data');
+        yield const AdminPageError('Failed to load admin page data');
       }
     }
   }

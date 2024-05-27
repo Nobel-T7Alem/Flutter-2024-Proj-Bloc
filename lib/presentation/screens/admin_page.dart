@@ -18,13 +18,13 @@ class AdminPage extends StatelessWidget {
         body: BlocBuilder<AdminPageBloc, AdminPageState>(
           builder: (context, state) {
             if (state is AdminPageLoading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (state is AdminPageLoaded) {
               return Center(child: Text(state.data));
             } else if (state is AdminPageError) {
               return Center(child: Text(state.error));
             } else {
-              return Center(child: Text('Welcome to Admin Page'));
+              return const Center(child: Text('Welcome to Admin Page'));
             }
           },
         ),

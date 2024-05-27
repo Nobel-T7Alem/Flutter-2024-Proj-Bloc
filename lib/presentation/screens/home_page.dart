@@ -18,13 +18,13 @@ class HomePage extends StatelessWidget {
           body: BlocBuilder<HomePageBloc, HomePageState>(
             builder: (context, state) {
               if (state is HomePageLoading) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (state is HomePageLoaded) {
-                return LoginPage();
+                return const LoginPage();
               } else if (state is HomePageError) {
                 return Center(child: Text(state.error));
               } else {
-                return Center(child: Text('Welcome to Home Page'));
+                return const Center(child: Text('Welcome to Home Page'));
               }
             },
           ),

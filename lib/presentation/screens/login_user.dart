@@ -30,31 +30,31 @@ class LoginUserPage extends StatelessWidget {
           child: BlocBuilder<LoginUserBloc, LoginUserState>(
             builder: (context, state) {
               if (state is LoginUserLoading) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Email'),
                       ),
-                      TextField(
+                      const TextField(
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           // Use your actual input fields to get values
                           BlocProvider.of<LoginUserBloc>(context).add(
-                            LoginUserRequested(
+                            const LoginUserRequested(
                               'email@example.com',
                               'password',
                             ),
                           );
                         },
-                        child: Text('Login'),
+                        child: const Text('Login'),
                       ),
                     ],
                   ),
