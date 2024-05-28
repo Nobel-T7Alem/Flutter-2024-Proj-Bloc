@@ -87,7 +87,6 @@ class _LoginPageState extends State<LoginPage> {
                       width: 300,
                       child: ElevatedButton(
                         onPressed: () {
-                          context.go("/admin_login");
                           BlocProvider.of<LoginPageBloc>(context).add(NavigateToAdminPage());
                         },
                         style: ElevatedButton.styleFrom(
@@ -110,7 +109,6 @@ class _LoginPageState extends State<LoginPage> {
                       width: 300,
                       child: ElevatedButton(
                         onPressed: () {
-                          context.go("/volunteer_signup");
                           BlocProvider.of<LoginPageBloc>(context).add(NavigateToUserLogin());
                         },
                         style: ElevatedButton.styleFrom(
@@ -150,19 +148,18 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextButton(
                             onPressed: () {
-                              context.go("/signup");
                               BlocProvider.of<LoginPageBloc>(context).add(NavigateToSignup());
                             },
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
+                                (Set<WidgetState> states) {
+                                  if (states.contains(WidgetState.pressed)) {
                                     return Colors.green.shade800;
                                   }
                                   return Colors.lightGreen;
                                 },
                               ),
-                              textStyle: MaterialStateProperty.all<TextStyle>(
+                              textStyle: WidgetStateProperty.all<TextStyle>(
                                 const TextStyle(
                                   fontSize: 15,
                                   shadows: [
