@@ -1,115 +1,128 @@
 import 'package:Sebawi/data/services/api_path.dart';
 import 'package:flutter/material.dart';
-
-import '../../data/models/posts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../data/models/posts.dart';
+import 'package:Sebawi/blocs/user_home/user_home_bloc.dart';
+import 'package:Sebawi/blocs/user_home/user_home_state.dart';
+import 'package:Sebawi/blocs/user_home/user_home_event.dart';
 
 class UserHomePage extends StatelessWidget {
   const UserHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Padding(
-              padding: const EdgeInsets.only(top: 16.0, left: 8.0),
-              child: Text('Sebawi',
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.green.shade800)),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0, right: 16.0),
-                child: IconButton(
-                  onPressed: () {
-                    context.go('/user_update');
-                  },
-                  icon: const Icon(Icons.settings),
-                  color: Colors.green.shade800,
-                  iconSize: 27,
+    return BlocProvider(
+      create: (context) => UserHomeBloc()..add(LoadPostsEvent()),
+      child: BlocListener<UserHomeBloc, UserHomeState>(
+        listener: (context, state) {
+          if (state is UserHomeNavigationSuccess) {
+            context.go(state.route);
+          }
+        },
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Padding(
+                  padding: const EdgeInsets.only(top: 16.0, left: 8.0),
+                  child: Text('Sebawi',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.green.shade800)),
                 ),
-              )
-            ],
-            bottom: TabBar(
-              tabs: const [
-                Tab(
-                  child: Text(
-                    "Posts",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, right: 16.0),
+                    child: IconButton(
+                      onPressed: () {
+                        BlocProvider.of<UserHomeBloc>(context).add(NavigateToUserUpdateEvent());
+                      },
+                      icon: Icon(Icons.settings),
+                      color: Colors.green.shade800,
+                      iconSize: 27,
+                    ),
+                  )
+                ],
+                bottom: TabBar(
+                  tabs: const [
+                    Tab(
+                      child: Text(
+                        "Posts",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        "My Calendar",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                  labelColor: Colors.green.shade800,
+                  unselectedLabelColor: Colors.grey.shade800,
+                  indicatorColor: Colors.green.shade800,
+                ),
+              ),
+              body: TabBarView(
+                children: [
+                  BlocBuilder<UserHomeBloc, UserHomeState>(
+                    builder: (context, state) {
+                      if (state is UserHomeLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state is UserHomeError) {
+                        return const Center(child: Text("Error loading posts"));
+                      } else if (state is UserHomeLoaded) {
+                        return ListView.builder(
+                          itemCount: state.posts.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                PostItem(
+                                  post: state.posts[index],
+                                  isMyPost: true,
+                                ),
+                                Divider(
+                                  height: 10,
+                                  thickness: 1,
+                                  color: Colors.grey.shade200,
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                      return Container();
+                    },
                   ),
-                ),
-                Tab(
-                  child: Text(
-                    "My Calendar",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ListView.builder(
+                    itemCount: calendar.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(calendar[index]),
+                          ),
+                          Divider(
+                            height: 10,
+                            thickness: 1,
+                            color: Colors.grey.shade200,
+                          ),
+                        ],
+                      );
+                    },
                   ),
-                ),
-              ],
-              labelColor: Colors.green.shade800,
-              unselectedLabelColor: Colors.grey.shade800,
-              indicatorColor: Colors.green.shade800,
+                ],
+              ),
             ),
           ),
-          body: TabBarView(
-            children: [
-              FutureBuilder(
-                future: fetchPosts(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return const Center(child: Text("Error loading posts"));
-                  } else {
-                    return ListView.builder(
-                      itemCount: posts?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            PostItem(
-                              post: posts![index],
-                              isMyPost: true,
-                            ),
-                            Divider(
-                              height: 10,
-                              thickness: 1,
-                              color: Colors.grey.shade200,
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-              ListView.builder(
-                itemCount: calendar.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      ListTile(
-                        title: Text(calendar[index]),
-                      ),
-                      Divider(
-                        height: 10,
-                        thickness: 1,
-                        color: Colors.grey.shade200,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ],
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade800),
           ),
         ),
-      ),
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade800),
       ),
     );
   }
@@ -218,9 +231,9 @@ class PostItemState extends State<PostItem> {
                       TextButton(
                         style: ButtonStyle(
                           backgroundColor:
-                          WidgetStateProperty.all(Colors.green.shade800),
+                          MaterialStateProperty.all(Colors.green.shade800),
                           shape:
-                          WidgetStateProperty.all<RoundedRectangleBorder>(
+                          MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius:
                               BorderRadius.circular(20), // Border radius
