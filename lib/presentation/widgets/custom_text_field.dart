@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String labelText;
   final bool obscureText;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
+  final void Function(String?)? onChange;
 
-  const CustomTextFormField({super.key, 
+  const CustomTextFormField({super.key,
     required this.labelText,
     this.obscureText = false,
+    this.inputFormatters,
+    this.onChange,
+    this.validator,
   }) ;
 
   @override
@@ -37,6 +44,8 @@ class CustomTextFormField extends StatelessWidget {
         ),
         obscureText: obscureText,
         style: const TextStyle(color: Colors.black),
+        onChanged: onChange,
+        validator: validator,
       ),
     );
   }

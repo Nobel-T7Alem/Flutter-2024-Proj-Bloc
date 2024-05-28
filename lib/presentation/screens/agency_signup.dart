@@ -15,8 +15,12 @@ class AgencySignup extends StatefulWidget {
 }
 
 class _AgencySignupState extends State<AgencySignup> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+  TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,29 +76,34 @@ class _AgencySignupState extends State<AgencySignup> {
                       ),
                     ),
                     const SizedBox(height: 8.0),
-                    const CustomTextFormField(
+                     CustomTextFormField(
                       labelText: 'Agency name',
                       obscureText: true,
+                       controller: _nameController,
                     ),
                     const SizedBox(height: 10.0),
-                    const CustomTextFormField(
+                     CustomTextFormField(
                       labelText: 'Enter Email',
                       obscureText: true,
+                       controller: _emailController,
                     ),
                     const SizedBox(height: 10.0),
-                    const CustomTextFormField(
+                     CustomTextFormField(
                       labelText: 'Create Username',
                       obscureText: true,
+                       controller: _usernameController,
                     ),
                     const SizedBox(height: 10.0),
-                    const CustomTextFormField(
+                     CustomTextFormField(
                       labelText: 'Create Password',
                       obscureText: true,
+                        controller: _passwordController,
                     ),
                     const SizedBox(height: 10.0),
-                    const CustomTextFormField(
+                     CustomTextFormField(
                       labelText: 'Confirm Password',
                       obscureText: true,
+                       controller: _confirmPasswordController,
                     ),
                     const SizedBox(height: 40.0),
                     CustomButton(

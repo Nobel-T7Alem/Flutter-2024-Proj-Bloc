@@ -53,7 +53,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/user_login',
       name: "user_login",
-      builder: (context, state) => const LoginUser(),
+      builder: (context, state) =>  LoginUser(),
     ),
     GoRoute(
       path: '/admin_login',

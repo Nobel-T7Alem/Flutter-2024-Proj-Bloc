@@ -9,8 +9,9 @@ import 'package:Sebawi/blocs/login_user/login_user_event.dart';
 
 
 class LoginUser extends StatelessWidget {
-  const LoginUser({super.key});
-
+  LoginUser({super.key});
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -65,13 +66,15 @@ class LoginUser extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10.0),
-                    const CustomTextFormField(
+                     CustomTextFormField(
                       labelText: 'Username',
+                       controller: _usernameController,
                     ),
                     const SizedBox(height: 10.0),
-                    const CustomTextFormField(
+                     CustomTextFormField(
                       labelText: 'Password',
                       obscureText: true,
+                      controller: _passwordController,
                     ),
                     const SizedBox(height: 40.0),
                     CustomButton(
