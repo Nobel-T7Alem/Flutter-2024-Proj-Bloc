@@ -117,9 +117,9 @@ class _VolunteerSignupState extends State<VolunteerSignup> {
                                 context.read<VolunteerSignupBloc>().add(LoginButtonPressed());
                               },
                               style: ButtonStyle(
-                                foregroundColor: WidgetStateProperty.all<Color>(
+                                foregroundColor: MaterialStateProperty.all<Color>(
                                     const Color.fromARGB(255, 66, 148, 69)),
-                                textStyle: WidgetStateProperty.all<TextStyle>(
+                                textStyle: MaterialStateProperty.all<TextStyle>(
                                   const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,

@@ -31,7 +31,7 @@ class _SignupScreenState extends State<SignupScreen> {
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  context.go('/');
                 },
                 icon: const Icon(Icons.arrow_back),
               ),
@@ -68,6 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       buttonColor: const Color.fromARGB(255, 83, 171, 71),
                       buttonTextColor: Colors.white,
                       buttonAction: () {
+                        context.go('/volunteer_signup');
                         BlocProvider.of<SignupBloc>(context).add(NavigateToVolunteerSignupEvent());
                       },
                     ),
@@ -110,6 +111,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       buttonColor: Colors.white,
                       buttonTextColor: const Color.fromARGB(255, 83, 171, 71),
                       buttonAction: () {
+                        context.go('/agency_signup');
                         BlocProvider.of<SignupBloc>(context).add(NavigateToAgencySignupEvent());
                       },
                     ),

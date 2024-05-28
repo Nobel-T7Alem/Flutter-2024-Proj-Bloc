@@ -41,7 +41,7 @@ class UserHomePage extends StatelessWidget {
                       onPressed: () {
                         BlocProvider.of<UserHomeBloc>(context).add(NavigateToUserUpdateEvent());
                       },
-                      icon: Icon(Icons.settings),
+                      icon: const Icon(Icons.settings),
                       color: Colors.green.shade800,
                       iconSize: 27,
                     ),
@@ -209,9 +209,9 @@ class PostItemState extends State<PostItem> {
                       TextButton(
                         style: ButtonStyle(
                           backgroundColor:
-                          WidgetStateProperty.all(Colors.green.shade800),
+                          MaterialStateProperty.all(Colors.green.shade800),
                           shape:
-                          WidgetStateProperty.all<RoundedRectangleBorder>(
+                          MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius:
                               BorderRadius.circular(20), // Border radius
