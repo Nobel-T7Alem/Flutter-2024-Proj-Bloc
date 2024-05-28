@@ -8,3 +8,5 @@ abstract class AgencyHomeEvent extends Equatable {
 }
 
 class LoadAgencyHomePage extends AgencyHomeEvent {}
+
+class NavigateToAgencyUpdateEvent extends AgencyHomeEvent {}

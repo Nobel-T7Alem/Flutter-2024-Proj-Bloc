@@ -9,22 +9,6 @@ abstract class VolunteerSignupState extends Equatable {
 
 class VolunteerSignupInitial extends VolunteerSignupState {}
 
-class VolunteerSignupLoading extends VolunteerSignupState {}
+class NavigateToUserHome extends VolunteerSignupState {}
 
-class VolunteerSignupSuccess extends VolunteerSignupState {
-  final String message;
-
-  const VolunteerSignupSuccess(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
-
-class VolunteerSignupFailure extends VolunteerSignupState {
-  final String error;
-
-  const VolunteerSignupFailure(this.error);
-
-  @override
-  List<Object> get props => [error];
-}
+class NavigateToUserLogin extends VolunteerSignupState {}

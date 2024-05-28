@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../data/models/posts.dart';
 
 abstract class UserHomeState extends Equatable {
   const UserHomeState();
@@ -12,19 +13,21 @@ class UserHomeInitial extends UserHomeState {}
 class UserHomeLoading extends UserHomeState {}
 
 class UserHomeLoaded extends UserHomeState {
-  final String data;
+  final List<Post> posts;
 
-  const UserHomeLoaded(this.data);
+  const UserHomeLoaded(this.posts);
 
   @override
-  List<Object> get props => [data];
+  List<Object> get props => [posts];
 }
 
-class UserHomeError extends UserHomeState {
-  final String error;
+class UserHomeError extends UserHomeState {}
 
-  const UserHomeError(this.error);
+class UserHomeNavigationSuccess extends UserHomeState {
+  final String route;
+
+  const UserHomeNavigationSuccess(this.route);
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [route];
 }

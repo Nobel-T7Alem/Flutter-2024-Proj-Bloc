@@ -7,13 +7,6 @@ abstract class VolunteerSignupEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SubmitVolunteerSignup extends VolunteerSignupEvent {
-  final String name;
-  final String email;
-  final String password;
+class SignupButtonPressed extends VolunteerSignupEvent {}
 
-  const SubmitVolunteerSignup(this.name, this.email, this.password);
-
-  @override
-  List<Object> get props => [name, email, password];
-}
+class LoginButtonPressed extends VolunteerSignupEvent {}

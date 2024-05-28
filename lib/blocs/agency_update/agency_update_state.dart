@@ -9,22 +9,11 @@ abstract class AgencyUpdateState extends Equatable {
 
 class AgencyUpdateInitial extends AgencyUpdateState {}
 
-class AgencyUpdateLoading extends AgencyUpdateState {}
+class AgencyUpdateNavigationSuccess extends AgencyUpdateState {
+  final String route;
 
-class AgencyUpdateSuccess extends AgencyUpdateState {
-  final String message;
-
-  const AgencyUpdateSuccess(this.message);
+  const AgencyUpdateNavigationSuccess(this.route);
 
   @override
-  List<Object> get props => [message];
-}
-
-class AgencyUpdateFailure extends AgencyUpdateState {
-  final String error;
-
-  const AgencyUpdateFailure(this.error);
-
-  @override
-  List<Object> get props => [error];
+  List<Object> get props => [route];
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../blocs/login/login_page_bloc.dart';
 import '../../blocs/login/login_page_event.dart';
 import '../../blocs/login/login_page_state.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -151,15 +151,15 @@ class _LoginPageState extends State<LoginPage> {
                               BlocProvider.of<LoginPageBloc>(context).add(NavigateToSignup());
                             },
                             style: ButtonStyle(
-                              foregroundColor: WidgetStateProperty.resolveWith<Color>(
-                                (Set<WidgetState> states) {
-                                  if (states.contains(WidgetState.pressed)) {
+                              foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
                                     return Colors.green.shade800;
                                   }
                                   return Colors.lightGreen;
                                 },
                               ),
-                              textStyle: WidgetStateProperty.all<TextStyle>(
+                              textStyle: MaterialStateProperty.all<TextStyle>(
                                 const TextStyle(
                                   fontSize: 15,
                                   shadows: [

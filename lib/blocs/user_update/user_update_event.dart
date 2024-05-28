@@ -8,12 +8,10 @@ abstract class UserUpdateEvent extends Equatable {
 }
 
 class SubmitUserUpdate extends UserUpdateEvent {
-  final String name;
-  final String email;
-  final String address;
+  final Map<String, dynamic> userData;
 
-  const SubmitUserUpdate(this.name, this.email, this.address);
+  const SubmitUserUpdate(this.userData);
 
   @override
-  List<Object> get props => [name, email, address];
+  List<Object> get props => [userData];
 }

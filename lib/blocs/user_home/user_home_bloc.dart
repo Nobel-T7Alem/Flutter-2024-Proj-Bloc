@@ -1,21 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'user_home_event.dart';
 import 'user_home_state.dart';
+import '../../data/models/posts.dart';
+import '../../data/services/api_path.dart';
 
 class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
-  UserHomeBloc() : super(UserHomeInitial());
+  UserHomeBloc() : super(UserHomeInitial()) {
+    on<LoadPostsEvent>(_onLoadPosts);
+    on<NavigateToUserUpdateEvent>(_onNavigateToUserUpdate);
+  }
 
-  @override
-  Stream<UserHomeState> mapEventToState(UserHomeEvent event) async* {
-    if (event is LoadUserHomePage) {
-      yield UserHomeLoading();
-      try {
-        // Simulate fetching data
-        await Future.delayed(const Duration(seconds: 2));
-        yield const UserHomeLoaded('User Home Page Data Loaded');
-      } catch (e) {
-        yield const UserHomeError('Failed to load user home page data');
-      }
+  void _onLoadPosts(LoadPostsEvent event, Emitter<UserHomeState> emit) async {
+    emit(UserHomeLoading());
+    try {
+      final posts = await RemoteService().getPosts();
+      emit(UserHomeLoaded(posts!));
+    } catch (e) {
+      emit(UserHomeError());
     }
+  }
+
+  void _onNavigateToUserUpdate(NavigateToUserUpdateEvent event, Emitter<UserHomeState> emit) {
+    emit(UserHomeNavigationSuccess('/user_update'));
   }
 }

@@ -9,22 +9,11 @@ abstract class LoginUserState extends Equatable {
 
 class LoginUserInitial extends LoginUserState {}
 
-class LoginUserLoading extends LoginUserState {}
+class LoginUserNavigationSuccess extends LoginUserState {
+  final String route;
 
-class LoginUserSuccess extends LoginUserState {
-  final String message;
-
-  const LoginUserSuccess(this.message);
+  const LoginUserNavigationSuccess(this.route);
 
   @override
-  List<Object> get props => [message];
-}
-
-class LoginUserFailure extends LoginUserState {
-  final String error;
-
-  const LoginUserFailure(this.error);
-
-  @override
-  List<Object> get props => [error];
+  List<Object> get props => [route];
 }

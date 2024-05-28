@@ -10,17 +10,14 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
   }
 
   void _onNavigateToAdminPage(NavigateToAdminPage event, Emitter<LoginPageState> emit) {
-    print('Navigating to Admin Page');
-    emit(LoginPageNavigationSuccess('/admin_page'));
+    emit(LoginPageNavigationSuccess('/admin_login'));
   }
 
   void _onNavigateToUserLogin(NavigateToUserLogin event, Emitter<LoginPageState> emit) {
-    print('Navigating to User Login');
     emit(LoginPageNavigationSuccess('/user_login'));
   }
 
   void _onNavigateToSignup(NavigateToSignup event, Emitter<LoginPageState> emit) {
-    print('Navigating to Signup');
     emit(LoginPageNavigationSuccess('/signup'));
   }
 }

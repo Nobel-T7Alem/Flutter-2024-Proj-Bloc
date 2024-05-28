@@ -7,4 +7,4 @@ abstract class HomePageEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadHomePage extends HomePageEvent {}
+class NavigateToLoginPage extends HomePageEvent {}

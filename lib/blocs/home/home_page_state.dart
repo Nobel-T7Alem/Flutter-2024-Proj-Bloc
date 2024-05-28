@@ -9,22 +9,11 @@ abstract class HomePageState extends Equatable {
 
 class HomePageInitial extends HomePageState {}
 
-class HomePageLoading extends HomePageState {}
+class HomePageNavigationSuccess extends HomePageState {
+  final String route;
 
-class HomePageLoaded extends HomePageState {
-  final String data;
-
-  const HomePageLoaded(this.data);
+  const HomePageNavigationSuccess(this.route);
 
   @override
-  List<Object> get props => [data];
-}
-
-class HomePageError extends HomePageState {
-  final String error;
-
-  const HomePageError(this.error);
-
-  @override
-  List<Object> get props => [error];
+  List<Object> get props => [route];
 }

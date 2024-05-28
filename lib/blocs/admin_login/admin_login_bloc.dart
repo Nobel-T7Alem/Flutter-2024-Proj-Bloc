@@ -3,19 +3,15 @@ import 'admin_login_event.dart';
 import 'admin_login_state.dart';
 
 class AdminLoginBloc extends Bloc<AdminLoginEvent, AdminLoginState> {
-  AdminLoginBloc() : super(AdminLoginInitial());
+  AdminLoginBloc() : super(AdminLoginInitial()) {
+    on<AdminLoginSubmitted>(_onAdminLoginSubmitted);
+  }
 
-  @override
-  Stream<AdminLoginState> mapEventToState(AdminLoginEvent event) async* {
-    if (event is AdminLoginRequested) {
-      yield AdminLoginLoading();
-      try {
-        // Simulate a login process
-        await Future.delayed(const Duration(seconds: 2));
-        yield const AdminLoginSuccess('Admin Login Successful');
-      } catch (e) {
-        yield const AdminLoginFailure('Admin Login Failed');
-      }
+  void _onAdminLoginSubmitted(AdminLoginSubmitted event, Emitter<AdminLoginState> emit) {
+    if (event.username == 'admin' && event.password == 'password') {
+      emit(AdminLoginSuccess());
+    } else {
+      emit(AdminLoginFailure());
     }
   }
 }
