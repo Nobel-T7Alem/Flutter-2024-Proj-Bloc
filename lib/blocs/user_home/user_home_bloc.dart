@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'user_home_event.dart';
 import 'user_home_state.dart';
-import '../../data/models/posts.dart';
 import '../../data/services/api_path.dart';
 
 class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
