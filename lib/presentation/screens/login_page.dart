@@ -87,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 300,
                       child: ElevatedButton(
                         onPressed: () {
+                          context.go("/admin_login");
                           BlocProvider.of<LoginPageBloc>(context).add(NavigateToAdminPage());
                         },
                         style: ElevatedButton.styleFrom(
@@ -109,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 300,
                       child: ElevatedButton(
                         onPressed: () {
+                          context.go("/volunteer_signup");
                           BlocProvider.of<LoginPageBloc>(context).add(NavigateToUserLogin());
                         },
                         style: ElevatedButton.styleFrom(
@@ -148,18 +150,19 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextButton(
                             onPressed: () {
+                              context.go("/signup");
                               BlocProvider.of<LoginPageBloc>(context).add(NavigateToSignup());
                             },
                             style: ButtonStyle(
-                              foregroundColor: WidgetStateProperty.resolveWith<Color>(
-                                (Set<WidgetState> states) {
-                                  if (states.contains(WidgetState.pressed)) {
+                              foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
                                     return Colors.green.shade800;
                                   }
                                   return Colors.lightGreen;
                                 },
                               ),
-                              textStyle: WidgetStateProperty.all<TextStyle>(
+                              textStyle: MaterialStateProperty.all<TextStyle>(
                                 const TextStyle(
                                   fontSize: 15,
                                   shadows: [
