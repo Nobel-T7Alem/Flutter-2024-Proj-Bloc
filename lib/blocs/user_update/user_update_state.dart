@@ -9,22 +9,11 @@ abstract class UserUpdateState extends Equatable {
 
 class UserUpdateInitial extends UserUpdateState {}
 
-class UserUpdateLoading extends UserUpdateState {}
+class UserUpdateNavigationSuccess extends UserUpdateState {
+  final String route;
 
-class UserUpdateSuccess extends UserUpdateState {
-  final String message;
-
-  const UserUpdateSuccess(this.message);
+  const UserUpdateNavigationSuccess(this.route);
 
   @override
-  List<Object> get props => [message];
-}
-
-class UserUpdateFailure extends UserUpdateState {
-  final String error;
-
-  const UserUpdateFailure(this.error);
-
-  @override
-  List<Object> get props => [error];
+  List<Object> get props => [route];
 }

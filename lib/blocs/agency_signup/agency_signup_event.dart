@@ -7,13 +7,13 @@ abstract class AgencySignupEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SubmitAgencySignup extends AgencySignupEvent {
-  final String agencyName;
-  final String email;
-  final String password;
+class AgencySignupSubmitted extends AgencySignupEvent {
+  final Map<String, dynamic> agencyData;
 
-  const SubmitAgencySignup(this.agencyName, this.email, this.password);
+  const AgencySignupSubmitted({required this.agencyData});
 
   @override
-  List<Object> get props => [agencyName, email, password];
+  List<Object> get props => [agencyData];
 }
+
+class NavigateToLogin extends AgencySignupEvent {}

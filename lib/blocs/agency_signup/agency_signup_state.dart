@@ -9,22 +9,11 @@ abstract class AgencySignupState extends Equatable {
 
 class AgencySignupInitial extends AgencySignupState {}
 
-class AgencySignupLoading extends AgencySignupState {}
+class AgencySignupNavigationSuccess extends AgencySignupState {
+  final String route;
 
-class AgencySignupSuccess extends AgencySignupState {
-  final String message;
-
-  const AgencySignupSuccess(this.message);
+  const AgencySignupNavigationSuccess(this.route);
 
   @override
-  List<Object> get props => [message];
-}
-
-class AgencySignupFailure extends AgencySignupState {
-  final String error;
-
-  const AgencySignupFailure(this.error);
-
-  @override
-  List<Object> get props => [error];
+  List<Object> get props => [route];
 }

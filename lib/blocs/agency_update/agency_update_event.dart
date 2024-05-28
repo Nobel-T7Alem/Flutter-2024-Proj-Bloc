@@ -8,12 +8,10 @@ abstract class AgencyUpdateEvent extends Equatable {
 }
 
 class SubmitAgencyUpdate extends AgencyUpdateEvent {
-  final String agencyName;
-  final String email;
-  final String address;
+  final Map<String, dynamic> agencyData;
 
-  const SubmitAgencyUpdate(this.agencyName, this.email, this.address);
+  const SubmitAgencyUpdate(this.agencyData);
 
   @override
-  List<Object> get props => [agencyName, email, address];
+  List<Object> get props => [agencyData];
 }

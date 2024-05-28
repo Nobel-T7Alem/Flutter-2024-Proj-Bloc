@@ -8,7 +8,7 @@ class Post {
   Post({
     required this.name,
     required this.description,
-    required this.contact,
+    required this.contact, required String serviceType, required String agencyName, required String contactInfo,
   });
 
   String name;
@@ -19,7 +19,7 @@ class Post {
   factory Post.fromJson(Map<String, dynamic> json) => Post(
     name: json["name"],
     description: json["description"],
-    contact: json["contact"],
+    contact: json["contact"], serviceType: '', agencyName: '', contactInfo: '',
   );
 
   Map<String, dynamic> toJson() => {

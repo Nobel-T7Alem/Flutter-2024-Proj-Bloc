@@ -7,4 +7,6 @@ abstract class UserHomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadUserHomePage extends UserHomeEvent {}
+class LoadPostsEvent extends UserHomeEvent {}
+
+class NavigateToUserUpdateEvent extends UserHomeEvent {}

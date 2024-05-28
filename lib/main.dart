@@ -1,18 +1,119 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'app_router.dart';
-import 'blocs/home/home_page_bloc.dart';
-import 'blocs/login/login_page_bloc.dart';
-import 'blocs/admin_login/admin_login_bloc.dart';
-import 'blocs/admin_page/admin_page_bloc.dart';
+import 'package:go_router/go_router.dart';
+import './presentation/screens/login_page.dart';
+import './presentation/screens/admin_login.dart';
+import './blocs/login/login_page_bloc.dart'; 
+import './blocs/admin_login/admin_login_bloc.dart';
+import './blocs/admin_page/admin_page_bloc.dart';
 import 'blocs/agency_home/agency_home_bloc.dart';
 import 'blocs/agency_signup/agency_signup_bloc.dart';
 import 'blocs/agency_update/agency_update_bloc.dart';
 import 'blocs/user_home/user_home_bloc.dart';
 import 'blocs/user_update/user_update_bloc.dart';
 import 'blocs/volunteer_signup/volunteer_signup_bloc.dart';
-import 'blocs/signup/signup_page_bloc.dart';
+import 'blocs/signup_page/signup_page.bloc.dart';
 import 'blocs/login_user/login_user_bloc.dart';
+import 'presentation/screens/admin_page.dart';
+import 'presentation/screens/agency_home.dart';
+import 'presentation/screens/agency_signup.dart';
+import 'presentation/screens/agency_update.dart';
+import 'presentation/screens/home_page.dart';
+import 'presentation/screens/login_user.dart';
+import 'presentation/screens/signup_page.dart';
+import 'presentation/screens/user_home.dart';
+import 'presentation/screens/user_update.dart';
+import 'presentation/screens/volunteer_signup.dart';
+
+
+
+final GoRouter router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      name: 'home',
+      builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: '/signup',
+      name: "signup",
+      builder: (context, state) => const SignupScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      name: "login",
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: '/admin',
+      name: "admin",
+      builder: (context, state) => const AdminPage(),
+    ),
+    GoRoute(
+      path: '/user_login',
+      name: "user_login",
+      builder: (context, state) => const LoginUser(),
+    ),
+    GoRoute(
+      path: '/admin_login',
+      name: "admin_login",
+      builder: (context, state) => const AdminLoginPage(),
+    ),
+    GoRoute(
+      path: '/user_home',
+      name: "user_home",
+      builder: (context, state) => const UserHomePage(),
+    ),
+    GoRoute(
+      path: '/volunteer_signup',
+      name: "volunteer_signup",
+      builder: (context, state) => VolunteerSignup(),
+    ),
+    GoRoute(
+      path: '/agency_signup',
+      name: "agency_signup",
+      builder: (context, state) => const AgencySignup(),
+    ),
+    GoRoute(
+        path: '/agency_home',
+        name: "agency_home",
+        builder: (context, state) => const AgencyHomePage()),
+    GoRoute(
+      path: '/user_update',
+      name: "user_update",
+      builder: (context, state) => const UserUpdate(),
+    ),
+    GoRoute(
+      path: '/agency_update',
+      name: "agency_update",
+      builder: (context, state) => const AgencyUpdate(),
+    ),
+    GoRoute(
+      path: '/admin_page',
+      name: "admin_page",
+      builder: (context, state) => const AdminPage(),
+    ),
+  ],
+  errorBuilder: (context, state) => Scaffold(
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Error: ${state.error}',
+            style: const TextStyle(fontSize: 20),
+          ),
+          ElevatedButton(
+            onPressed: () => context.go('/'),
+            child: const Text('Go Home'),
+          ),
+        ],
+      ),
+    ),
+  ),
+);
 
 void main() {
   runApp(MyApp());
@@ -24,7 +125,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => HomePageBloc()),
         BlocProvider(create: (context) => LoginPageBloc()),
         BlocProvider(create: (context) => AdminLoginBloc()),
         BlocProvider(create: (context) => AdminPageBloc()),
@@ -34,12 +134,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => UserHomeBloc()),
         BlocProvider(create: (context) => UserUpdateBloc()),
         BlocProvider(create: (context) => VolunteerSignupBloc()),
-        BlocProvider(create: (context) => SignupPageBloc()),
+        BlocProvider(create: (context) => SignupBloc()),
         BlocProvider(create: (context) => LoginUserBloc()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        title: 'Sebawi',
+        title: 'Your App',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.green,

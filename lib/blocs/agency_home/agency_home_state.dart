@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../presentation/screens/agency_home.dart'; 
+
 abstract class AgencyHomeState extends Equatable {
   const AgencyHomeState();
 
@@ -12,12 +14,12 @@ class AgencyHomeInitial extends AgencyHomeState {}
 class AgencyHomeLoading extends AgencyHomeState {}
 
 class AgencyHomeLoaded extends AgencyHomeState {
-  final String data;
+  final List<Post> posts;
 
-  const AgencyHomeLoaded(this.data);
+  const AgencyHomeLoaded(this.posts);
 
   @override
-  List<Object> get props => [data];
+  List<Object> get props => [posts];
 }
 
 class AgencyHomeError extends AgencyHomeState {
@@ -27,4 +29,13 @@ class AgencyHomeError extends AgencyHomeState {
 
   @override
   List<Object> get props => [error];
+}
+
+class AgencyHomeNavigationSuccess extends AgencyHomeState {
+  final String route;
+
+  const AgencyHomeNavigationSuccess(this.route);
+
+  @override
+  List<Object> get props => [route];
 }

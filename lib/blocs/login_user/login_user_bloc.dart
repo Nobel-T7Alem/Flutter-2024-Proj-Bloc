@@ -3,19 +3,19 @@ import 'login_user_event.dart';
 import 'login_user_state.dart';
 
 class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
-  LoginUserBloc() : super(LoginUserInitial());
+  LoginUserBloc() : super(LoginUserInitial()) {
+    on<LoginSubmitted>(_onLoginSubmitted);
+    on<NavigateToSignupEvent>(_onNavigateToSignup);
+  }
 
-  @override
-  Stream<LoginUserState> mapEventToState(LoginUserEvent event) async* {
-    if (event is LoginUserRequested) {
-      yield LoginUserLoading();
-      try {
-        // Simulate a login process
-        await Future.delayed(const Duration(seconds: 2));
-        yield const LoginUserSuccess('User Login Successful');
-      } catch (e) {
-        yield const LoginUserFailure('User Login Failed');
-      }
-    }
+  void _onLoginSubmitted(LoginSubmitted event, Emitter<LoginUserState> emit) {
+    // Perform login logic here (e.g., API call, authentication)
+
+    // Navigate to the user home page upon successful login
+    emit(LoginUserNavigationSuccess('/user_home'));
+  }
+
+  void _onNavigateToSignup(NavigateToSignupEvent event, Emitter<LoginUserState> emit) {
+    emit(LoginUserNavigationSuccess('/signup'));
   }
 }

@@ -1,70 +1,122 @@
+import 'package:Sebawi/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../blocs/signup/signup_page_bloc.dart';
-import '../../blocs/signup/signup_page_event.dart';
-import '../../blocs/signup/signup_page_state.dart';
+import 'package:go_router/go_router.dart';
+import 'package:Sebawi/blocs/signup_page/signup_page.bloc.dart';
+import 'package:Sebawi/blocs/signup_page/signup_page.event.dart';
+import 'package:Sebawi/blocs/signup_page/signup_page.state.dart';
 
-class SignupPage extends StatelessWidget {
-  const SignupPage({super.key});
 
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignupPageBloc(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Signup Page'),
-        ),
-        body: BlocListener<SignupPageBloc, SignupPageState>(
-          listener: (context, state) {
-            if (state is SignupPageSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message)),
-              );
-            } else if (state is SignupPageFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
-              );
-            }
-          },
-          child: BlocBuilder<SignupPageBloc, SignupPageState>(
-            builder: (context, state) {
-              if (state is SignupPageLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      const TextField(
-                        decoration: InputDecoration(labelText: 'Username'),
+      create: (context) => SignupBloc(),
+      child: BlocListener<SignupBloc, SignupState>(
+        listener: (context, state) {
+          if (state is SignupNavigationSuccess) {
+            context.go(state.route);
+          }
+        },
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back),
+              ),
+            ),
+            body: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 2.0,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Are you a volunteer or an agency?',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      const TextField(
-                        decoration: InputDecoration(labelText: 'Email'),
-                      ),
-                      const TextField(
-                        decoration: InputDecoration(labelText: 'Password'),
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Use your actual input fields to get values
-                          BlocProvider.of<SignupPageBloc>(context).add(
-                            const SubmitSignup(
-                              'username',
-                              'email@example.com',
-                              'password',
+                    ),
+                    const SizedBox(height: 40.0),
+                    CustomButton(
+                      buttonText: 'Volunteer',
+                      buttonColor: const Color.fromARGB(255, 83, 171, 71),
+                      buttonTextColor: Colors.white,
+                      buttonAction: () {
+                        BlocProvider.of<SignupBloc>(context).add(NavigateToVolunteerSignupEvent());
+                      },
+                    ),
+                    const SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: Colors.grey[400],
+                              thickness: 1.0,
                             ),
-                          );
-                        },
-                        child: const Text('Sign Up'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'or',
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: Colors.grey[400],
+                              thickness: 1.0,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              }
-            },
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    CustomButton(
+                      buttonText: 'Agency',
+                      buttonColor: Colors.white,
+                      buttonTextColor: const Color.fromARGB(255, 83, 171, 71),
+                      buttonAction: () {
+                        BlocProvider.of<SignupBloc>(context).add(NavigateToAgencySignupEvent());
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
