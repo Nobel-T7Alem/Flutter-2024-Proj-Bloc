@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:Sebawi/blocs/agency_signup/agency_signup_event.dart';
 import 'package:Sebawi/blocs/agency_signup/agency_signup_bloc.dart';
 import 'package:Sebawi/blocs/agency_signup/agency_signup_state.dart';
-import '../../data/models/agency_signup_form.dart';
+import '../../data/models/validate_form.dart';
 
 class AgencySignup extends StatelessWidget {
   const AgencySignup({super.key});
@@ -73,7 +73,7 @@ class AgencySignup extends StatelessWidget {
                     onChange: (val) {
                       BlocProvider.of<AgencySignupBloc>(context).add(
                           NameChangedEvent(
-                              name: AgencySignupForm(value: val!)));
+                              name: ValidateForm(value: val!)));
                     },
                     validator: (val) {
                       return state.name.error;
@@ -86,7 +86,7 @@ class AgencySignup extends StatelessWidget {
                     onChange: (val) {
                       BlocProvider.of<AgencySignupBloc>(context).add(
                           EmailChangedEvent(
-                              email: AgencySignupForm(value: val!)));
+                              email: ValidateForm(value: val!)));
                     },
                     validator: (val) {
                       return state.email.error;
@@ -99,7 +99,7 @@ class AgencySignup extends StatelessWidget {
                     onChange: (val) {
                       BlocProvider.of<AgencySignupBloc>(context).add(
                           UsernameChangedEvent(
-                              username: AgencySignupForm(value: val!)));
+                              username: ValidateForm(value: val!)));
                     },
                     validator: (val) {
                       return state.username.error;
@@ -112,7 +112,7 @@ class AgencySignup extends StatelessWidget {
                     onChange: (val) {
                       BlocProvider.of<AgencySignupBloc>(context).add(
                           PasswordChangedEvent(
-                              password: AgencySignupForm(value: val!)));
+                              password: ValidateForm(value: val!)));
                     },
                     validator: (val) {
                       return state.password.error;
@@ -125,7 +125,7 @@ class AgencySignup extends StatelessWidget {
                     onChange: (val) {
                       BlocProvider.of<AgencySignupBloc>(context).add(
                           ConfirmPasswordChangedEvent(
-                              confirmPassword: AgencySignupForm(value: val!)));
+                              confirmPassword: ValidateForm(value: val!)));
                     },
                     validator: (val) {
                       return state.confirmPassword.error;

@@ -1,7 +1,7 @@
-import 'package:Sebawi/data/models/volunteer_signup_form.dart';
 import 'package:Sebawi/utils/extensions.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import '../../data/models/validate_form.dart';
 import '../../data/services/api_path.dart';
 import 'volunteer_signup_event.dart';
 import 'volunteer_signup_state.dart';
@@ -31,29 +31,29 @@ class VolunteerSignupBloc
 
   Future<void> _onNameChanged(NameChangedEvent event,
       Emitter<VolunteerSignupState> emit) async {
-    emit(state.copyWith(name: VolunteerSignupForm(value: event.name.value)));
+    emit(state.copyWith(name: ValidateForm(value: event.name.value)));
   }
 
   Future<void> _onEmailChanged(EmailChangedEvent event,
       Emitter<VolunteerSignupState> emit) async {
-    emit(state.copyWith(email: VolunteerSignupForm(value: event.email.value)));
+    emit(state.copyWith(email: ValidateForm(value: event.email.value)));
   }
 
   Future<void> _onUsernameChanged(UsernameChangedEvent event,
       Emitter<VolunteerSignupState> emit) async {
     emit(state.copyWith(
-        username: VolunteerSignupForm(value: event.username.value)));
+        username: ValidateForm(value: event.username.value)));
   }
 
   Future<void> _onPasswordChanged(PasswordChangedEvent event,
       Emitter<VolunteerSignupState> emit) async {
     emit(state.copyWith(
-        password: VolunteerSignupForm(value: event.password.value)));
+        password: ValidateForm(value: event.password.value)));
   }
 
   Future<void> _onConfirmPasswordChanged(ConfirmPasswordChangedEvent event,
       Emitter<VolunteerSignupState> emit) async {
-    emit(state.copyWith(confirmPassword: VolunteerSignupForm(
+    emit(state.copyWith(confirmPassword: ValidateForm(
         value: event.confirmPassword.value)));
   }
 
@@ -109,13 +109,13 @@ class VolunteerSignupBloc
       }
     } else {
       emit(state.copyWith(
-        name: VolunteerSignupForm(value: state.name.value, error: nameError),
-        email: VolunteerSignupForm(value: state.email.value, error: emailError),
-        username: VolunteerSignupForm(
+        name: ValidateForm(value: state.name.value, error: nameError),
+        email: ValidateForm(value: state.email.value, error: emailError),
+        username: ValidateForm(
             value: state.username.value, error: usernameError),
-        password: VolunteerSignupForm(
+        password: ValidateForm(
             value: state.password.value, error: passwordError),
-        confirmPassword: VolunteerSignupForm(
+        confirmPassword: ValidateForm(
             value: state.confirmPassword.value, error: confirmPasswordError),
       ));
     }

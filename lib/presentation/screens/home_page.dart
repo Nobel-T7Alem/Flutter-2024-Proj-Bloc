@@ -1,3 +1,5 @@
+import 'package:Sebawi/presentation/screens/admin_page.dart';
+import 'package:Sebawi/presentation/screens/agency_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +23,7 @@ class HomePage extends StatelessWidget {
         },
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const LoginPage(),
+          home: const AgencyHomePage(),
           theme: ThemeData(
             textTheme: const TextTheme(
               bodyLarge: TextStyle(fontSize: 20),

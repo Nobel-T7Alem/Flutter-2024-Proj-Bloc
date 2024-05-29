@@ -1,8 +1,8 @@
+import 'package:Sebawi/utils/extensions.dart';
 import 'package:bloc/bloc.dart';
-import '../../data/models/agency_signup_form.dart';
+import '../../data/models/validate_form.dart';
 import 'agency_signup_event.dart';
 import 'agency_signup_state.dart';
-import 'package:Sebawi/utils/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import '../../data/services/api_path.dart';
 
@@ -34,29 +34,29 @@ class AgencySignupBloc
 
   Future<void> _onNameChanged(NameChangedEvent event,
       Emitter<AgencySignupState> emit) async {
-    emit(state.copyWith(name: AgencySignupForm(value: event.name.value)));
+    emit(state.copyWith(name: ValidateForm(value: event.name.value)));
   }
 
   Future<void> _onEmailChanged(EmailChangedEvent event,
       Emitter<AgencySignupState> emit) async {
-    emit(state.copyWith(email: AgencySignupForm(value: event.email.value)));
+    emit(state.copyWith(email: ValidateForm(value: event.email.value)));
   }
 
   Future<void> _onUsernameChanged(UsernameChangedEvent event,
       Emitter<AgencySignupState> emit) async {
     emit(state.copyWith(
-        username: AgencySignupForm(value: event.username.value)));
+        username: ValidateForm(value: event.username.value)));
   }
 
   Future<void> _onPasswordChanged(PasswordChangedEvent event,
       Emitter<AgencySignupState> emit) async {
     emit(state.copyWith(
-        password: AgencySignupForm(value: event.password.value)));
+        password: ValidateForm(value: event.password.value)));
   }
 
   Future<void> _onConfirmPasswordChanged(ConfirmPasswordChangedEvent event,
       Emitter<AgencySignupState> emit) async {
-    emit(state.copyWith(confirmPassword: AgencySignupForm(
+    emit(state.copyWith(confirmPassword: ValidateForm(
         value: event.confirmPassword.value)));
   }
 
@@ -111,13 +111,13 @@ class AgencySignupBloc
       }
     } else {
       emit(state.copyWith(
-        name: AgencySignupForm(value: state.name.value, error: nameError),
-        email: AgencySignupForm(value: state.email.value, error: emailError),
-        username: AgencySignupForm(
+        name: ValidateForm(value: state.name.value, error: nameError),
+        email: ValidateForm(value: state.email.value, error: emailError),
+        username: ValidateForm(
             value: state.username.value, error: usernameError),
-        password: AgencySignupForm(
+        password: ValidateForm(
             value: state.password.value, error: passwordError),
-        confirmPassword: AgencySignupForm(
+        confirmPassword: ValidateForm(
             value: state.confirmPassword.value, error: confirmPasswordError),
       ));
     }

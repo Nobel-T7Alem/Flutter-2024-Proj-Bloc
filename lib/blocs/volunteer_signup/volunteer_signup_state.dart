@@ -1,32 +1,33 @@
-import 'package:Sebawi/data/models/volunteer_signup_form.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../data/models/validate_form.dart';
+
  class VolunteerSignupState extends Equatable {
-  final VolunteerSignupForm name;
-  final VolunteerSignupForm email;
-  final VolunteerSignupForm username;
-  final VolunteerSignupForm password;
-  final VolunteerSignupForm confirmPassword;
+  final ValidateForm name;
+  final ValidateForm email;
+  final ValidateForm username;
+  final ValidateForm password;
+  final ValidateForm confirmPassword;
   final GlobalKey<FormState>? formKey;
   final String? apiError;
 
   const VolunteerSignupState({
-    this.name = const VolunteerSignupForm(error:null),
-    this.email = const VolunteerSignupForm(error:null),
-    this.username =const VolunteerSignupForm(error:null),
-    this.password = const VolunteerSignupForm(error:null),
-    this.confirmPassword = const VolunteerSignupForm(error:null),
+    this.name = const ValidateForm(error:null),
+    this.email = const ValidateForm(error:null),
+    this.username =const ValidateForm(error:null),
+    this.password = const ValidateForm(error:null),
+    this.confirmPassword = const ValidateForm(error:null),
     this.formKey,
     this.apiError,
 });
 
   VolunteerSignupState copyWith({
-    VolunteerSignupForm? name,
-    VolunteerSignupForm? email,
-    VolunteerSignupForm? username,
-    VolunteerSignupForm? password,
-    VolunteerSignupForm? confirmPassword,
+    ValidateForm? name,
+    ValidateForm? email,
+    ValidateForm? username,
+    ValidateForm? password,
+    ValidateForm? confirmPassword,
     GlobalKey<FormState>? formKey,
     String? apiError,
   }) {

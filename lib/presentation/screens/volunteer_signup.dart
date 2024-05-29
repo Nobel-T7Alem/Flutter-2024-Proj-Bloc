@@ -1,4 +1,3 @@
-import 'package:Sebawi/data/models/volunteer_signup_form.dart';
 import 'package:Sebawi/presentation/widgets/custom_button.dart';
 import 'package:Sebawi/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,8 @@ import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_bloc.dart';
 import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_state.dart';
 import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_event.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../data/models/validate_form.dart';
 
 class VolunteerSignup extends StatelessWidget {
   const VolunteerSignup({super.key});
@@ -76,7 +77,7 @@ class VolunteerSignup extends StatelessWidget {
                             onChange: (val) {
                               BlocProvider.of<VolunteerSignupBloc>(context).add(
                                   NameChangedEvent(
-                                      name: VolunteerSignupForm(value: val!)));
+                                      name: ValidateForm(value: val!)));
                             },
                             validator: (val) {
                               return state.name.error;
@@ -88,7 +89,7 @@ class VolunteerSignup extends StatelessWidget {
                             onChange: (val) {
                               BlocProvider.of<VolunteerSignupBloc>(context).add(
                                   EmailChangedEvent(
-                                      email: VolunteerSignupForm(value: val!)));
+                                      email: ValidateForm(value: val!)));
                             },
                             validator: (val) {
                               return state.email.error;
@@ -101,7 +102,7 @@ class VolunteerSignup extends StatelessWidget {
                               BlocProvider.of<VolunteerSignupBloc>(context).add(
                                   UsernameChangedEvent(
                                       username:
-                                          VolunteerSignupForm(value: val!)));
+                                          ValidateForm(value: val!)));
                             },
                             validator: (val) {
                               return state.username.error;
@@ -115,7 +116,7 @@ class VolunteerSignup extends StatelessWidget {
                               BlocProvider.of<VolunteerSignupBloc>(context).add(
                                   PasswordChangedEvent(
                                       password:
-                                          VolunteerSignupForm(value: val!)));
+                                          ValidateForm(value: val!)));
                             },
                             validator: (val) {
                               return state.password.error;
@@ -129,7 +130,7 @@ class VolunteerSignup extends StatelessWidget {
                               BlocProvider.of<VolunteerSignupBloc>(context).add(
                                   ConfirmPasswordChangedEvent(
                                       confirmPassword:
-                                          VolunteerSignupForm(value: val!)));
+                                          ValidateForm(value: val!)));
                             },
                             validator: (val) {
                               return state.confirmPassword.error;

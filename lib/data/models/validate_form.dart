@@ -1,12 +1,12 @@
-class VolunteerSignupForm{
+class ValidateForm{
   final String value;
   final String? error;
-  const VolunteerSignupForm({ this.value ='', this.error});
-  VolunteerSignupForm copyWith({
+  const ValidateForm({ this.value ='', this.error});
+  ValidateForm copyWith({
     final String? value,
     final String? error,
   }){
-    return VolunteerSignupForm(
+    return ValidateForm(
       value: value ?? this.value,
       error: error ?? this.error,
     );

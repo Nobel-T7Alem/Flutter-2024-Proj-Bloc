@@ -1,31 +1,31 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import '../../data/models/agency_signup_form.dart';
+import '../../data/models/validate_form.dart';
 
 class AgencySignupState extends Equatable {
-  final AgencySignupForm name;
-  final AgencySignupForm email;
-  final AgencySignupForm username;
-  final AgencySignupForm password;
-  final AgencySignupForm confirmPassword;
+  final ValidateForm name;
+  final ValidateForm email;
+  final ValidateForm username;
+  final ValidateForm password;
+  final ValidateForm confirmPassword;
   final GlobalKey<FormState>? formKey;
   final String? apiError;
 
   const AgencySignupState({
-    this.name = const AgencySignupForm(error:null),
-    this.email = const AgencySignupForm(error:null),
-    this.username =const AgencySignupForm(error:null),
-    this.password = const AgencySignupForm(error:null),
-    this.confirmPassword = const AgencySignupForm(error:null),
+    this.name = const ValidateForm(error:null),
+    this.email = const ValidateForm(error:null),
+    this.username =const ValidateForm(error:null),
+    this.password = const ValidateForm(error:null),
+    this.confirmPassword = const ValidateForm(error:null),
     this.formKey,
     this.apiError,
 });
   AgencySignupState copyWith({
-    AgencySignupForm? name,
-    AgencySignupForm? email,
-    AgencySignupForm? username,
-    AgencySignupForm? password,
-    AgencySignupForm? confirmPassword,
+    ValidateForm? name,
+    ValidateForm? email,
+    ValidateForm? username,
+    ValidateForm? password,
+    ValidateForm? confirmPassword,
     GlobalKey<FormState>? formKey,
     String? apiError,
   }) {

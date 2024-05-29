@@ -2,27 +2,33 @@ import 'dart:convert';
 
 import '../models/posts.dart';
 import 'package:http/http.dart' as http;
-class RemoteService
-{
 
+class RemoteService {
   Future<List<Post>?> getPosts() async {
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.7:3000/posts');
+    var uri = Uri.parse('http://192.168.1.10:3000/posts');
     final response = await client.get(uri);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return postFromJson(jsonString);
     } else {
-      return (null
-      );
+      return (null);
     }
+  }
+
+  Future<int?> addPost(post) async {
+    var client = http.Client();
+    var uri = Uri.parse('http://192.168.1.10:3000/posts');
+    final response = await client.post(uri,
+        headers: {'Content-Type': 'application/json'}, body: json.encode(post));
+      return response.statusCode;
   }
 }
 
-
-Future<String?> signUp(String fullName, String email, String username, String password, String role) async {
+Future<String?> signUp(String fullName, String email, String username,
+    String password, String role) async {
   final response = await http.post(
-    Uri.parse('http://192.168.4.138:3000/auth/signup'),
+    Uri.parse('http://192.168.1.10:3000/auth/signup'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -43,4 +49,3 @@ Future<String?> signUp(String fullName, String email, String username, String pa
     return responseBody['message'] ?? 'Failed to sign up';
   }
 }
-
