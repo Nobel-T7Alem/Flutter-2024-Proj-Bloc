@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
   final VolunteerSignupForm password;
   final VolunteerSignupForm confirmPassword;
   final GlobalKey<FormState>? formKey;
+  final String? apiError;
 
   const VolunteerSignupState({
     this.name = const VolunteerSignupForm(error:null),
@@ -17,6 +18,7 @@ import 'package:flutter/cupertino.dart';
     this.password = const VolunteerSignupForm(error:null),
     this.confirmPassword = const VolunteerSignupForm(error:null),
     this.formKey,
+    this.apiError,
 });
 
   VolunteerSignupState copyWith({
@@ -26,6 +28,7 @@ import 'package:flutter/cupertino.dart';
     VolunteerSignupForm? password,
     VolunteerSignupForm? confirmPassword,
     GlobalKey<FormState>? formKey,
+    String? apiError,
   }) {
     return VolunteerSignupState(
       name: name ?? this.name,
@@ -34,10 +37,11 @@ import 'package:flutter/cupertino.dart';
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
       formKey: formKey ?? this.formKey,
+      apiError: apiError ?? this.apiError,
     );
   }
   @override
-  List<Object?> get props => [name, email, username, password, confirmPassword, formKey];
+  List<Object?> get props => [name, email, username, password, confirmPassword, formKey, apiError];
 }
 
 class VolunteerSignupInitial extends VolunteerSignupState {}

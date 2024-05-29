@@ -9,7 +9,6 @@ import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_state.dart';
 import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_event.dart';
 import 'package:go_router/go_router.dart';
 
-
 class VolunteerSignup extends StatelessWidget {
   const VolunteerSignup({super.key});
   @override
@@ -76,7 +75,9 @@ class VolunteerSignup extends StatelessWidget {
                           CustomTextFormField(
                             labelText: 'Full name',
                             onChange: (val) {
-                              BlocProvider.of<VolunteerSignupBloc>(context).add(NameChangedEvent(name: VolunteerSignupForm(value: val!)));
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(
+                                  NameChangedEvent(
+                                      name: VolunteerSignupForm(value: val!)));
                             },
                             validator: (val) {
                               return state.name.error;
@@ -86,7 +87,9 @@ class VolunteerSignup extends StatelessWidget {
                           CustomTextFormField(
                             labelText: 'Enter Email',
                             onChange: (val) {
-                              BlocProvider.of<VolunteerSignupBloc>(context).add(EmailChangedEvent(email: VolunteerSignupForm(value: val!)));
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(
+                                  EmailChangedEvent(
+                                      email: VolunteerSignupForm(value: val!)));
                             },
                             validator: (val) {
                               return state.email.error;
@@ -96,7 +99,10 @@ class VolunteerSignup extends StatelessWidget {
                           CustomTextFormField(
                             labelText: 'Create Username',
                             onChange: (val) {
-                              BlocProvider.of<VolunteerSignupBloc>(context).add(UsernameChangedEvent(username: VolunteerSignupForm(value: val!)));
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(
+                                  UsernameChangedEvent(
+                                      username:
+                                          VolunteerSignupForm(value: val!)));
                             },
                             validator: (val) {
                               return state.username.error;
@@ -107,7 +113,10 @@ class VolunteerSignup extends StatelessWidget {
                             labelText: 'Create Password',
                             obscureText: false,
                             onChange: (val) {
-                              BlocProvider.of<VolunteerSignupBloc>(context).add(PasswordChangedEvent(password: VolunteerSignupForm(value: val!)));
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(
+                                  PasswordChangedEvent(
+                                      password:
+                                          VolunteerSignupForm(value: val!)));
                             },
                             validator: (val) {
                               return state.password.error;
@@ -118,26 +127,37 @@ class VolunteerSignup extends StatelessWidget {
                             labelText: 'Confirm Password',
                             obscureText: true,
                             onChange: (val) {
-                              BlocProvider.of<VolunteerSignupBloc>(context).add(ConfirmPasswordChangedEvent(confirmPassword: VolunteerSignupForm(value: val!)));
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(
+                                  ConfirmPasswordChangedEvent(
+                                      confirmPassword:
+                                          VolunteerSignupForm(value: val!)));
                             },
                             validator: (val) {
                               return state.confirmPassword.error;
                             },
                           ),
+                          if (state.apiError != null)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                              child: Text(
+                                state.apiError!,
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            ),
+
                           const SizedBox(height: 40.0),
                           CustomButton(
                             buttonText: 'Sign up',
                             buttonColor: const Color.fromARGB(255, 83, 171, 71),
                             buttonTextColor: Colors.white,
                             buttonAction: () async {
-                              BlocProvider.of<VolunteerSignupBloc>(context).add(SignupButtonPressed());
+                              BlocProvider.of<VolunteerSignupBloc>(context)
+                                  .add(const SignupButtonPressed());
                             },
-
                           ),
                         ],
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.all(17),
                       child: Center(
@@ -165,7 +185,7 @@ class VolunteerSignup extends StatelessWidget {
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               );

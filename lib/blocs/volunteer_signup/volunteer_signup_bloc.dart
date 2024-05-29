@@ -4,6 +4,7 @@ import 'package:Sebawi/data/models/volunteer_signup_form.dart';
 import 'package:Sebawi/utils/extensions.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import '../../data/services/api_path.dart';
 import 'volunteer_signup_event.dart';
 import 'volunteer_signup_state.dart';
 import 'package:http/http.dart' as http;
@@ -102,8 +103,13 @@ class VolunteerSignupBloc
 
     if (nameError == null && emailError == null && usernameError == null &&
         passwordError == null && confirmPasswordError == null) {
-      await signUp(state.name.value, state.email.value, state.password.value,
-          state.username.value);
+      final errorMessage =  await signUp(state.name.value, state.email.value,  state.username.value, state.password.value,
+         );
+      if (errorMessage == null){
+        emit(NavigateToUserHome());
+      } else {
+        emit(state.copyWith(apiError: errorMessage));
+      }
     } else {
       emit(state.copyWith(
         name: VolunteerSignupForm(value: state.name.value, error: nameError),
@@ -115,36 +121,6 @@ class VolunteerSignupBloc
         confirmPassword: VolunteerSignupForm(
             value: state.confirmPassword.value, error: confirmPasswordError),
       ));
-    }
-  }
-  Future<void> signUp(String fullName, String email, String username, String password) async {
-    print(fullName);
-    print(email);
-    print(username);
-    print(password);
-
-    final response = await http.post(
-      Uri.parse('http://192.168.4.138:3000/auth/signup'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'name': fullName,
-        "username": username,
-        'email': email,
-        'password': password,
-        'role': "user"
-      }),
-    );
-    if (response.statusCode == 201) {
-      print("success");
-      return jsonDecode(response.body);
-
-    } else {
-      print("nope, status code:");
-      print(response.statusCode);
-      print(response.body);
-      throw Exception('Failed to sign up');
     }
   }
 }
