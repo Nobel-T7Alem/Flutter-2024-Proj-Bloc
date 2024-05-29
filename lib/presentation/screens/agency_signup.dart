@@ -6,144 +6,182 @@ import 'package:go_router/go_router.dart';
 import 'package:Sebawi/blocs/agency_signup/agency_signup_event.dart';
 import 'package:Sebawi/blocs/agency_signup/agency_signup_bloc.dart';
 import 'package:Sebawi/blocs/agency_signup/agency_signup_state.dart';
+import '../../data/models/agency_signup_form.dart';
 
-class AgencySignup extends StatefulWidget {
+class AgencySignup extends StatelessWidget {
   const AgencySignup({super.key});
-
-  @override
-  _AgencySignupState createState() => _AgencySignupState();
-}
-
-class _AgencySignupState extends State<AgencySignup> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-  TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AgencySignupBloc(),
+      create: (context) =>
+          AgencySignupBloc()..add(const AgencySignupInitialEvent()),
       child: BlocListener<AgencySignupBloc, AgencySignupState>(
         listener: (context, state) {
-          if (state is AgencySignupNavigationSuccess) {
-            context.go(state.route);
+          if (state is NavigateToAdminHome) {
+            context.go("/agency_home");
+          } else if (state is NavigateToAdminLogin) {
+            context.go("/user_login");
           }
         },
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: Scaffold(
-            body: Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+          home: Scaffold(body: BlocBuilder<AgencySignupBloc, AgencySignupState>(
+              builder: (context, state) {
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 35),
+                    child: Image.asset(
+                      'assets/images/sebawilogo.png',
+                      width: 140.0,
+                      height: 140.0,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 35),
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 2.0,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 35.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 8.0),
+                        Text(
+                          'Share your Agencying opportunities.',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  CustomTextFormField(
+                    labelText: 'Agency name',
+                    obscureText: false,
+                    onChange: (val) {
+                      BlocProvider.of<AgencySignupBloc>(context).add(
+                          NameChangedEvent(
+                              name: AgencySignupForm(value: val!)));
+                    },
+                    validator: (val) {
+                      return state.name.error;
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  CustomTextFormField(
+                    labelText: 'Enter Email',
+                    obscureText: false,
+                    onChange: (val) {
+                      BlocProvider.of<AgencySignupBloc>(context).add(
+                          EmailChangedEvent(
+                              email: AgencySignupForm(value: val!)));
+                    },
+                    validator: (val) {
+                      return state.email.error;
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  CustomTextFormField(
+                    labelText: 'Create Username',
+                    obscureText: false,
+                    onChange: (val) {
+                      BlocProvider.of<AgencySignupBloc>(context).add(
+                          UsernameChangedEvent(
+                              username: AgencySignupForm(value: val!)));
+                    },
+                    validator: (val) {
+                      return state.username.error;
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  CustomTextFormField(
+                    labelText: 'Create Password',
+                    obscureText: false,
+                    onChange: (val) {
+                      BlocProvider.of<AgencySignupBloc>(context).add(
+                          PasswordChangedEvent(
+                              password: AgencySignupForm(value: val!)));
+                    },
+                    validator: (val) {
+                      return state.password.error;
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  CustomTextFormField(
+                    labelText: 'Confirm Password',
+                    obscureText: true,
+                    onChange: (val) {
+                      BlocProvider.of<AgencySignupBloc>(context).add(
+                          ConfirmPasswordChangedEvent(
+                              confirmPassword: AgencySignupForm(value: val!)));
+                    },
+                    validator: (val) {
+                      return state.confirmPassword.error;
+                    },
+                  ),
+                  if (state.apiError != null)
                     Padding(
-                      padding: const EdgeInsets.only(top: 35),
-                      child: Image.asset(
-                        'assets/images/sebawilogo.png',
-                        width: 140.0,
-                        height: 140.0,
+                      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      child:
+                      Center(
+                        child: Text(
+                        state.apiError!,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 35),
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 2.0,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 35.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 40.0),
+                  CustomButton(
+                      buttonText: 'Signup',
+                      buttonColor: const Color.fromARGB(255, 83, 171, 71),
+                      buttonTextColor: Colors.white,
+                      buttonAction: () async {
+                        BlocProvider.of<AgencySignupBloc>(context)
+                            .add(const AgencySignupButtonPressed());
+                      }),
+                  Padding(
+                    padding: const EdgeInsets.all(17),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: 8.0),
-                          Text(
-                            'Share your volunteering opportunities.',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                          const Padding(
+                            padding: EdgeInsets.only(right: 4.0),
+                            child: Text('Already signed up?'),
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              BlocProvider.of<AgencySignupBloc>(context)
+                                  .add(NavigateToLogin());
+                            },
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 66, 148, 69),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8.0),
-                     CustomTextFormField(
-                      labelText: 'Agency name',
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 10.0),
-                     CustomTextFormField(
-                      labelText: 'Enter Email',
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 10.0),
-                     CustomTextFormField(
-                      labelText: 'Create Username',
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 10.0),
-                     CustomTextFormField(
-                      labelText: 'Create Password',
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 10.0),
-                     CustomTextFormField(
-                      labelText: 'Confirm Password',
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 40.0),
-                    CustomButton(
-                        buttonText: 'Signup',
-                        buttonColor: const Color.fromARGB(255, 83, 171, 71),
-                        buttonTextColor: Colors.white,
-                        buttonAction: () {
-                          BlocProvider.of<AgencySignupBloc>(context).add(AgencySignupSubmitted(
-                            agencyData: {
-                              'username': _usernameController.text,
-                              'password': _passwordController.text,
-                            },
-                          ));
-                        }),
-                    Padding(
-                      padding: const EdgeInsets.all(17),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(right: 4.0),
-                              child: Text('Already signed up?'),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                BlocProvider.of<AgencySignupBloc>(context).add(NavigateToLogin());
-                              },
-                              child: const Text(
-                                'Login',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 66, 148, 69),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
-            ),
-          ),
+            );
+          })),
         ),
       ),
     );

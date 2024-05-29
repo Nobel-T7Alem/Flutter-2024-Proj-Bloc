@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:Sebawi/data/models/volunteer_signup_form.dart';
 import 'package:Sebawi/utils/extensions.dart';
 import 'package:bloc/bloc.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import '../../data/services/api_path.dart';
 import 'volunteer_signup_event.dart';
 import 'volunteer_signup_state.dart';
-import 'package:http/http.dart' as http;
 
 class VolunteerSignupBloc
     extends Bloc<VolunteerSignupEvent, VolunteerSignupState> {
@@ -103,7 +100,7 @@ class VolunteerSignupBloc
 
     if (nameError == null && emailError == null && usernameError == null &&
         passwordError == null && confirmPasswordError == null) {
-      final errorMessage =  await signUp(state.name.value, state.email.value,  state.username.value, state.password.value,
+      final errorMessage =  await signUp(state.name.value, state.email.value,  state.username.value, state.password.value, "user"
          );
       if (errorMessage == null){
         emit(NavigateToUserHome());

@@ -20,12 +20,7 @@ class RemoteService
 }
 
 
-Future<String?> signUp(String fullName, String email, String username, String password) async {
-  print(fullName);
-  print(email);
-  print(username);
-  print(password);
-
+Future<String?> signUp(String fullName, String email, String username, String password, String role) async {
   final response = await http.post(
     Uri.parse('http://192.168.4.138:3000/auth/signup'),
     headers: <String, String>{
@@ -36,7 +31,7 @@ Future<String?> signUp(String fullName, String email, String username, String pa
       "username": username,
       'email': email,
       'password': password,
-      'role': "user"
+      'role': role,
     }),
   );
   if (response.statusCode == 201) {
@@ -48,3 +43,4 @@ Future<String?> signUp(String fullName, String email, String username, String pa
     return responseBody['message'] ?? 'Failed to sign up';
   }
 }
+

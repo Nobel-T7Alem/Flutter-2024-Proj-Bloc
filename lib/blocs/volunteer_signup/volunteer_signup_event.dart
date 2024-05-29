@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-
 import '../../data/models/volunteer_signup_form.dart';
 
 abstract class VolunteerSignupEvent extends Equatable {
@@ -15,19 +14,7 @@ class SignupButtonPressed extends VolunteerSignupEvent {
 class VolunteerSignupInitialEvent extends VolunteerSignupEvent {
   const VolunteerSignupInitialEvent();
 }
-class ValidateForm extends VolunteerSignupEvent {
-  final String name;
-  final String email;
-  final String username;
-  final String password;
 
-  const ValidateForm({
-    required this.name,
-    required this.email,
-    required this.username,
-    required this.password,
-  });
-}
 
 class LoginButtonPressed extends VolunteerSignupEvent {}
 
