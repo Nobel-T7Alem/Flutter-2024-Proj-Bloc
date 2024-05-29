@@ -68,13 +68,11 @@ class LoginUser extends StatelessWidget {
                     const SizedBox(height: 10.0),
                      CustomTextFormField(
                       labelText: 'Username',
-                       controller: _usernameController,
                     ),
                     const SizedBox(height: 10.0),
                      CustomTextFormField(
                       labelText: 'Password',
                       obscureText: true,
-                      controller: _passwordController,
                     ),
                     const SizedBox(height: 40.0),
                     CustomButton(

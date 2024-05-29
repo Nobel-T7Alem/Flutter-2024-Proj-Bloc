@@ -6,7 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? inputFormatters;
-  final void Function(String?)? onChange;
+  final Function(String?)? onChange;
 
   const CustomTextFormField({super.key,
     required this.labelText,
@@ -36,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
             ),
           ),
           labelText: labelText,
+          errorText: validator != null ? validator!(null) : null,
           labelStyle: const TextStyle(
             color: Color.fromARGB(255, 165, 165, 165),
             fontSize: 18,

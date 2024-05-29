@@ -79,31 +79,26 @@ class _AgencySignupState extends State<AgencySignup> {
                      CustomTextFormField(
                       labelText: 'Agency name',
                       obscureText: true,
-                       controller: _nameController,
                     ),
                     const SizedBox(height: 10.0),
                      CustomTextFormField(
                       labelText: 'Enter Email',
                       obscureText: true,
-                       controller: _emailController,
                     ),
                     const SizedBox(height: 10.0),
                      CustomTextFormField(
                       labelText: 'Create Username',
                       obscureText: true,
-                       controller: _usernameController,
                     ),
                     const SizedBox(height: 10.0),
                      CustomTextFormField(
                       labelText: 'Create Password',
                       obscureText: true,
-                        controller: _passwordController,
                     ),
                     const SizedBox(height: 10.0),
                      CustomTextFormField(
                       labelText: 'Confirm Password',
                       obscureText: true,
-                       controller: _confirmPasswordController,
                     ),
                     const SizedBox(height: 40.0),
                     CustomButton(

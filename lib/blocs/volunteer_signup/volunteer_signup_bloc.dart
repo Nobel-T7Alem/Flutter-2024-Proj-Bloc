@@ -22,98 +22,133 @@ class VolunteerSignupBloc
       emit(NavigateToUserLogin());
     });
   }
+
   final _formKey = GlobalKey<FormState>();
+
   Future<void> _initState(VolunteerSignupInitialEvent event,
       Emitter<VolunteerSignupState> emit) async {
     emit(state.copyWith(formKey: _formKey));
   }
 
-  Future<void> _onNameChanged(
-      NameChangedEvent event, Emitter<VolunteerSignupState> emit) async {
-    emit(state.copyWith(
-        formKey: _formKey,
-        name: VolunteerSignupForm(
-            error: event.name.value.isValidName ? null : "Enter name")));
+
+  Future<void> _onNameChanged(NameChangedEvent event,
+      Emitter<VolunteerSignupState> emit) async {
+    emit(state.copyWith(name: VolunteerSignupForm(value: event.name.value)));
   }
 
-  Future<void> _onEmailChanged(
-      EmailChangedEvent event, Emitter<VolunteerSignupState> emit) async {
-    emit(state.copyWith(
-        formKey: _formKey,
-        name: VolunteerSignupForm(
-            error: event.email.value.isValidEmail ? null : "Enter email")));
+  Future<void> _onEmailChanged(EmailChangedEvent event,
+      Emitter<VolunteerSignupState> emit) async {
+    emit(state.copyWith(email: VolunteerSignupForm(value: event.email.value)));
   }
 
-  Future<void> _onUsernameChanged(
-      UsernameChangedEvent event, Emitter<VolunteerSignupState> emit) async {
+  Future<void> _onUsernameChanged(UsernameChangedEvent event,
+      Emitter<VolunteerSignupState> emit) async {
     emit(state.copyWith(
-        formKey: _formKey,
-        name: VolunteerSignupForm(
-            error: event.username.value.isValidUsername ? null : "Enter Username")));
+        username: VolunteerSignupForm(value: event.username.value)));
   }
 
-  Future<void> _onPasswordChanged(
-      PasswordChangedEvent event, Emitter<VolunteerSignupState> emit) async {
+  Future<void> _onPasswordChanged(PasswordChangedEvent event,
+      Emitter<VolunteerSignupState> emit) async {
     emit(state.copyWith(
-        formKey: _formKey,
-        name: VolunteerSignupForm(
-            error: event.password.value.isValidPassword ? null : "Enter Password")));
+        password: VolunteerSignupForm(value: event.password.value)));
   }
 
-  Future<void> _onConfirmPasswordChanged(
-      ConfirmPasswordChangedEvent event, Emitter<VolunteerSignupState> emit) async {
-    emit(state.copyWith(
-        formKey: _formKey,
-        name: VolunteerSignupForm(
-            error: event.confirmPassword.value  ? null : "Re-enter password")));
+  Future<void> _onConfirmPasswordChanged(ConfirmPasswordChangedEvent event,
+      Emitter<VolunteerSignupState> emit) async {
+    emit(state.copyWith(confirmPassword: VolunteerSignupForm(
+        value: event.confirmPassword.value)));
   }
 
-  Future<void> _onSignupButtonPressed(
-      SignupButtonPressed event, Emitter<VolunteerSignupState> emit) async {
-    if (_formKey.currentState!.validate()) {
-      signup( event.name, event.email, event.password, event.username);
+
+  Future<void> _onSignupButtonPressed(SignupButtonPressed event,
+      Emitter<VolunteerSignupState> emit) async {
+    String? nameError;
+    String? emailError;
+    String? usernameError;
+    String? passwordError;
+    String? confirmPasswordError;
+
+    if (state.name.value.isEmpty) {
+      nameError = "Please enter your name";
     }
-    try {
-      emit(SignupLoading());
 
-      // Call the signup function with the provided user details
-      final success =
-          await signup(event.name, event.email, event.password, event.username);
+    if (state.email.value.isEmpty) {
+      emailError = "Email cannot be empty";
+    } else if (!state.email.value.isValidEmail) {
+      emailError = "Invalid email";
+    }
 
-      if (success) {
-        emit(SignupSuccess());
-        emit(NavigateToUserHome());
-      } else {
-        emit(const SignupFailure(error: "Signup failed"));
-      }
-    } catch (error) {
-      emit(SignupFailure(error: error.toString()));
+    if (state.username.value.isEmpty) {
+      usernameError = "Username cannot be empty";
+    } else if (!state.username.value.isValidUsername) {
+      usernameError = "Invalid username";
+    }
+
+    if (state.password.value.isEmpty) {
+      passwordError = "Password cannot be empty";
+    } else if (state.password.value.length < 8){
+      passwordError = "Password has to include at least 8 characters,";
+    }
+    else if (!state.password.value
+        .isValidPassword) { // Assuming you have an extension for password validation
+      passwordError = "Password Should include an uppercase letter and a special character";
+    }
+
+    if (state.confirmPassword.value.isEmpty) {
+      confirmPasswordError = "Confirm Password cannot be empty";
+    } else if (state.confirmPassword.value != state.password.value) {
+      confirmPasswordError = "Passwords do not match";
+    }
+
+    if (nameError == null && emailError == null && usernameError == null &&
+        passwordError == null && confirmPasswordError == null) {
+      await signUp(state.name.value, state.email.value, state.password.value,
+          state.username.value);
+    } else {
+      emit(state.copyWith(
+        name: VolunteerSignupForm(value: state.name.value, error: nameError),
+        email: VolunteerSignupForm(value: state.email.value, error: emailError),
+        username: VolunteerSignupForm(
+            value: state.username.value, error: usernameError),
+        password: VolunteerSignupForm(
+            value: state.password.value, error: passwordError),
+        confirmPassword: VolunteerSignupForm(
+            value: state.confirmPassword.value, error: confirmPasswordError),
+      ));
+    }
+  }
+  Future<void> signUp(String fullName, String email, String username, String password) async {
+    print(fullName);
+    print(email);
+    print(username);
+    print(password);
+
+    final response = await http.post(
+      Uri.parse('http://192.168.4.138:3000/auth/signup'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'name': fullName,
+        "username": username,
+        'email': email,
+        'password': password,
+        'role': "user"
+      }),
+    );
+    if (response.statusCode == 201) {
+      print("success");
+      return jsonDecode(response.body);
+
+    } else {
+      print("nope, status code:");
+      print(response.statusCode);
+      print(response.body);
+      throw Exception('Failed to sign up');
     }
   }
 }
 
-Future<bool> signup(
-    String name, String email, String password, String username) async {
-  final response = await http.post(
-    Uri.parse('http://192.168.1.7:3000/auth/signup'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'name': name,
-      "username": username,
-      'email': email,
-      'password': password,
-      'role': "user"
-    }),
-  );
-  if (response.statusCode == 201) {
-    print("success");
-    return jsonDecode(response.body);
-  } else {
-    print("status code:");
-    print(response.statusCode);
-    print(response.body);
-    throw Exception('Failed to sign up');
-  }
-}
+
+
+

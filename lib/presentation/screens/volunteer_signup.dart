@@ -70,88 +70,74 @@ class VolunteerSignup extends StatelessWidget {
                       ),
                     ),
                     Form(
-                        key: state.formKey,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 8.0),
-                            CustomTextFormField(
-                              labelText: 'Full name',
-                              onChange:(val){
-                                BlocProvider.of<VolunteerSignupBloc>(context).add(NameChangedEvent(name: VolunteerSignupForm(value: val!)));
-                              },
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(r"[a-zA-Z]+|\s"),
-                                  )
-                                ],
-                              obscureText: false,
-                              validator: (val) {
-                                return state.name.error;
-                              }
-                            ),
-                            const SizedBox(height: 10.0),
-                            CustomTextFormField(
-                              onChange:(val){
-                                BlocProvider.of<VolunteerSignupBloc>(context).add(EmailChangedEvent(email: VolunteerSignupForm(value: val!)));
-                              },
-                              labelText: 'Enter Email',
-                              obscureText: false,
-                              validator: (val) {
-                                return state.email.error;
-                              }
-                            ),
-                            const SizedBox(height: 10.0),
-                            CustomTextFormField(
-                              labelText: 'Create Username',
-                              obscureText: false,
-                              onChange: (val){
-                                BlocProvider.of<VolunteerSignupBloc>(context).add(UsernameChangedEvent(username: VolunteerSignupForm(value: val!)));
-                              },
-                              validator: (val) {
-                                return state.username.error;
-                              }
-                            ),
-                            const SizedBox(height: 10.0),
-                            CustomTextFormField(
-                              labelText: 'Create Password',
-                              obscureText: true,
-                              onChange: (val){
-                                BlocProvider.of<VolunteerSignupBloc>(context).add(PasswordChangedEvent(password: VolunteerSignupForm(value: val!)));
-                              },
-                              validator: (val) {
-                                return state.password.error;
-                              }
-                            ),
-                            const SizedBox(height: 10.0),
-                            CustomTextFormField(
-                              labelText: 'Confirm Password',
-                              obscureText: true,
-                              validator: (val) {
-                                return state.confirmPassword.error;
-                              },
-                            ),
-                            const SizedBox(height: 40.0),
-                            CustomButton(
-                              buttonText: 'Sign up',
-                              buttonColor:
-                                  const Color.fromARGB(255, 83, 171, 71),
-                              buttonTextColor: Colors.white,
-                              buttonAction: () async {
-                              // BlocProvider.of<VolunteerSignupBloc>(context).add(const
-                              // SignupButtonPressed(
-                                  // name: VolunteerSignupForm(value: state.name.value),
-                                  // email: VolunteerSignupForm(value: state.email.value),
-                                  // username: VolunteerSignupForm(value: state.username.value),
-                                  // password: VolunteerSignupForm(value: state.password.value),
-                                  // confirmPassword: VolunteerSignupForm(value: state.confirmPassword.value),
-                              // ));
-                                // signup()
+                      key: state.formKey,
+                      child: Column(
+                        children: [
+                          CustomTextFormField(
+                            labelText: 'Full name',
+                            onChange: (val) {
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(NameChangedEvent(name: VolunteerSignupForm(value: val!)));
+                            },
+                            validator: (val) {
+                              return state.name.error;
+                            },
+                          ),
+                          const SizedBox(height: 10.0),
+                          CustomTextFormField(
+                            labelText: 'Enter Email',
+                            onChange: (val) {
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(EmailChangedEvent(email: VolunteerSignupForm(value: val!)));
+                            },
+                            validator: (val) {
+                              return state.email.error;
+                            },
+                          ),
+                          const SizedBox(height: 10.0),
+                          CustomTextFormField(
+                            labelText: 'Create Username',
+                            onChange: (val) {
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(UsernameChangedEvent(username: VolunteerSignupForm(value: val!)));
+                            },
+                            validator: (val) {
+                              return state.username.error;
+                            },
+                          ),
+                          const SizedBox(height: 10.0),
+                          CustomTextFormField(
+                            labelText: 'Create Password',
+                            obscureText: false,
+                            onChange: (val) {
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(PasswordChangedEvent(password: VolunteerSignupForm(value: val!)));
+                            },
+                            validator: (val) {
+                              return state.password.error;
+                            },
+                          ),
+                          const SizedBox(height: 10.0),
+                          CustomTextFormField(
+                            labelText: 'Confirm Password',
+                            obscureText: true,
+                            onChange: (val) {
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(ConfirmPasswordChangedEvent(confirmPassword: VolunteerSignupForm(value: val!)));
+                            },
+                            validator: (val) {
+                              return state.confirmPassword.error;
+                            },
+                          ),
+                          const SizedBox(height: 40.0),
+                          CustomButton(
+                            buttonText: 'Sign up',
+                            buttonColor: const Color.fromARGB(255, 83, 171, 71),
+                            buttonTextColor: Colors.white,
+                            buttonAction: () async {
+                              BlocProvider.of<VolunteerSignupBloc>(context).add(SignupButtonPressed());
+                            },
 
+                          ),
+                        ],
+                      ),
+                    ),
 
-                              },
-                            ),
-                          ],
-                        )),
                     Padding(
                       padding: const EdgeInsets.all(17),
                       child: Center(

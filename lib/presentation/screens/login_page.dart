@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       if (_pageController.hasClients) {
         int nextPage = _pageController.page!.toInt() + 1;
         if (nextPage >= imageSliders.length) {
-          nextPage = 0; 
+          nextPage = 0;
         }
         _pageController
             .animateToPage(
@@ -148,18 +148,19 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextButton(
                             onPressed: () {
+                              context.go("/signup");
                               BlocProvider.of<LoginPageBloc>(context).add(NavigateToSignup());
                             },
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                                (Set<WidgetState> states) {
-                                  if (states.contains(WidgetState.pressed)) {
+                                (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
                                     return Colors.green.shade800;
                                   }
                                   return Colors.lightGreen;
                                 },
                               ),
-                              textStyle: WidgetStateProperty.all<TextStyle>(
+                              textStyle: MaterialStateProperty.all<TextStyle>(
                                 const TextStyle(
                                   fontSize: 15,
                                   shadows: [

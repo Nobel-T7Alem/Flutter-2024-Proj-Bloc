@@ -10,16 +10,7 @@ abstract class VolunteerSignupEvent extends Equatable {
 }
 
 class SignupButtonPressed extends VolunteerSignupEvent {
-  final String name;
-  final String email;
-  final String password;
-  final String username;
-  const SignupButtonPressed({
-    required this.name,
-    required this.email,
-    required this.password,
-    required this.username
-  });
+  const SignupButtonPressed();
 }
 class VolunteerSignupInitialEvent extends VolunteerSignupEvent {
   const VolunteerSignupInitialEvent();

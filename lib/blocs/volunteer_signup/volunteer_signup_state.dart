@@ -11,11 +11,11 @@ import 'package:flutter/cupertino.dart';
   final GlobalKey<FormState>? formKey;
 
   const VolunteerSignupState({
-    this.name = const VolunteerSignupForm(error:"Enter your Name"),
-    this.email = const VolunteerSignupForm(error:"Enter your Email"),
-    this.username =const VolunteerSignupForm(error:"Enter Username"),
-    this.password = const VolunteerSignupForm(error:"Enter Password"),
-    this.confirmPassword = const VolunteerSignupForm(error:"Confirm Password"),
+    this.name = const VolunteerSignupForm(error:null),
+    this.email = const VolunteerSignupForm(error:null),
+    this.username =const VolunteerSignupForm(error:null),
+    this.password = const VolunteerSignupForm(error:null),
+    this.confirmPassword = const VolunteerSignupForm(error:null),
     this.formKey,
 });
 
@@ -33,7 +33,7 @@ import 'package:flutter/cupertino.dart';
       username: username ?? this.username,
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
-      formKey: formKey,
+      formKey: formKey ?? this.formKey,
     );
   }
   @override
