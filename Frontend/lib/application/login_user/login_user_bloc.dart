@@ -6,7 +6,7 @@ import 'login_user_event.dart';
 import 'login_user_state.dart';
 
 class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
-  LoginUserBloc() : super(LoginUserInitial()) {
+  LoginUserBloc() : super(const LoginUserState()) {
     on<LoginUserInitialEvent>(_initState);
     on<LoginSubmitted>(_onLoginSubmitted);
     on<NavigateToSignupEvent>(_onNavigateToSignup);
@@ -16,19 +16,23 @@ class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> _initState(LoginUserInitialEvent event, Emitter<LoginUserState> emit) async {
-    emit(LoginUserState(formKey: _formKey));
+  Future<void> _initState(LoginUserInitialEvent event,
+      Emitter<LoginUserState> emit) async {
+    emit(state.copyWith(formKey: _formKey));
   }
 
-  Future<void> _onUsernameChanged(UsernameChangedEvent event, Emitter<LoginUserState> emit) async {
+  Future<void> _onUsernameChanged(UsernameChangedEvent event,
+      Emitter<LoginUserState> emit) async {
     emit(state.copyWith(username: ValidateForm(value: event.username.value)));
   }
 
-  Future<void> _onPasswordChanged(PasswordChangedEvent event, Emitter<LoginUserState> emit) async {
+  Future<void> _onPasswordChanged(PasswordChangedEvent event,
+      Emitter<LoginUserState> emit) async {
     emit(state.copyWith(password: ValidateForm(value: event.password.value)));
   }
 
-  void _onLoginSubmitted(LoginSubmitted event, Emitter<LoginUserState> emit) async {
+  Future<void> _onLoginSubmitted(LoginSubmitted event,
+      Emitter<LoginUserState> emit) async {
     String? usernameError;
     String? passwordError;
 
@@ -49,6 +53,9 @@ class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
       }
       else if(response == "agency") {
         emit(const LoginUserNavigationSuccess('/agency_home'));
+        return;
+      } else if (response == "admin"){
+        emit(const LoginUserNavigationSuccess('/admin_home'));
         return;
       }
       else {

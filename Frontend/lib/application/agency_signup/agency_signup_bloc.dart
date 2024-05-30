@@ -17,11 +17,8 @@ class AgencySignupBloc
     on<PasswordChangedEvent>(_onPasswordChanged);
     on<ConfirmPasswordChangedEvent>(_onConfirmPasswordChanged);
     on<AgencySignupButtonPressed>(_onAgencySignupSubmitted);
-    on<LoginButtonPressed>((event, emit) {
-      emit(NavigateToAdminLogin());
-    });
     on<NavigateToLogin>((event, emit){
-      emit(NavigateToAdminHome());
+      emit(NavigateToAdminLogin());
     });
   }
 

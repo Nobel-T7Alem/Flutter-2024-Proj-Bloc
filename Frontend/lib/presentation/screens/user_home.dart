@@ -17,10 +17,8 @@ class UserHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-      UserHomeBloc()
-        ..add(LoadPostsEvent()),
+    return BlocProvider<UserHomeBloc>(
+      create: (context) => UserHomeBloc(),
       child: BlocListener<UserHomeBloc, UserHomeState>(
         listener: (context, state) {
           if (state is UserHomeNavigationSuccess) {
@@ -46,8 +44,7 @@ class UserHomePage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 16.0, right: 16.0),
                     child: IconButton(
                       onPressed: () {
-                        BlocProvider.of<UserHomeBloc>(context)
-                            .add(NavigateToUserUpdateEvent());
+                        context.go("/profile_update");
                       },
                       icon: const Icon(Icons.settings),
                       color: Colors.green.shade800,
@@ -79,6 +76,8 @@ class UserHomePage extends StatelessWidget {
                 children: [
                   BlocBuilder<UserHomeBloc, UserHomeState>(
                     builder: (context, state) {
+                      BlocProvider.of<UserHomeBloc>(context)
+                          .add(LoadPostsEvent());
                       if (state is UserHomeLoading) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (state is UserHomeError) {
@@ -108,35 +107,34 @@ class UserHomePage extends StatelessWidget {
                   ),
                   BlocBuilder<UserHomeBloc, UserHomeState>(
                       builder: (context, state) {
-                        if (state is CalendarLoading) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (state is CalendarError) {
-                          return const Center(child: Text(
-                              "Error loading calendar"));
-                        }
-                        else if (state is CalendarLoaded) {
-                          return ListView.builder(
-                            itemCount: state.calendars.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  CalendarItem(
-                                    calendar: state.calendars[index],
-                                  ),
-                                  Divider(
-                                    height: 10,
-                                    thickness: 1,
-                                    color: Colors.grey.shade200,
-                                  ),
-                                ],
-                              );
-                            },
+                    BlocProvider.of<UserHomeBloc>(context)
+                        .add(LoadCalendarEvent());
+                    if (state is CalendarLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is CalendarError) {
+                      return const Center(
+                          child: Text("Error loading calendar"));
+                    } else if (state is CalendarLoaded) {
+                      return ListView.builder(
+                        itemCount: state.calendars.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              CalendarItem(
+                                calendar: state.calendars[index],
+                              ),
+                              Divider(
+                                height: 10,
+                                thickness: 1,
+                                color: Colors.grey.shade200,
+                              ),
+                            ],
                           );
-                        }
-                        return Container();
-                      }
-                  ),
+                        },
+                      );
+                    }
+                    return Container();
+                  }),
                 ],
               ),
             ),
@@ -150,83 +148,90 @@ class UserHomePage extends StatelessWidget {
   }
 }
 
-
 class CalendarItem extends StatelessWidget {
   final Calendar calendar;
   const CalendarItem({required this.calendar, super.key});
-//
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: Container(
-//         decoration: BoxDecoration(
-//           gradient: LinearGradient(
-//             begin: Alignment.topLeft,
-//             end: Alignment.bottomRight,
-//             colors: [
-//               Colors.grey.shade200,
-//               Colors.grey.shade100
-//             ], // You can adjust these colors as needed
-//           ),
-//         ),
-//         child: ListTile(
-//           title: Padding(
-//             padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-//             child: Text(
-//               calendar?.date,
-//               style: TextStyle(
-//                   fontSize: 22,
-//                   fontWeight: FontWeight.w700,
-//                   color: Colors.green.shade800),
-//             ),
-//           ),
-//           subtitle: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Row(
-//                 children: [
-//                   Icon(Icons.phone_android,
-//                       size: 14, color: Colors.green.shade800),
-//                   const Text(
-//                     " Contact: ",
-//                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-//                   ),
-//                   Text(post.contact),
-//                 ],
-//               ),
-//               Row(
-//                 children: [
-//                   Icon(Icons.medical_services,
-//                       size: 14, color: Colors.green.shade800),
-//                   const Center(
-//                     child: Text(
-//                       " Service Type: ",
-//                       style:
-//                       TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-//                     ),
-//                   ),
-//                   Text(post.description),
-//                 ],
-//               ),
-//               Padding(
-//                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.end,
-//                   children: [
-//                       Text('Scheduled to ${calendar.date}'),
-//                     ],
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.grey.shade200,
+              Colors.grey.shade100
+            ],
+          ),
+        ),
+        child: ListTile(
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${calendar.name[0].toUpperCase()}${calendar.name.substring(1).toLowerCase()}",
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.green.shade800),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.phone_android,
+                      size: 14, color: Colors.green.shade800),
+                  const Text(
+                    "Contact: ",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Text(calendar.name),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.medical_services,
+                      size: 14, color: Colors.green.shade800),
+                  const Center(
+                    child: Text(
+                      " Service Type: ",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text(calendar.description),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.phone,
+                      size: 14, color: Colors.green.shade800),
+                  const Center(
+                    child: Text(
+                      " Contact: ",
+                      style:
+                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text(calendar.contact),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text('Scheduled to ${calendar.date}'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
-
 
 class PostItem extends StatelessWidget {
   final Post post;
@@ -296,9 +301,9 @@ class PostItem extends StatelessWidget {
                       TextButton(
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.green.shade800),
+                              WidgetStateProperty.all(Colors.green.shade800),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.circular(20), // Border radius
@@ -318,9 +323,9 @@ class PostItem extends StatelessWidget {
                       TextButton(
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.green.shade800),
+                              WidgetStateProperty.all(Colors.green.shade800),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.circular(20), // Border radius
@@ -334,7 +339,25 @@ class PostItem extends StatelessWidget {
                         ),
                         onPressed: () {
                           context.read<UserHomeBloc>().add(AddToCalendarEvent(
-                              DateTime.now().toString().split(" ")[0], post.id.toString()));
+                              DateTime.now().toString().split(" ")[0],
+                              post.id.toString()));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Text("Calendar event added for ",
+                                      style:
+                                          TextStyle(fontWeight: FontWeight.bold)),
+                                  Text(
+                                    DateTime.now().toString().split(" ")[0],
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              duration: const Duration(milliseconds: 1000),
+                            ),
+                          );
                         },
                       ),
                     ],

@@ -10,9 +10,9 @@ export class UserController {
 
     @Delete(':id')
     @UseGuards(AuthGuard('admin'))
-    async deleteUser(@Param('id') userId: string): Promise<{message: string}> {
+    async deleteUser(@Param('id') userId: string): Promise<{ message: string }> {
         await this.userService.deleteUser(userId);
-        return {message: "User deleted successfully."}
+        return { message: "User deleted successfully." }
     }
 
 
@@ -30,7 +30,7 @@ export class UserController {
         return this.userService.getAllUsers();
     }
 
-    
+
     @Patch(':id/role')
     @UseGuards(AuthGuard('admin'))
     async updateUserRole(
@@ -50,7 +50,7 @@ export class UserController {
     ): Promise<{ message: string }> {
         await this.userService.updateUserProfile(userId, username, password);
         return { message: 'Profile updated successfully' };
-    }   
+    }
 
     @Delete(':id/account')
     @UseGuards(AuthGuard('user'))

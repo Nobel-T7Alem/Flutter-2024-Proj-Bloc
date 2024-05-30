@@ -10,4 +10,5 @@ export declare class PostsController {
     getPosts(id: string): Promise<Posts>;
     updateUser(id: string, posts: UpdatePostsDto): Promise<Posts>;
     deletePosts(postsId: string): Promise<void>;
+    findAllByUser(userId: string): Promise<Posts[]>;
 }

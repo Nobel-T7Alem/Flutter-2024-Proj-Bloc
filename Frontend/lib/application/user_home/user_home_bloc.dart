@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import '../../data/models/calendars.dart';
+import '../../data/models/posts.dart';
 import 'user_home_event.dart';
 import 'user_home_state.dart';
 import '../../data/services/api_path.dart';
@@ -13,7 +14,6 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
   }
 
   void _onLoadPosts(LoadPostsEvent event, Emitter<UserHomeState> emit) async {
-    emit(UserHomeLoading());
     try {
       final posts = await RemoteService().getPosts();
       emit(UserHomeLoaded(posts!));
@@ -32,20 +32,20 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
   }
 
   void _onLoadCalendar(LoadCalendarEvent event, Emitter<UserHomeState> emit) async {
-    emit(CalendarLoading());
     try {
-      final List<Calendar>? calendars = await RemoteService().getCalendar();
-      if (calendars == null) {
+      final  posts = await RemoteService().getCalendar();
+      if (posts == null) {
+        print("Failed to load calendar.");
         emit(CalendarError());
         return;
       }
-      emit(CalendarLoaded(calendars));
+      emit(CalendarLoaded(posts));
     } catch (e) {
       emit(CalendarError());
     }
   }
 
   void _onNavigateToUserUpdate(NavigateToUserUpdateEvent event, Emitter<UserHomeState> emit) {
-    emit(UserHomeNavigationSuccess('/user_update'));
+    emit(const UserHomeNavigationSuccess('/user_update'));
   }
 }

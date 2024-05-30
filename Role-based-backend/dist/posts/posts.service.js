@@ -33,6 +33,9 @@ let PostsService = class PostsService {
         const posts = await this.postsModel.find();
         return posts;
     }
+    async findAllByUser(userId) {
+        return this.postsModel.find({ user: userId }).exec();
+    }
     async findById(id) {
         const isValidID = mongoose_1.default.isValidObjectId(id);
         const posts = await this.postsModel.findById(id);

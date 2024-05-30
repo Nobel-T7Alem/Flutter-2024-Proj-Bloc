@@ -43,10 +43,14 @@ export class PostsService {
   //All posts
   async findAll(query: any): Promise<Posts[]> {
     const posts = await this.postsModel.find();
-
-
     return posts;
   }
+
+  async findAllByUser(userId: string): Promise<Posts[]> {
+    return this.postsModel.find({ user: userId }).exec();
+  }
+
+
 
   //find posts by id
   async findById(id: string): Promise<Posts> {

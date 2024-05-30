@@ -41,6 +41,12 @@ let PostsController = class PostsController {
     async deletePosts(postsId) {
         return this.postsService.deletePosts(postsId);
     }
+    async findAllByUser(userId) {
+        if (!userId) {
+            throw new common_1.BadRequestException('User ID must be provided');
+        }
+        return this.postsService.findAllByUser(userId);
+    }
 };
 exports.PostsController = PostsController;
 __decorate([
@@ -81,6 +87,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "deletePosts", null);
+__decorate([
+    (0, common_1.Get)('myposts/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PostsController.prototype, "findAllByUser", null);
 exports.PostsController = PostsController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [posts_service_1.PostsService])

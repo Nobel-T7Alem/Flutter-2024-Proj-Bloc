@@ -32,7 +32,9 @@ export declare class AuthService {
     private jwtService;
     constructor(userModel: Model<User>, jwtService: JwtService);
     signUp(signUpDto: SignUpDto): Promise<{
+        userId: string;
         token: string;
+        status: string;
     }>;
     login(loginDto: LogInDto): Promise<{
         userId: string;
