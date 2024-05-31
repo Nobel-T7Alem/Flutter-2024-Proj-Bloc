@@ -1,12 +1,8 @@
-import 'package:Sebawi/blocs/agency_signup/agency_signup_event.dart';
-import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_event.dart';
-import 'package:Sebawi/presentation/screens/user_home.dart';
 import 'package:Sebawi/presentation/widgets/custom_button.dart';
 import 'package:Sebawi/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart';
 import '../../blocs/agency_home/agency_home_bloc.dart';
 import '../../blocs/agency_home/agency_home_event.dart';
 import '../../blocs/agency_home/agency_home_state.dart';
@@ -23,7 +19,7 @@ class AgencyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AgencyHomeBloc()..add(LoadAgencyHomePage()),
+      create: (context) => AgencyHomeBloc()..add(LoadAgencyHomePageEvent()),
       child: BlocListener<AgencyHomeBloc, AgencyHomeState>(
         listener: (context, state) {
           if (state is AgencyHomeNavigationSuccess) {
@@ -75,7 +71,7 @@ class AgencyHomePage extends StatelessWidget {
                     child: IconButton(
                       onPressed: () {
                         BlocProvider.of<AgencyHomeBloc>(context)
-                            .add(NavigateToAgencyUpdateEvent());
+                            .add(LoadAgencyHomePageEvent());
                       },
                       icon: const Icon(Icons.settings),
                       color: Colors.green.shade800,
@@ -84,16 +80,18 @@ class AgencyHomePage extends StatelessWidget {
                   )
                 ],
               ),
-              body: BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
-                builder: (context, state) {
-                  if (state is AgencyHomeLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is AgencyHomeError) {
-                    return Center(child: Text(state.error));
-                  } else if (state is AgencyHomeLoaded) {
-                    return TabBarView(
-                      children: [
-                        ListView.builder(
+              body: TabBarView(
+                children: [
+                  BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
+                    builder: (context, state) {
+                      BlocProvider.of<AgencyHomeBloc>(context)
+                          .add(LoadAgencyHomePageEvent());
+                      if (state is AgencyHomeLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state is AgencyHomeError) {
+                        return Center(child: Text(state.error));
+                      } else if (state is AgencyHomeLoaded) {
+                        return ListView.builder(
                           itemCount: state.posts.length,
                           itemBuilder: (context, index) {
                             return Column(
@@ -110,8 +108,21 @@ class AgencyHomePage extends StatelessWidget {
                               ],
                             );
                           },
-                        ),
-                        ListView.builder(
+                        );
+                      }
+                      return Container(); // Empty container for other states
+                    },
+                  ),
+                  BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
+                    builder: (context, state) {
+                      BlocProvider.of<AgencyHomeBloc>(context)
+                          .add(LoadAgencyHomePageEvent());
+                      if (state is AgencyHomeLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state is AgencyHomeError) {
+                        return Center(child: Text(state.error));
+                      } else if (state is AgencyHomeLoaded) {
+                        return ListView.builder(
                           itemCount: state.posts.length,
                           itemBuilder: (context, index) {
                             return Column(
@@ -128,85 +139,98 @@ class AgencyHomePage extends StatelessWidget {
                               ],
                             );
                           },
-                        ),
-                        ListView.builder(
-                          itemCount: 1,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Form(
-                                key: state.formKey,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomTextFormField(
-                                      labelText: "Agency Name",
-                                      onChange: (val) {
-                                        BlocProvider.of<AgencyHomeBloc>(context)
-                                            .add(AgencyNameChangedEvent(
-                                                name:
-                                                    ValidateForm(value: val!)));
-                                      },
-                                      validator: (val) {
-                                        return state.name.error;
-                                      },
-                                    ),
-                                    CustomTextFormField(
-                                      labelText: "Description",
-                                      onChange: (val) {
-                                        BlocProvider.of<AgencyHomeBloc>(context)
-                                            .add(DescriptionChangedEvent(
-                                                description:
-                                                    ValidateForm(value: val!)));
-                                      },
-                                      validator: (val) {
-                                        return state.description.error;
-                                      },
-                                    ),
-                                    CustomTextFormField(
-                                      labelText: "Contact",
-                                      onChange: (val) {
-                                        BlocProvider.of<AgencyHomeBloc>(context)
-                                            .add(ContactChangedEvent(
-                                                contact:
-                                                    ValidateForm(value: val!)));
-                                      },
-                                      validator: (val) {
-                                        return state.contact.error;
-                                      },
-                                    ),
-                                    if (state.apiError != null)
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-                                        child: Text(
-                                          state.apiError!,
-                                          style: const TextStyle(color: Colors.red),
-                                        ),
-                                      ),
-                                    const SizedBox(height: 20),
-                                    CustomButton(
-                                      buttonText: 'Post',
-                                      buttonColor: const Color.fromARGB(
-                                          255, 255, 255, 255),
-                                      buttonTextColor:
-                                          const Color.fromARGB(255, 33, 94, 35),
-                                      buttonAction: () async {
-                                        BlocProvider.of<AgencyHomeBloc>(context)
-                                            .add(const AddPostEvent());
-                                        // Implement post creation logic here
-                                      },
-                                    )
-                                  ],
+                        );
+                      }
+                      return Container(); // Empty container for other states
+                    },
+                  ),
+                  BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
+                      builder: (context, state) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Form(
+                        key: state.formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomTextFormField(
+                              controller:
+                                  BlocProvider.of<AgencyHomeBloc>(context)
+                                      .nameController,
+                              labelText: "Agency Name",
+                              onChange: (val) {
+                                BlocProvider.of<AgencyHomeBloc>(context).add(
+                                    AgencyNameChangedEvent(
+                                        name: ValidateForm(value: val!)));
+                              },
+                              validator: (val) {
+                                return state.name.error;
+                              },
+                            ),
+                            CustomTextFormField(
+                              labelText: "Description",
+                              controller:
+                                  BlocProvider.of<AgencyHomeBloc>(context)
+                                      .descriptionController,
+                              onChange: (val) {
+                                BlocProvider.of<AgencyHomeBloc>(context).add(
+                                    DescriptionChangedEvent(
+                                        description:
+                                            ValidateForm(value: val!)));
+                              },
+                              validator: (val) {
+                                return state.description.error;
+                              },
+                            ),
+                            CustomTextFormField(
+                              labelText: "Contact",
+                              controller:
+                                  BlocProvider.of<AgencyHomeBloc>(context)
+                                      .contactController,
+                              onChange: (val) {
+                                BlocProvider.of<AgencyHomeBloc>(context).add(
+                                    ContactChangedEvent(
+                                        contact: ValidateForm(value: val!)));
+                              },
+                              validator: (val) {
+                                return state.contact.error;
+                              },
+                            ),
+                            if (context.read<AgencyHomeBloc>().state.apiError !=
+                                null)
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                child: Center(
+                                  child: Text(
+                                    context
+                                        .read<AgencyHomeBloc>()
+                                        .state
+                                        .apiError!,
+                                    style: const TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ),
                               ),
-                            );
-                          },
-                        )
-                      ],
+                            const SizedBox(height: 20),
+                            CustomButton(
+                              buttonText: 'Post',
+                              buttonColor:
+                                  const Color.fromARGB(255, 255, 255, 255),
+                              buttonTextColor:
+                                  const Color.fromARGB(255, 33, 94, 35),
+                              buttonAction: () async {
+                                BlocProvider.of<AgencyHomeBloc>(context)
+                                    .add(const AddPostEvent());
+                                // Implement post creation logic here
+                              },
+                            )
+                          ],
+                        ),
+                      ),
                     );
-                  }
-                  return Container(); // Empty container for other states
-                },
+                  })
+                ],
               ),
             ),
           ),
@@ -373,7 +397,7 @@ class PostItem extends StatelessWidget {
     );
   }
 
-  Future openDialog(BuildContext context, Post Post) => showDialog(
+  Future openDialog(BuildContext context, Post post) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text(

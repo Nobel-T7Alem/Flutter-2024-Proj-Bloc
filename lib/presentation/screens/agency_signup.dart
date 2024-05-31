@@ -66,91 +66,95 @@ class AgencySignup extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  CustomTextFormField(
-                    labelText: 'Agency name',
-                    obscureText: false,
-                    onChange: (val) {
-                      BlocProvider.of<AgencySignupBloc>(context).add(
-                          NameChangedEvent(
-                              name: ValidateForm(value: val!)));
-                    },
-                    validator: (val) {
-                      return state.name.error;
-                    },
-                  ),
-                  const SizedBox(height: 10.0),
-                  CustomTextFormField(
-                    labelText: 'Enter Email',
-                    obscureText: false,
-                    onChange: (val) {
-                      BlocProvider.of<AgencySignupBloc>(context).add(
-                          EmailChangedEvent(
-                              email: ValidateForm(value: val!)));
-                    },
-                    validator: (val) {
-                      return state.email.error;
-                    },
-                  ),
-                  const SizedBox(height: 10.0),
-                  CustomTextFormField(
-                    labelText: 'Create Username',
-                    obscureText: false,
-                    onChange: (val) {
-                      BlocProvider.of<AgencySignupBloc>(context).add(
-                          UsernameChangedEvent(
-                              username: ValidateForm(value: val!)));
-                    },
-                    validator: (val) {
-                      return state.username.error;
-                    },
-                  ),
-                  const SizedBox(height: 10.0),
-                  CustomTextFormField(
-                    labelText: 'Create Password',
-                    obscureText: false,
-                    onChange: (val) {
-                      BlocProvider.of<AgencySignupBloc>(context).add(
-                          PasswordChangedEvent(
-                              password: ValidateForm(value: val!)));
-                    },
-                    validator: (val) {
-                      return state.password.error;
-                    },
-                  ),
-                  const SizedBox(height: 10.0),
-                  CustomTextFormField(
-                    labelText: 'Confirm Password',
-                    obscureText: true,
-                    onChange: (val) {
-                      BlocProvider.of<AgencySignupBloc>(context).add(
-                          ConfirmPasswordChangedEvent(
-                              confirmPassword: ValidateForm(value: val!)));
-                    },
-                    validator: (val) {
-                      return state.confirmPassword.error;
-                    },
-                  ),
-                  if (state.apiError != null)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-                      child:
-                      Center(
-                        child: Text(
-                        state.apiError!,
-                        style: const TextStyle(color: Colors.red),
+                  Form(
+                    key: state.formKey,
+                    child: Column(children: [
+                      const SizedBox(height: 8.0),
+                      CustomTextFormField(
+                        labelText: 'Agency name',
+                        obscureText: false,
+                        onChange: (val) {
+                          BlocProvider.of<AgencySignupBloc>(context).add(
+                              NameChangedEvent(
+                                  name: ValidateForm(value: val!)));
+                        },
+                        validator: (val) {
+                          return state.name.error;
+                        },
                       ),
+                      const SizedBox(height: 10.0),
+                      CustomTextFormField(
+                        labelText: 'Enter Email',
+                        obscureText: false,
+                        onChange: (val) {
+                          BlocProvider.of<AgencySignupBloc>(context).add(
+                              EmailChangedEvent(
+                                  email: ValidateForm(value: val!)));
+                        },
+                        validator: (val) {
+                          return state.email.error;
+                        },
                       ),
-                    ),
-                  const SizedBox(height: 40.0),
-                  CustomButton(
-                      buttonText: 'Signup',
-                      buttonColor: const Color.fromARGB(255, 83, 171, 71),
-                      buttonTextColor: Colors.white,
-                      buttonAction: () async {
-                        BlocProvider.of<AgencySignupBloc>(context)
-                            .add(const AgencySignupButtonPressed());
-                      }),
+                      const SizedBox(height: 10.0),
+                      CustomTextFormField(
+                        labelText: 'Create Username',
+                        obscureText: false,
+                        onChange: (val) {
+                          BlocProvider.of<AgencySignupBloc>(context).add(
+                              UsernameChangedEvent(
+                                  username: ValidateForm(value: val!)));
+                        },
+                        validator: (val) {
+                          return state.username.error;
+                        },
+                      ),
+                      const SizedBox(height: 10.0),
+                      CustomTextFormField(
+                        labelText: 'Create Password',
+                        obscureText: false,
+                        onChange: (val) {
+                          BlocProvider.of<AgencySignupBloc>(context).add(
+                              PasswordChangedEvent(
+                                  password: ValidateForm(value: val!)));
+                        },
+                        validator: (val) {
+                          return state.password.error;
+                        },
+                      ),
+                      const SizedBox(height: 10.0),
+                      CustomTextFormField(
+                        labelText: 'Confirm Password',
+                        obscureText: true,
+                        onChange: (val) {
+                          BlocProvider.of<AgencySignupBloc>(context).add(
+                              ConfirmPasswordChangedEvent(
+                                  confirmPassword: ValidateForm(value: val!)));
+                        },
+                        validator: (val) {
+                          return state.confirmPassword.error;
+                        },
+                      ),
+                      if (state.apiError != null)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                          child: Center(
+                            child: Text(
+                              state.apiError!,
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 40.0),
+                      CustomButton(
+                          buttonText: 'Signup',
+                          buttonColor: const Color.fromARGB(255, 83, 171, 71),
+                          buttonTextColor: Colors.white,
+                          buttonAction: () async {
+                            BlocProvider.of<AgencySignupBloc>(context)
+                                .add(const AgencySignupButtonPressed());
+                          }),
+                    ]),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(17),
                     child: Center(

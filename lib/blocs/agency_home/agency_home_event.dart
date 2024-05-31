@@ -14,7 +14,12 @@ class AddPostEvent extends AgencyHomeEvent {
   const AddPostEvent();
 }
 
-class LoadAgencyHomePage extends AgencyHomeEvent {}
+class InitialAgencyHomeEvent extends AgencyHomeEvent {
+  const InitialAgencyHomeEvent();
+}
+
+class LoadAgencyHomePageEvent extends AgencyHomeEvent {
+}
 
 class NavigateToAgencyUpdateEvent extends AgencyHomeEvent {}
 
@@ -30,18 +35,15 @@ class DeletePostEvent extends AgencyHomeEvent {
 
 class AgencyNameChangedEvent extends AgencyHomeEvent {
   const AgencyNameChangedEvent({required this.name});
-
   final ValidateForm name;
 }
 
 class DescriptionChangedEvent extends AgencyHomeEvent {
   const DescriptionChangedEvent({required this.description});
-
   final ValidateForm description;
 }
 
 class ContactChangedEvent extends AgencyHomeEvent {
   const ContactChangedEvent({required this.contact});
-
   final ValidateForm contact;
 }

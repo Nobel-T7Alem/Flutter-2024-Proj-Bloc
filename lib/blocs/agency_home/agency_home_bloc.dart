@@ -1,16 +1,20 @@
 import 'dart:convert';
-
 import 'package:Sebawi/data/services/api_path.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../../data/models/posts.dart';
 import '../../data/models/validate_form.dart';
 import 'agency_home_event.dart';
 import 'agency_home_state.dart';
 
 class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
-  AgencyHomeBloc() : super(AgencyHomeLoading()) {
-    on<LoadAgencyHomePage>(_onLoadAgencyHomePage);
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
+  AgencyHomeBloc() : super(InitialAgencyHome()) {
+
+    on<InitialAgencyHomeEvent>(_initState);
+    on<LoadAgencyHomePageEvent>(_onLoadAgencyHomePage);
     on<NavigateToAgencyUpdateEvent>(_onNavigateToAgencyUpdate);
     on<EditPostEvent>(_onEditPostEvent);
     on<DeletePostEvent>(_onDeletePostEvent);
@@ -22,10 +26,14 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
 
   final _formKey = GlobalKey<FormState>();
 
+  Future<void> _initState(
+      InitialAgencyHomeEvent event, Emitter<AgencyHomeState> emit) async {
+    // emit(state.copyWith(formKey: _formKey));
+     add(LoadAgencyHomePageEvent());
+  }
 
-  Future<void> _onLoadAgencyHomePage(LoadAgencyHomePage event,
-      Emitter<AgencyHomeState> emit) async {
-    emit(state.copyWith(formKey: _formKey));
+  Future<void> _onLoadAgencyHomePage(
+      LoadAgencyHomePageEvent event, Emitter<AgencyHomeState> emit) async {
     final posts = await RemoteService().getPosts();
     try {
       if (posts != null) {
@@ -38,18 +46,19 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
     }
   }
 
-  Future<void> _onNameChanged(AgencyNameChangedEvent event,
-      Emitter<AgencyHomeState> emit) async {
+  Future<void> _onNameChanged(
+      AgencyNameChangedEvent event, Emitter<AgencyHomeState> emit) async {
     emit(state.copyWith(name: ValidateForm(value: event.name.value)));
   }
 
-  Future<void> _onDescriptionChanged(DescriptionChangedEvent event,
-      Emitter<AgencyHomeState> emit) async {
-    emit(state.copyWith(description: ValidateForm(value: event.description.value)));
+  Future<void> _onDescriptionChanged(
+      DescriptionChangedEvent event, Emitter<AgencyHomeState> emit) async {
+    emit(state.copyWith(
+        description: ValidateForm(value: event.description.value)));
   }
 
-  Future<void> _onContactChanged(ContactChangedEvent event,
-      Emitter<AgencyHomeState> emit) async {
+  Future<void> _onContactChanged(
+      ContactChangedEvent event, Emitter<AgencyHomeState> emit) async {
     emit(state.copyWith(contact: ValidateForm(value: event.contact.value)));
   }
 
@@ -58,61 +67,68 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
     emit(const AgencyHomeNavigationSuccess('/agency_update'));
   }
 
-
-Future<void> _onAddPostEvent(AddPostEvent event,
-    Emitter<AgencyHomeState> emit) async {
+  Future<void> _onAddPostEvent(
+      AddPostEvent event, Emitter<AgencyHomeState> emit) async {
     String? nameError;
     String? descriptionError;
     String? contactError;
-
-    if (state.name.value.isEmpty) {
+    print(nameController.text);
+    print(descriptionController.text);
+    print(contactController.text);
+    if (nameController.text.isEmpty) {
       nameError = 'Name cannot be empty';
     }
-    if (state.description.value.isEmpty) {
+    if (descriptionController.text.isEmpty) {
       descriptionError = 'Description cannot be empty';
     }
-    if (state.contact.value.isEmpty) {
+    if (contactController.text.isEmpty) {
       contactError = 'Contact cannot be empty';
     }
-    if(nameError != null || descriptionError != null || contactError != null){
-      Post post = Post(name: state.name.value, description: state.description.value, contact: state.contact.value);
+    if (nameError == null && descriptionError == null && contactError == null) {
+      Post post = Post(
+          name: nameController.text,
+          description: descriptionController.text,
+          contact: contactController.text);
       final success = await RemoteService().addPost(json.encode(post.toJson()));
+      print(success);
       try {
-        if (success == 201){
+        if (success == 201) {
           print("success");
-          add(LoadAgencyHomePage());
-        } else{
+          add(LoadAgencyHomePageEvent());
+        } else {
+          print("failed");
           emit(state.copyWith(apiError: 'Failed to add post'));
         }
       } catch (error) {
+        print("error");
         emit(AgencyHomeError(error.toString()));
       }
     } else {
       emit(state.copyWith(
         name: ValidateForm(value: state.name.value, error: nameError),
-        description: ValidateForm(value: state.description.value, error: descriptionError),
+        description: ValidateForm(
+            value: state.description.value, error: descriptionError),
         contact: ValidateForm(value: state.contact.value, error: contactError),
       ));
     }
+  }
 
+  void _onEditPostEvent(EditPostEvent event, Emitter<AgencyHomeState> emit) {
+    // if (state is AgencyHomeLoaded) {
+    //   final loadedState = state as AgencyHomeLoaded;
+    //   final updatedPosts = loadedState.posts.map((post) {
+    //     return post == event.post ? event.post : post;
+    //   }).toList();
+    //   emit(AgencyHomeLoaded(updatedPosts));
+    // }
+  }
 
-}
-
-void _onEditPostEvent(EditPostEvent event, Emitter<AgencyHomeState> emit) {
-  // if (state is AgencyHomeLoaded) {
-  //   final loadedState = state as AgencyHomeLoaded;
-  //   final updatedPosts = loadedState.posts.map((post) {
-  //     return post == event.post ? event.post : post;
-  //   }).toList();
-  //   emit(AgencyHomeLoaded(updatedPosts));
-  // }
-}
-
-void _onDeletePostEvent(DeletePostEvent event, Emitter<AgencyHomeState> emit) {
-  // if (state is AgencyHomeLoaded) {
-  //   final loadedState = state as AgencyHomeLoaded;
-  //   final updatedPosts = loadedState.posts.where((post) => post != event.post).toList();
-  //   emit(AgencyHomeLoaded(updatedPosts));
-  // }
-}
+  void _onDeletePostEvent(
+      DeletePostEvent event, Emitter<AgencyHomeState> emit) {
+    // if (state is AgencyHomeLoaded) {
+    //   final loadedState = state as AgencyHomeLoaded;
+    //   final updatedPosts = loadedState.posts.where((post) => post != event.post).toList();
+    //   emit(AgencyHomeLoaded(updatedPosts));
+    // }
+  }
 }

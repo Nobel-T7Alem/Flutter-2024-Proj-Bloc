@@ -1,6 +1,6 @@
 import 'package:Sebawi/data/models/validate_form.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../data/models/posts.dart';
 import '../../presentation/screens/agency_home.dart';
@@ -39,27 +39,24 @@ class AgencyHomeState extends Equatable {
   List<Object?> get props => [name, contact, description, formKey, apiError];
 }
 
-class AgencyHomeInitial extends AgencyHomeState {}
 
 class AgencyHomeLoading extends AgencyHomeState {}
 
 class AgencyHomeLoaded extends AgencyHomeState {
   final List<Post> posts;
-
   const AgencyHomeLoaded(this.posts);
-
   @override
   List<Object> get props => [posts];
 }
 
 class AgencyHomeError extends AgencyHomeState {
   final String error;
-
   const AgencyHomeError(this.error);
-
   @override
   List<Object> get props => [error];
 }
+
+class InitialAgencyHome extends AgencyHomeState {}
 
 class AgencyHomeNavigationSuccess extends AgencyHomeState {
   final String route;

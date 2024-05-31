@@ -1,6 +1,6 @@
 import 'package:Sebawi/utils/extensions.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../../data/models/validate_form.dart';
 import '../../data/services/api_path.dart';
 import 'volunteer_signup_event.dart';
@@ -21,7 +21,7 @@ class VolunteerSignupBloc
     });
   }
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKey =  GlobalKey<FormState>();
 
   Future<void> _initState(VolunteerSignupInitialEvent event,
       Emitter<VolunteerSignupState> emit) async {
@@ -100,7 +100,7 @@ class VolunteerSignupBloc
 
     if (nameError == null && emailError == null && usernameError == null &&
         passwordError == null && confirmPasswordError == null) {
-      final errorMessage =  await signUp(state.name.value, state.email.value,  state.username.value, state.password.value, "user"
+      final errorMessage =  await RemoteService().signUp(state.name.value, state.email.value,  state.username.value, state.password.value, "user"
          );
       if (errorMessage == null){
         emit(NavigateToUserHome());
