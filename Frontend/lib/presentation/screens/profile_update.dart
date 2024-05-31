@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:Sebawi/application/user_update/user_update_bloc.dart';
 import 'package:Sebawi/presentation/Events/user_update_event.dart';
 import 'package:Sebawi/presentation/States/user_update_state.dart';
-
 import '../../data/models/validate_form.dart';
 import '../../data/services/api_path.dart';
 import '../widgets/custom_button.dart';
