@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import '../../data/models/calendars.dart';
 import 'user_home_event.dart';
 import 'user_home_state.dart';
 import '../../data/services/api_path.dart';
@@ -22,10 +23,6 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
   }
 
   void _onAddToCalendar(AddToCalendarEvent event, Emitter<UserHomeState> emit) async {
-    print("date");
-    print(event.date);
-
-    print(event.id);
     final post = await RemoteService().addToCalendar(event.date, event.id);
     if (post != null) {
       // emit(UserHomeLoaded(post);
@@ -37,7 +34,7 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
   void _onLoadCalendar(LoadCalendarEvent event, Emitter<UserHomeState> emit) async {
     emit(CalendarLoading());
     try {
-      final calendars = await RemoteService().getCalendar();
+      final List<Calendar>? calendars = await RemoteService().getCalendar();
       if (calendars == null) {
         emit(CalendarError());
         return;

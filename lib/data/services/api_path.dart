@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/calendars.dart';
 import '../models/posts.dart';
 import 'package:http/http.dart' as http;
 
@@ -92,8 +93,6 @@ class RemoteService {
     }
   }
 
-
-
   Future<String?>? addToCalendar(String date, String id) async {
     SharedPreferenceService sharedPrefService = SharedPreferenceService();
     String? userId = await sharedPrefService.readCache(key: "uId");
@@ -120,7 +119,7 @@ class RemoteService {
     }
   }
 
-  Future<List<Object>?> getCalendar() async {
+  Future<List<Calendar>?> getCalendar() async {
     SharedPreferenceService sharedPrefService = SharedPreferenceService();
     String? token = await sharedPrefService.readCache(key: "token");
     if (token == null) {
@@ -128,18 +127,29 @@ class RemoteService {
     }
     var client = http.Client();
     var uri = Uri.parse('http://192.168.1.2:3000/calendars/mycalendar');
-    final response = await client.get(uri,
-        headers: {
-          'Authorization': 'Bearer $token'
-        });
+    final response =
+        await client.get(uri, headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
-      print("yes");
       var jsonString = response.body;
-      return postFromJson(jsonString);
+      print(calendarFromJson(jsonString));
+      return calendarFromJson(jsonString);
     } else {
       return (null);
     }
   }
+
+  Future<Post?> getPost(String id) async {
+    var client = http.Client();
+    var uri = Uri.parse('http://192.168.1.2:3000/posts/$id');
+    final response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return postFromJson(jsonString)[0];
+    } else {
+      return (null);
+    }
+  }
+
   Future<List<Post>?> getPosts() async {
     var client = http.Client();
     var uri = Uri.parse('http://192.168.1.2:3000/posts');

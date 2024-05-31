@@ -2,6 +2,7 @@ import 'package:Sebawi/data/services/api_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../data/models/calendars.dart';
 import '../../data/models/posts.dart';
 import 'package:Sebawi/blocs/user_home/user_home_bloc.dart';
 import 'package:Sebawi/blocs/user_home/user_home_state.dart';
@@ -17,7 +18,9 @@ class UserHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserHomeBloc()..add(LoadPostsEvent()),
+      create: (context) =>
+      UserHomeBloc()
+        ..add(LoadPostsEvent()),
       child: BlocListener<UserHomeBloc, UserHomeState>(
         listener: (context, state) {
           if (state is UserHomeNavigationSuccess) {
@@ -105,19 +108,21 @@ class UserHomePage extends StatelessWidget {
                   ),
                   BlocBuilder<UserHomeBloc, UserHomeState>(
                       builder: (context, state) {
-                        if(state is CalendarLoading){
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (state is CalendarError){
-                          return const Center(child: Text("Error loading calendar"));
+                        if (state is CalendarLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state is CalendarError) {
+                          return const Center(child: Text(
+                              "Error loading calendar"));
                         }
                         else if (state is CalendarLoaded) {
                           return ListView.builder(
-                            itemCount: posts!.length,
+                            itemCount: state.calendars.length,
                             itemBuilder: (context, index) {
                               return Column(
                                 children: [
-                                  ListTile(
-                                    title: Text(posts![index].contact),
+                                  CalendarItem(
+                                    calendar: state.calendars[index],
                                   ),
                                   Divider(
                                     height: 10,
@@ -130,7 +135,7 @@ class UserHomePage extends StatelessWidget {
                           );
                         }
                         return Container();
-                  }
+                      }
                   ),
                 ],
               ),
@@ -143,19 +148,90 @@ class UserHomePage extends StatelessWidget {
       ),
     );
   }
+}
 
-  fetchPosts() async {
-    posts = await RemoteService().getPosts();
+
+class CalendarItem extends StatelessWidget {
+  final Calendar calendar;
+  const CalendarItem({required this.calendar, super.key});
+//
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      child: Container(
+//         decoration: BoxDecoration(
+//           gradient: LinearGradient(
+//             begin: Alignment.topLeft,
+//             end: Alignment.bottomRight,
+//             colors: [
+//               Colors.grey.shade200,
+//               Colors.grey.shade100
+//             ], // You can adjust these colors as needed
+//           ),
+//         ),
+//         child: ListTile(
+//           title: Padding(
+//             padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+//             child: Text(
+//               calendar?.date,
+//               style: TextStyle(
+//                   fontSize: 22,
+//                   fontWeight: FontWeight.w700,
+//                   color: Colors.green.shade800),
+//             ),
+//           ),
+//           subtitle: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Row(
+//                 children: [
+//                   Icon(Icons.phone_android,
+//                       size: 14, color: Colors.green.shade800),
+//                   const Text(
+//                     " Contact: ",
+//                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+//                   ),
+//                   Text(post.contact),
+//                 ],
+//               ),
+//               Row(
+//                 children: [
+//                   Icon(Icons.medical_services,
+//                       size: 14, color: Colors.green.shade800),
+//                   const Center(
+//                     child: Text(
+//                       " Service Type: ",
+//                       style:
+//                       TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+//                     ),
+//                   ),
+//                   Text(post.description),
+//                 ],
+//               ),
+//               Padding(
+//                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+//                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.end,
+//                   children: [
+//                       Text('Scheduled to ${calendar.date}'),
+//                     ],
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+      ),
+    );
   }
 }
 
-List<Post>? posts;
-List<String> calendar = [];
+
 class PostItem extends StatelessWidget {
-  final List? calendar;
   final Post post;
   final bool isMyPost;
-  const PostItem({required this.post, required this.isMyPost, this.calendar, super.key});
+  const PostItem({required this.post, required this.isMyPost, super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../data/models/calendars.dart';
 import '../../data/models/posts.dart';
 
 abstract class UserHomeState extends Equatable {
@@ -35,8 +36,7 @@ class UserHomeNavigationSuccess extends UserHomeState {
 class CalendarLoading extends UserHomeState {}
 
 class CalendarLoaded extends UserHomeState {
-  final List<Object> calendars;
-
+  final List<Calendar> calendars;
   const CalendarLoaded(this.calendars);
 
   @override
