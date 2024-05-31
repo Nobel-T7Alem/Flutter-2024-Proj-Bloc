@@ -49,8 +49,8 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
 
   Future<void> _onLoadAgencyHomePage(
       LoadAgencyHomePageEvent event, Emitter<AgencyHomeState> emit) async {
-    final posts = await RemoteService().getPosts();
     try {
+      final posts = await RemoteService().getPosts();
       if (posts != null) {
         emit(AgencyHomeLoaded(posts));
       } else {
@@ -97,10 +97,18 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
       contactError = 'Contact cannot be empty';
     }
     if (nameError == null && descriptionError == null && contactError == null) {
+      SharedPreferenceService sharedPrefService = SharedPreferenceService();
+      String? userId = await sharedPrefService.readCache(key: "uId");
+      if(userId == null){
+        return;
+      }
       Post post = Post(
           name: nameController.text,
           description: descriptionController.text,
-          contact: contactController.text);
+          contact: contactController.text,
+          user: userId,
+      );
+
       final success = await RemoteService().addPost(json.encode(post.toJson()));
       try {
         if (success == 201) {

@@ -9,21 +9,25 @@ class Post {
     required this.name,
     required this.description,
     required this.contact,
+    required this.user,
   });
 
   String name;
   String description;
   String contact;
+  String user;
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
     name: json["name"],
     description: json["description"],
     contact: json["contact"],
+    user: json["user"],
   );
 
   Map<String, dynamic> toJson() => {
     "name": name,
     "description": description,
     "contact": contact,
+    "user": user,
   };
 }

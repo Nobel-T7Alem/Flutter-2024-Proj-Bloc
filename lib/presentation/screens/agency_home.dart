@@ -110,7 +110,7 @@ class AgencyHomePage extends StatelessWidget {
                           },
                         );
                       }
-                      return Container(); // Empty container for other states
+                      return Container();
                     },
                   ),
                   BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
@@ -141,7 +141,7 @@ class AgencyHomePage extends StatelessWidget {
                           },
                         );
                       }
-                      return Container(); // Empty container for other states
+                      return  Container();
                     },
                   ),
                   BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
