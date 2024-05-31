@@ -12,7 +12,7 @@ class LoginPageInitial extends LoginPageState {}
 class LoginPageNavigationSuccess extends LoginPageState {
   final String route;
 
-  const LoginPageNavigationSuccess(this.route);
+  const LoginPageNavigationSuccess(this.route, {required String route});
 
   @override
   List<Object> get props => [route];
