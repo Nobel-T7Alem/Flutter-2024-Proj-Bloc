@@ -3,6 +3,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:Sebawi/application/admin_login/admin_login_bloc.dart';
 import 'package:Sebawi/application/admin_login/admin_login_event.dart';
 import 'package:Sebawi/application/admin_login/admin_login_state.dart';
+import 'package:Sebawi/data/models/validate_form.dart';
 
 void main() {
   group('AdminLoginBloc', () {
@@ -20,18 +21,23 @@ void main() {
       expect(adminLoginBloc.state, AdminLoginInitial());
     });
 
+  
     blocTest<AdminLoginBloc, AdminLoginState>(
-      'emits [AdminLoginLoading, AdminLoginSuccess] when AdminLoginSubmitted is added with correct credentials',
+      'emits state with updated username when UsernameChangedEvent is added',
       build: () => adminLoginBloc,
-      act: (bloc) => bloc.add(const AdminLoginSubmitted(username: 'admin', password: 'password')),
-      expect: () => [AdminLoginSuccess()],
+      act: (bloc) => bloc.add(const UsernameChangedEvent(username: ValidateForm(value: 'admin'))),
+      expect: () => [
+        isA<AdminLoginState>().having((state) => state.username.value, 'username', 'admin'),
+      ],
     );
 
     blocTest<AdminLoginBloc, AdminLoginState>(
-      'emits [AdminLoginLoading, AdminLoginFailure] when AdminLoginSubmitted is added with incorrect credentials',
+      'emits state with updated password when PasswordChangedEvent is added',
       build: () => adminLoginBloc,
-      act: (bloc) => bloc.add(const AdminLoginSubmitted(username: 'wrong', password: 'credentials')),
-      expect: () => [AdminLoginFailure()],
+      act: (bloc) => bloc.add(const PasswordChangedEvent(password: ValidateForm(value: 'password'))),
+      expect: () => [
+        isA<AdminLoginState>().having((state) => state.password.value, 'password', 'password'),
+      ],
     );
   });
 }

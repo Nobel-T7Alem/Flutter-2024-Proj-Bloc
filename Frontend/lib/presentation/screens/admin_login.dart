@@ -73,7 +73,7 @@ class AdminLoginPage extends StatelessWidget {
                           buttonTextColor: Colors.white,
                           buttonAction: () {
                             BlocProvider.of<AdminLoginBloc>(context)
-                                .add(const AdminLoginSubmitted());
+                                .add(const AdminLoginSubmitted(username: '', password: ''));
                           }),
                     ],
                   ),

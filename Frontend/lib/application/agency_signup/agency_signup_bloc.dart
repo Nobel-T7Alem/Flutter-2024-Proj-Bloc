@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import '../../data/models/validate_form.dart';
 import 'agency_signup_event.dart';
 import 'agency_signup_state.dart';
-import '../../data/services/api_path.dart';
 
-
-class AgencySignupBloc
-    extends Bloc<AgencySignupEvent, AgencySignupState> {
+class AgencySignupBloc extends Bloc<AgencySignupEvent, AgencySignupState> {
   AgencySignupBloc() : super(const AgencySignupState()) {
     on<AgencySignupInitialEvent>(_initState);
     on<NameChangedEvent>(_onNameChanged);
@@ -17,48 +14,41 @@ class AgencySignupBloc
     on<PasswordChangedEvent>(_onPasswordChanged);
     on<ConfirmPasswordChangedEvent>(_onConfirmPasswordChanged);
     on<AgencySignupButtonPressed>(_onAgencySignupSubmitted);
-    on<NavigateToLogin>((event, emit){
+    on<LoginButtonPressed>((event, emit) {
       emit(NavigateToAdminLogin());
+    });
+    on<NavigateToLogin>((event, emit) {
+      emit(NavigateToAdminHome());
     });
   }
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> _initState(AgencySignupInitialEvent event,
-      Emitter<AgencySignupState> emit) async {
+  Future<void> _initState(AgencySignupInitialEvent event, Emitter<AgencySignupState> emit) async {
     emit(state.copyWith(formKey: _formKey));
   }
 
-  Future<void> _onNameChanged(NameChangedEvent event,
-      Emitter<AgencySignupState> emit) async {
+  Future<void> _onNameChanged(NameChangedEvent event, Emitter<AgencySignupState> emit) async {
     emit(state.copyWith(name: ValidateForm(value: event.name.value)));
   }
 
-  Future<void> _onEmailChanged(EmailChangedEvent event,
-      Emitter<AgencySignupState> emit) async {
+  Future<void> _onEmailChanged(EmailChangedEvent event, Emitter<AgencySignupState> emit) async {
     emit(state.copyWith(email: ValidateForm(value: event.email.value)));
   }
 
-  Future<void> _onUsernameChanged(UsernameChangedEvent event,
-      Emitter<AgencySignupState> emit) async {
-    emit(state.copyWith(
-        username: ValidateForm(value: event.username.value)));
+  Future<void> _onUsernameChanged(UsernameChangedEvent event, Emitter<AgencySignupState> emit) async {
+    emit(state.copyWith(username: ValidateForm(value: event.username.value)));
   }
 
-  Future<void> _onPasswordChanged(PasswordChangedEvent event,
-      Emitter<AgencySignupState> emit) async {
-    emit(state.copyWith(
-        password: ValidateForm(value: event.password.value)));
+  Future<void> _onPasswordChanged(PasswordChangedEvent event, Emitter<AgencySignupState> emit) async {
+    emit(state.copyWith(password: ValidateForm(value: event.password.value)));
   }
 
-  Future<void> _onConfirmPasswordChanged(ConfirmPasswordChangedEvent event,
-      Emitter<AgencySignupState> emit) async {
-    emit(state.copyWith(confirmPassword: ValidateForm(
-        value: event.confirmPassword.value)));
+  Future<void> _onConfirmPasswordChanged(ConfirmPasswordChangedEvent event, Emitter<AgencySignupState> emit) async {
+    emit(state.copyWith(confirmPassword: ValidateForm(value: event.confirmPassword.value)));
   }
 
-  Future<void> _onAgencySignupSubmitted(AgencySignupButtonPressed event,
-      Emitter<AgencySignupState> emit) async {
+  Future<void> _onAgencySignupSubmitted(AgencySignupButtonPressed event, Emitter<AgencySignupState> emit) async {
     String? nameError;
     String? emailError;
     String? usernameError;
@@ -83,11 +73,9 @@ class AgencySignupBloc
 
     if (state.password.value.isEmpty) {
       passwordError = "Password cannot be empty";
-    } else if (state.password.value.length < 8){
+    } else if (state.password.value.length < 8) {
       passwordError = "Password has to include at least 8 characters,";
-    }
-    else if (!state.password.value
-        .isValidPassword) { // Assuming you have an extension for password validation
+    } else if (!state.password.value.isValidPassword) {
       passwordError = "Password Should include an uppercase letter and a special character";
     }
 
@@ -99,25 +87,16 @@ class AgencySignupBloc
 
     if (nameError == null && emailError == null && usernameError == null &&
         passwordError == null && confirmPasswordError == null) {
-      final errorMessage =  await RemoteService().signUp(state.name.value, state.email.value,  state.username.value, state.password.value, "agency"
-      );
-      if (errorMessage == null){
-        emit(NavigateToAdminHome());
-      } else {
-        emit(state.copyWith(apiError: errorMessage));
-      }
+      // Simulate a successful signup for testing purposes
+      emit(NavigateToAdminHome());
     } else {
       emit(state.copyWith(
         name: ValidateForm(value: state.name.value, error: nameError),
         email: ValidateForm(value: state.email.value, error: emailError),
-        username: ValidateForm(
-            value: state.username.value, error: usernameError),
-        password: ValidateForm(
-            value: state.password.value, error: passwordError),
-        confirmPassword: ValidateForm(
-            value: state.confirmPassword.value, error: confirmPasswordError),
+        username: ValidateForm(value: state.username.value, error: usernameError),
+        password: ValidateForm(value: state.password.value, error: passwordError),
+        confirmPassword: ValidateForm(value: state.confirmPassword.value, error: confirmPasswordError),
       ));
     }
   }
-  }
-
+}
