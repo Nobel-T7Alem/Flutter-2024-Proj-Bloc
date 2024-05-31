@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:Sebawi/application/admin_page/admin_page_bloc.dart';
-import 'package:Sebawi/application/admin_page/admin_page_event.dart';
-import 'package:Sebawi/application/admin_page/admin_page_state.dart';
+import 'package:Sebawi/presentation/Events/admin_page_event.dart';
+import 'package:Sebawi/presentation/States/admin_page_state.dart';
 import 'package:Sebawi/data/models/accounts.dart';
 import 'package:Sebawi/data/models/posts.dart';
 import 'package:Sebawi/data/services/api_path.dart';

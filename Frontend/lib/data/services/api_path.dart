@@ -36,7 +36,7 @@ class RemoteService {
       return 401;
     }
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/posts');
+    var uri = Uri.parse('http://192.168.38.24:3000/posts');
     final response = await client.post(uri,
         headers: {
           'Content-Type': 'application/json',
@@ -44,14 +44,13 @@ class RemoteService {
         },
         body: post);
     final Map<String, dynamic> responseBody = jsonDecode(response.body);
-    print(responseBody);
     return response.statusCode;
   }
 
   Future<String?> signUp(String fullName, String email, String username,
       String password, String role) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.2:3000/auth/signup'),
+      Uri.parse('http://192.168.38.24:3000/auth/signup'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -82,7 +81,7 @@ class RemoteService {
     if (userId == null) {
       return null;
     }
-    String url = 'http://192.168.1.2:3000/posts/myposts/$userId';
+    String url = 'http://192.168.38.24:3000/posts/myposts/$userId';
     var uri = Uri.parse(url);
     final response = await client.get(uri);
     if (response.statusCode == 200) {
@@ -101,7 +100,7 @@ class RemoteService {
       return null;
     }
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/calendars/add/$id');
+    var uri = Uri.parse('http://192.168.38.24:3000/calendars/add/$id');
     final response = await client.post(uri,
         headers: {
           'Content-Type': 'application/json',
@@ -123,14 +122,13 @@ class RemoteService {
     SharedPreferenceService sharedPrefService = SharedPreferenceService();
     String? token = await sharedPrefService.readCache(key: "token");
     if (token == null) {
-      print("Token is null, cannot fetch calendar.");
       return null;
     }
 
     final client = http.Client();
     try {
       var calendarUri =
-          Uri.parse('http://192.168.1.2:3000/calendars/mycalendar');
+          Uri.parse('http://192.168.38.24:3000/calendars/mycalendar');
       final calendarResponse = await client.get(
         calendarUri,
         headers: {'Authorization': 'Bearer $token'},
@@ -141,7 +139,7 @@ class RemoteService {
         List<Calendar> posts = [];
         for (var item in calendarData) {
           var postId = item["post"];
-          var postUri = Uri.parse('http://192.168.1.2:3000/posts/$postId');
+          var postUri = Uri.parse('http://192.168.38.24:3000/posts/$postId');
           final postResponse = await client.get(
             postUri,
             headers: {'Authorization': 'Bearer $token'},
@@ -149,7 +147,6 @@ class RemoteService {
           DateTime dateTime = DateTime.parse(item["date"].toString());
           DateFormat formatter = DateFormat('yyyy-MM-dd');
           String formatted = formatter.format(dateTime);
-          print(item["date"].toString().split("")[0]);
           if (postResponse.statusCode == 200) {
             var postData = Post.fromJson(jsonDecode(postResponse.body));
             posts.add(Calendar(
@@ -158,7 +155,6 @@ class RemoteService {
                 description: postData.description,
                 contact: postData.contact,
                 date: formatted));
-            print(posts[0]);
           }
         }
         return posts;
@@ -172,7 +168,7 @@ class RemoteService {
 
   Future<Post?> getPost(String id) async {
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/posts/$id');
+    var uri = Uri.parse('http://192.168.38.24:3000/posts/$id');
     final response = await client.get(uri);
     if (response.statusCode == 200) {
       var jsonString = response.body;
@@ -184,7 +180,7 @@ class RemoteService {
 
   Future<List<Post>?> getPosts() async {
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/posts');
+    var uri = Uri.parse('http://192.168.38.24:3000/posts');
     final response = await client.get(uri);
     if (response.statusCode == 200) {
       var jsonString = response.body;
@@ -202,7 +198,7 @@ class RemoteService {
       return null;
     }
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/user');
+    var uri = Uri.parse('http://192.168.38.24:3000/user');
     final response = await client.get(
       uri,
       headers: {'Authorization': 'Bearer $token'},
@@ -223,7 +219,7 @@ class RemoteService {
       return 401;
     }
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/user/$userId/profile');
+    var uri = Uri.parse('http://192.168.38.24:3000/user/$userId/profile');
 
     // Create a map to hold only the fields that are not null
     Map<String, String> body = {};
@@ -240,7 +236,6 @@ class RemoteService {
       },
       body: jsonEncode(body),
     );
-    print(response.body);
     return response.statusCode;
   }
 
@@ -251,7 +246,7 @@ class RemoteService {
       return 401;
     }
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/user/$id/role');
+    var uri = Uri.parse('http://192.168.38.24:3000/user/$id/role');
     final response = await client.patch(uri,
         headers: {
           'Content-Type': 'application/json',
@@ -271,7 +266,7 @@ class RemoteService {
       return null;
     }
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/user/$userId/account');
+    var uri = Uri.parse('http://192.168.38.24:3000/user/$userId/account');
     final response = await client.delete(
       uri,
       headers: {
@@ -290,18 +285,17 @@ class RemoteService {
       return null;
     }
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/user/$id');
+    var uri = Uri.parse('http://192.168.38.24:3000/user/$id');
     final response = await client.delete(
       uri,
       headers: {'Authorization': 'Bearer $token'},
     );
-    print(response.body);
     return response.statusCode;
   }
 
   Future<int> editPost(id, post) async {
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/posts/$id');
+    var uri = Uri.parse('http://192.168.38.24:3000/posts/$id');
     final response = await client.put(uri,
         headers: {
           'Content-Type': 'application/json',
@@ -316,7 +310,7 @@ class RemoteService {
 
   Future<int> deletePost(id) async {
     var client = http.Client();
-    var uri = Uri.parse('http://192.168.1.2:3000/posts/$id');
+    var uri = Uri.parse('http://192.168.38.24:3000/posts/$id');
     final response = await client.delete(uri);
     return response.statusCode;
   }
@@ -325,7 +319,7 @@ class RemoteService {
     var client = http.Client();
     var link = Uri(
       scheme: 'http',
-      host: '192.168.1.2',
+      host: '192.168.38.24',
       port: 3000,
       path: '/auth/login',
       queryParameters: {
@@ -349,7 +343,6 @@ class RemoteService {
       }
     } else {
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
-      print("Failed to log in");
       return responseBody['message'] ?? 'Failed to log in';
     }
     return null;

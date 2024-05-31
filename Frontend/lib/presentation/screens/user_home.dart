@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../data/models/calendars.dart';
 import '../../data/models/posts.dart';
 import 'package:Sebawi/application/user_home/user_home_bloc.dart';
-import 'package:Sebawi/application/user_home/user_home_state.dart';
-import 'package:Sebawi/application/user_home/user_home_event.dart';
+import 'package:Sebawi/presentation/States/user_home_state.dart';
+import 'package:Sebawi/presentation/Events/user_home_event.dart';
 
 void main() {
   runApp(const UserHomePage());

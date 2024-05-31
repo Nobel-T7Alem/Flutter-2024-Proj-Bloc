@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:Sebawi/application/login_user/login_user_bloc.dart';
-import 'package:Sebawi/application/login_user/login_user_state.dart';
-import 'package:Sebawi/application/login_user/login_user_event.dart';
+import 'package:Sebawi/presentation/States/login_user_state.dart';
+import 'package:Sebawi/presentation/Events/login_user_event.dart';
 
 class LoginUser extends StatelessWidget {
   const LoginUser({super.key});

@@ -1,7 +1,7 @@
 import 'package:Sebawi/data/services/api_path.dart';
 import 'package:bloc/bloc.dart';
-import 'admin_page_event.dart';
-import 'admin_page_state.dart';
+import '../../presentation/Events/admin_page_event.dart';
+import '../../presentation/States/admin_page_state.dart';
 
 class AdminPageBloc extends Bloc<AdminPageEvent, AdminPageState> {
   AdminPageBloc() : super(AdminPageInitial()) {

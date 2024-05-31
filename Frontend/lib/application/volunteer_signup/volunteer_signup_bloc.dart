@@ -3,8 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import '../../data/models/validate_form.dart';
 import '../../data/services/api_path.dart';
-import 'volunteer_signup_event.dart';
-import 'volunteer_signup_state.dart';
+import '../../presentation/Events/volunteer_signup_event.dart';
+import '../../presentation/States/volunteer_signup_state.dart';
 
 class VolunteerSignupBloc
     extends Bloc<VolunteerSignupEvent, VolunteerSignupState> {

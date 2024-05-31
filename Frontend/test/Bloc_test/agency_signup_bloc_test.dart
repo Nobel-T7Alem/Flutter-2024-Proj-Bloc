@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:Sebawi/application/agency_signup/agency_signup_bloc.dart';
-import 'package:Sebawi/application/agency_signup/agency_signup_event.dart';
-import 'package:Sebawi/application/agency_signup/agency_signup_state.dart';
+import 'package:Sebawi/presentation/Events/agency_signup_event.dart';
+import 'package:Sebawi/presentation/States/agency_signup_state.dart';
 import 'package:Sebawi/data/models/validate_form.dart';
 
 void main() {

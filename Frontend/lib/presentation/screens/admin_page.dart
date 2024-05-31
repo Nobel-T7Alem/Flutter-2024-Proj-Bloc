@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/admin_page/admin_page_bloc.dart';
-import '../../application/admin_page/admin_page_event.dart';
-import '../../application/admin_page/admin_page_state.dart';
+import '../Events/admin_page_event.dart';
+import '../States/admin_page_state.dart';
 import '../../data/models/accounts.dart';
 import '../../data/models/posts.dart';
 

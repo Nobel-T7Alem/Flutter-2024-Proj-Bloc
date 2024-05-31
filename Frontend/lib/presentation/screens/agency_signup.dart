@@ -3,9 +3,9 @@ import 'package:Sebawi/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Sebawi/application/agency_signup/agency_signup_event.dart';
+import 'package:Sebawi/presentation/Events/agency_signup_event.dart';
 import 'package:Sebawi/application/agency_signup/agency_signup_bloc.dart';
-import 'package:Sebawi/application/agency_signup/agency_signup_state.dart';
+import 'package:Sebawi/presentation/States/agency_signup_state.dart';
 import '../../data/models/validate_form.dart';
 
 class AgencySignup extends StatelessWidget {

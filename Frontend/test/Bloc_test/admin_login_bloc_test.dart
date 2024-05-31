@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:Sebawi/application/admin_login/admin_login_bloc.dart';
-import 'package:Sebawi/application/admin_login/admin_login_event.dart';
-import 'package:Sebawi/application/admin_login/admin_login_state.dart';
+import 'package:Sebawi/presentation/Events/admin_login_event.dart';
+import 'package:Sebawi/presentation/States/admin_login_state.dart';
 import 'package:Sebawi/data/models/validate_form.dart';
 
 void main() {

@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import '../../data/models/posts.dart';
 import '../../data/models/validate_form.dart';
-import 'agency_home_event.dart';
-import 'agency_home_state.dart';
+import '../../presentation/Events/agency_home_event.dart';
+import '../../presentation/States/agency_home_state.dart';
 
 class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
   final TextEditingController nameController = TextEditingController();

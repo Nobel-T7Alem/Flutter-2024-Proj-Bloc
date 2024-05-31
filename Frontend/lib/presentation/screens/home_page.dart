@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'login_page.dart';
 import 'package:Sebawi/application/home/home_page_bloc.dart';
-import 'package:Sebawi/application/home/home_page_event.dart';
-import 'package:Sebawi/application/home/home_page_state.dart';
+import 'package:Sebawi/presentation/Events/home_page_event.dart';
+import 'package:Sebawi/presentation/States/home_page_state.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

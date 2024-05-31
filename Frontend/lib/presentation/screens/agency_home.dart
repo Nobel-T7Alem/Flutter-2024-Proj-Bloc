@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/agency_home/agency_home_bloc.dart';
-import '../../application/agency_home/agency_home_event.dart';
-import '../../application/agency_home/agency_home_state.dart';
+import '../Events/agency_home_event.dart';
+import '../States/agency_home_state.dart';
 import '../../data/models/posts.dart';
 import '../../data/models/validate_form.dart';
 

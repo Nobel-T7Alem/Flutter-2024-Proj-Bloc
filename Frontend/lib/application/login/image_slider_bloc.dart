@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'image_slider_event.dart';
-import 'image_slider_state.dart';
+import '../../presentation/Events/image_slider_event.dart';
+import '../../presentation/States/image_slider_state.dart';
 
 class ImageSliderBloc extends Bloc<ImageSliderEvent, ImageSliderState> {
   ImageSliderBloc() : super(ImageSliderInitial()) {

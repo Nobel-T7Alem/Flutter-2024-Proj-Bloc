@@ -3,8 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import '../../data/models/validate_form.dart';
 import '../../data/services/api_path.dart';
-import 'user_update_event.dart';
-import 'user_update_state.dart';
+import '../../presentation/Events/user_update_event.dart';
+import '../../presentation/States/user_update_state.dart';
 
 class UserUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
   UserUpdateBloc() : super(const UserUpdateState()) {

@@ -2,8 +2,8 @@ import 'package:Sebawi/data/models/validate_form.dart';
 import 'package:Sebawi/data/services/api_path.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'login_user_event.dart';
-import 'login_user_state.dart';
+import '../../presentation/Events/login_user_event.dart';
+import '../../presentation/States/login_user_state.dart';
 
 class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
   LoginUserBloc() : super(const LoginUserState()) {

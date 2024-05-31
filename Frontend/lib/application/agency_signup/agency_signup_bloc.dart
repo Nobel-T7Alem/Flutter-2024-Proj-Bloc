@@ -2,8 +2,8 @@ import 'package:Sebawi/utils/extensions.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import '../../data/models/validate_form.dart';
-import 'agency_signup_event.dart';
-import 'agency_signup_state.dart';
+import '../../presentation/Events/agency_signup_event.dart';
+import '../../presentation/States/agency_signup_state.dart';
 
 class AgencySignupBloc extends Bloc<AgencySignupEvent, AgencySignupState> {
   AgencySignupBloc() : super(const AgencySignupState()) {

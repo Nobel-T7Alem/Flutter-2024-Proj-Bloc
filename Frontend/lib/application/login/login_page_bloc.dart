@@ -1,7 +1,7 @@
 // login_bloc.dart
-import 'package:Sebawi/application/login/login_page_event.dart';
+import 'package:Sebawi/presentation/Events/login_page_event.dart';
 import 'package:bloc/bloc.dart';
-import 'login_page_state.dart';
+import '../../presentation/States/login_page_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
