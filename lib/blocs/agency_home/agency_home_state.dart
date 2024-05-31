@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/posts.dart';
-import '../../presentation/screens/agency_home.dart';
 
 class AgencyHomeState extends Equatable {
   final ValidateForm name;
@@ -11,12 +10,14 @@ class AgencyHomeState extends Equatable {
   final ValidateForm contact;
   final GlobalKey<FormState>? formKey;
   final String? apiError;
+  final String? apiMessage;
   const AgencyHomeState({
     this.name = const ValidateForm(error: null),
     this.description = const ValidateForm(error: null),
     this.contact = const ValidateForm(error: null),
     this.formKey,
     this.apiError,
+    this.apiMessage
 });
 
   AgencyHomeState copyWith({
@@ -25,6 +26,7 @@ class AgencyHomeState extends Equatable {
     ValidateForm? contact,
     GlobalKey<FormState>? formKey,
     String? apiError,
+    String? apiMessage,
 }){
     return AgencyHomeState(
       name: name ?? this.name,
@@ -32,15 +34,32 @@ class AgencyHomeState extends Equatable {
       contact: contact ?? this.contact,
       formKey: formKey ?? this.formKey,
       apiError: apiError ?? this.apiError,
+      apiMessage: apiMessage ?? this.apiMessage,
     );
   }
 
   @override
-  List<Object?> get props => [name, contact, description, formKey, apiError];
+  List<Object?> get props => [name, contact, description, formKey, apiError, apiMessage];
 }
 
 
 class AgencyHomeLoading extends AgencyHomeState {}
+
+class MyPostsLoaded extends AgencyHomeState {
+  final List<Post> myPosts;
+  const MyPostsLoaded(this.myPosts);
+  @override
+  List<Object> get props => [myPosts];
+}
+
+class MyPostsLoading extends AgencyHomeState {}
+
+class MyPostsError extends AgencyHomeState {
+  final String error;
+  const MyPostsError(this.error);
+  @override
+  List<Object> get props => [error];
+}
 
 class AgencyHomeLoaded extends AgencyHomeState {
   final List<Post> posts;
@@ -56,6 +75,8 @@ class AgencyHomeError extends AgencyHomeState {
   List<Object> get props => [error];
 }
 
+
+
 class InitialAgencyHome extends AgencyHomeState {}
 
 class AgencyHomeNavigationSuccess extends AgencyHomeState {
@@ -66,6 +87,7 @@ class AgencyHomeNavigationSuccess extends AgencyHomeState {
   @override
   List<Object> get props => [route];
 }
+
 
 
 

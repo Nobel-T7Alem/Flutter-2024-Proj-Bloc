@@ -116,19 +116,19 @@ class AgencyHomePage extends StatelessWidget {
                   BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
                     builder: (context, state) {
                       BlocProvider.of<AgencyHomeBloc>(context)
-                          .add(LoadAgencyHomePageEvent());
-                      if (state is AgencyHomeLoading) {
+                          .add(LoadMyPostsEvent());
+                      if (state is MyPostsLoading) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (state is AgencyHomeError) {
+                      } else if (state is MyPostsError) {
                         return Center(child: Text(state.error));
-                      } else if (state is AgencyHomeLoaded) {
+                      } else if (state is MyPostsLoaded) {
                         return ListView.builder(
-                          itemCount: state.posts.length,
+                          itemCount: state.myPosts.length,
                           itemBuilder: (context, index) {
                             return Column(
                               children: [
                                 PostItem(
-                                  post: state.posts[index],
+                                  post: state.myPosts[index],
                                   isMyPost: false,
                                 ),
                                 Divider(
@@ -208,6 +208,22 @@ class AgencyHomePage extends StatelessWidget {
                                         .apiError!,
                                     style: const TextStyle(
                                         color: Colors.red,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            if (context.read<AgencyHomeBloc>().state.apiMessage !=
+                                null)
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                child: Center(
+                                  child: Text(
+                                    context
+                                        .read<AgencyHomeBloc>()
+                                        .state
+                                        .apiMessage!,
+                                    style: const TextStyle(
+                                        color: Colors.green,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),

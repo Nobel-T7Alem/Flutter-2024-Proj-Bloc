@@ -21,6 +21,9 @@ class InitialAgencyHomeEvent extends AgencyHomeEvent {
 class LoadAgencyHomePageEvent extends AgencyHomeEvent {
 }
 
+class LoadMyPostsEvent extends AgencyHomeEvent {
+}
+
 class NavigateToAgencyUpdateEvent extends AgencyHomeEvent {}
 
 class EditPostEvent extends AgencyHomeEvent {

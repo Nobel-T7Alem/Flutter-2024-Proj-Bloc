@@ -109,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 300,
                       child: ElevatedButton(
                         onPressed: () {
+                          context.go("/user_login");
                           BlocProvider.of<LoginPageBloc>(context).add(NavigateToUserLogin());
                         },
                         style: ElevatedButton.styleFrom(

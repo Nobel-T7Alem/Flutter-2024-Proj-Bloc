@@ -15,7 +15,6 @@ class Post {
   String description;
   String contact;
 
-
   factory Post.fromJson(Map<String, dynamic> json) => Post(
     name: json["name"],
     description: json["description"],

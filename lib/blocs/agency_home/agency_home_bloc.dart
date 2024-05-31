@@ -22,14 +22,29 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
     on<AgencyNameChangedEvent>(_onNameChanged);
     on<DescriptionChangedEvent>(_onDescriptionChanged);
     on<ContactChangedEvent>(_onContactChanged);
+    on<LoadMyPostsEvent>(_onLoadMyPosts);
   }
 
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _initState(
       InitialAgencyHomeEvent event, Emitter<AgencyHomeState> emit) async {
-    // emit(state.copyWith(formKey: _formKey));
+    emit(state.copyWith(formKey: _formKey));
      add(LoadAgencyHomePageEvent());
+  }
+
+  Future<void> _onLoadMyPosts(
+      LoadMyPostsEvent event, Emitter<AgencyHomeState> emit) async {
+      final myPosts = await RemoteService().getMyPosts();
+      try{
+        if (myPosts != null) {
+          emit(MyPostsLoaded(myPosts));
+        } else {
+          emit(const MyPostsError('Failed to load posts'));
+        }
+      } catch (error) {
+        emit(MyPostsError(error.toString()));
+      }
   }
 
   Future<void> _onLoadAgencyHomePage(
@@ -72,9 +87,6 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
     String? nameError;
     String? descriptionError;
     String? contactError;
-    print(nameController.text);
-    print(descriptionController.text);
-    print(contactController.text);
     if (nameController.text.isEmpty) {
       nameError = 'Name cannot be empty';
     }
@@ -90,17 +102,15 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
           description: descriptionController.text,
           contact: contactController.text);
       final success = await RemoteService().addPost(json.encode(post.toJson()));
-      print(success);
       try {
         if (success == 201) {
-          print("success");
-          add(LoadAgencyHomePageEvent());
+          emit(state.copyWith(
+            apiMessage: "Post added successfully!",
+          ));
         } else {
-          print("failed");
           emit(state.copyWith(apiError: 'Failed to add post'));
         }
       } catch (error) {
-        print("error");
         emit(AgencyHomeError(error.toString()));
       }
     } else {

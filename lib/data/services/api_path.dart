@@ -19,7 +19,7 @@ Future readCache({required String key}) async {
   final SharedPreferences pref = await SharedPreferences.getInstance();
   String? value = pref.getString(key);
   if (value != null) {
-    debugPrint(value.toString());
+    return value.toString();
   } else {
     return null;
   }
@@ -27,7 +27,6 @@ Future readCache({required String key}) async {
 }
 
 class RemoteService {
-
 
   Future<int?> addPost(post) async {
     SharedPreferenceService sharedPrefService = SharedPreferenceService();
@@ -39,10 +38,7 @@ class RemoteService {
     var uri = Uri.parse('http://192.168.1.2:3000/posts');
     final response = await client.post(uri,
         headers: {'Content-Type': 'application/json',
-        'Authorization':'Bearer $token'}, body: json.encode(post));
-    final Map<String, dynamic> responseBody = jsonDecode(response.body);
-    print("responde");
-    print(responseBody);
+        'Authorization':'Bearer $token'}, body: post);
     return response.statusCode;
   }
 
@@ -66,14 +62,31 @@ class RemoteService {
       SharedPreferenceService sharedPrefService = SharedPreferenceService();
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       sharedPrefService.writeCache(key: "token", value: responseBody['token']);
-      print("success");
+      sharedPrefService.writeCache(key: "username", value: username);
       return null;
     } else {
-      print(response.statusCode);
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       return responseBody['message'] ?? 'Failed to sign up';
     }
   }
+  Future<List<Post>?> getMyPosts() async {
+    var client = http.Client();
+    SharedPreferenceService sharedPrefService = SharedPreferenceService();
+    String? user = await sharedPrefService.readCache(key: "username");
+    if(user == null){
+      return null;
+    }
+    String url = 'http://192.168.1.2:3000/posts/$user';
+    var uri = Uri.parse(url);
+    final response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return postFromJson(jsonString);
+    } else {
+      return (null);
+    }
+  }
+
 
   Future<List<Post>?> getPosts() async {
     var client = http.Client();
@@ -105,10 +118,15 @@ class RemoteService {
       SharedPreferenceService sharedPrefService = SharedPreferenceService();
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       sharedPrefService.writeCache(key: "token", value: responseBody['token']);
-      print("success");
+      if(responseBody['status'] == "user") {
+        return "user";
+      } else if(responseBody['status'] == "agency") {
+        return "agency";
+      }
     } else {
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       return responseBody['message'] ?? 'Failed to log in';
     }
+    return null;
   }
 }

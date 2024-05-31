@@ -10,7 +10,6 @@ class AgencySignupState extends Equatable {
   final ValidateForm confirmPassword;
   final GlobalKey<FormState>? formKey;
   final String? apiError;
-
   const AgencySignupState({
     this.name = const ValidateForm(error:null),
     this.email = const ValidateForm(error:null),
