@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../blocs/admin_login/admin_login_bloc.dart';
-import '../../blocs/admin_login/admin_login_event.dart';
-import '../../blocs/admin_login/admin_login_state.dart';
+import '../../application/admin_login/admin_login_bloc.dart';
+import '../../application/admin_login/admin_login_event.dart';
+import '../../application/admin_login/admin_login_state.dart';
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({super.key});

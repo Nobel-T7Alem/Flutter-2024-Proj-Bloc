@@ -2,9 +2,9 @@ import 'package:Sebawi/presentation/widgets/custom_button.dart';
 import 'package:Sebawi/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_bloc.dart';
-import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_state.dart';
-import 'package:Sebawi/blocs/volunteer_signup/volunteer_signup_event.dart';
+import 'package:Sebawi/application/volunteer_signup/volunteer_signup_bloc.dart';
+import 'package:Sebawi/application/volunteer_signup/volunteer_signup_state.dart';
+import 'package:Sebawi/application/volunteer_signup/volunteer_signup_event.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../data/models/validate_form.dart';

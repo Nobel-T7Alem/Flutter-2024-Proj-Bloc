@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 
-import 'package:Sebawi/blocs/signup_page/signup_page.event.dart';
-import 'package:Sebawi/blocs/signup_page/signup_page.state.dart';
+import 'package:Sebawi/application/signup_page/signup_page.event.dart';
+import 'package:Sebawi/application/signup_page/signup_page.state.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(SignupInitial()) {

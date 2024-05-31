@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../blocs/admin_page/admin_page_bloc.dart';
-import '../../blocs/admin_page/admin_page_event.dart';
-import '../../blocs/admin_page/admin_page_state.dart';
+import '../../application/admin_page/admin_page_bloc.dart';
+import '../../application/admin_page/admin_page_event.dart';
+import '../../application/admin_page/admin_page_state.dart';
 
 class AdminPage extends StatelessWidget {
   const AdminPage({super.key});

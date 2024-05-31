@@ -1,12 +1,12 @@
-import 'package:Sebawi/blocs/login/image_slider_bloc.dart';
-import 'package:Sebawi/blocs/login/image_slider_event.dart';
-import 'package:Sebawi/blocs/login/image_slider_state.dart';
-import 'package:Sebawi/blocs/login/login_page_bloc.dart';
+import 'package:Sebawi/application/login/image_slider_bloc.dart';
+import 'package:Sebawi/application/login/image_slider_event.dart';
+import 'package:Sebawi/application/login/image_slider_state.dart';
+import 'package:Sebawi/application/login/login_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Sebawi/blocs/login/login_page_event.dart';
-import 'package:Sebawi/blocs/login/login_page_state.dart';
+import 'package:Sebawi/application/login/login_page_event.dart';
+import 'package:Sebawi/application/login/login_page_state.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
