@@ -1,9 +1,10 @@
+import 'package:Sebawi/blocs/login/login_page_bloc.dart';
+import 'package:Sebawi/blocs/signup_page/signup_page.bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import './presentation/screens/login_page.dart';
 import './presentation/screens/admin_login.dart';
-import './blocs/login/login_page_bloc.dart'; 
 import './blocs/admin_login/admin_login_bloc.dart';
 import './blocs/admin_page/admin_page_bloc.dart';
 import 'blocs/agency_home/agency_home_bloc.dart';
@@ -12,7 +13,6 @@ import 'blocs/agency_update/agency_update_bloc.dart';
 import 'blocs/user_home/user_home_bloc.dart';
 import 'blocs/user_update/user_update_bloc.dart';
 import 'blocs/volunteer_signup/volunteer_signup_bloc.dart';
-import 'blocs/signup_page/signup_page.bloc.dart';
 import 'blocs/login_user/login_user_bloc.dart';
 import 'presentation/screens/admin_page.dart';
 import 'presentation/screens/agency_home.dart';
@@ -24,8 +24,6 @@ import 'presentation/screens/signup_page.dart';
 import 'presentation/screens/user_home.dart';
 import 'presentation/screens/user_update.dart';
 import 'presentation/screens/volunteer_signup.dart';
-
-
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -120,12 +118,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LoginPageBloc()),
+        BlocProvider(create: (context) => LoginBloc()),
         BlocProvider(create: (context) => AdminLoginBloc()),
         BlocProvider(create: (context) => AdminPageBloc()),
         BlocProvider(create: (context) => AgencyHomeBloc()),
