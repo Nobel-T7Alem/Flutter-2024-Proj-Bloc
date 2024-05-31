@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../data/models/validate_form.dart';
 
 abstract class AdminLoginEvent extends Equatable {
   const AdminLoginEvent();
@@ -8,11 +9,21 @@ abstract class AdminLoginEvent extends Equatable {
 }
 
 class AdminLoginSubmitted extends AdminLoginEvent {
-  final String username;
-  final String password;
+  const AdminLoginSubmitted();
+}
 
-  const AdminLoginSubmitted({required this.username, required this.password});
+class AdminLoginInitialEvent extends AdminLoginEvent{
+  const AdminLoginInitialEvent();
+}
 
-  @override
-  List<Object> get props => [username, password];
+class NavigateToAdminHomeEvent extends AdminLoginEvent{}
+
+class UsernameChangedEvent extends AdminLoginEvent {
+  const UsernameChangedEvent({required this.username});
+  final ValidateForm username;
+}
+
+class PasswordChangedEvent extends AdminLoginEvent {
+  const PasswordChangedEvent({required this.password});
+  final ValidateForm password;
 }

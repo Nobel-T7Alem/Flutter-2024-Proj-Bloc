@@ -45,6 +45,7 @@ export declare class PostsService {
         _id: mongoose.Types.ObjectId;
     })[]>;
     findAll(query: any): Promise<Posts[]>;
+    findAllByUser(userId: string): Promise<Posts[]>;
     findById(id: string): Promise<Posts>;
     updatePosts(id: string, posts: Posts): Promise<Posts>;
     deletePosts(postsId: string): Promise<void>;

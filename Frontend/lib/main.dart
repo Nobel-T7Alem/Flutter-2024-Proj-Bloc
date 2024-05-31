@@ -9,7 +9,6 @@ import './application/admin_login/admin_login_bloc.dart';
 import './application/admin_page/admin_page_bloc.dart';
 import 'application/agency_home/agency_home_bloc.dart';
 import 'application/agency_signup/agency_signup_bloc.dart';
-import 'application/agency_update/agency_update_bloc.dart';
 import 'application/user_home/user_home_bloc.dart';
 import 'application/user_update/user_update_bloc.dart';
 import 'application/volunteer_signup/volunteer_signup_bloc.dart';
@@ -17,12 +16,11 @@ import 'application/login_user/login_user_bloc.dart';
 import 'presentation/screens/admin_page.dart';
 import 'presentation/screens/agency_home.dart';
 import 'presentation/screens/agency_signup.dart';
-import 'presentation/screens/agency_update.dart';
 import 'presentation/screens/home_page.dart';
 import 'presentation/screens/login_user.dart';
 import 'presentation/screens/signup_page.dart';
 import 'presentation/screens/user_home.dart';
-import 'presentation/screens/user_update.dart';
+import 'presentation/screens/profile_update.dart';
 import 'presentation/screens/volunteer_signup.dart';
 
 final GoRouter router = GoRouter(
@@ -51,12 +49,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/user_login',
       name: "user_login",
-      builder: (context, state) =>  LoginUser(),
+      builder: (context, state) =>  const LoginUser(),
     ),
     GoRoute(
       path: '/admin_login',
       name: "admin_login",
-      builder: (context, state) => const AdminLoginPage(),
+      builder: (context, state) =>  const AdminLoginPage(),
     ),
     GoRoute(
       path: '/user_home',
@@ -66,7 +64,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/volunteer_signup',
       name: "volunteer_signup",
-      builder: (context, state) => VolunteerSignup(),
+      builder: (context, state) => const VolunteerSignup(),
     ),
     GoRoute(
       path: '/agency_signup',
@@ -78,14 +76,9 @@ final GoRouter router = GoRouter(
         name: "agency_home",
         builder: (context, state) => const AgencyHomePage()),
     GoRoute(
-      path: '/user_update',
-      name: "user_update",
-      builder: (context, state) => const UserUpdate(),
-    ),
-    GoRoute(
-      path: '/agency_update',
-      name: "agency_update",
-      builder: (context, state) => const AgencyUpdate(),
+      path: '/profile_update',
+      name: "profile_update",
+      builder: (context, state) => ProfileUpdate(),
     ),
     GoRoute(
       path: '/admin_page',
@@ -114,6 +107,7 @@ final GoRouter router = GoRouter(
 );
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -129,7 +123,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AdminPageBloc()),
         BlocProvider(create: (context) => AgencyHomeBloc()),
         BlocProvider(create: (context) => AgencySignupBloc()),
-        BlocProvider(create: (context) => AgencyUpdateBloc()),
         BlocProvider(create: (context) => UserHomeBloc()),
         BlocProvider(create: (context) => UserUpdateBloc()),
         BlocProvider(create: (context) => VolunteerSignupBloc()),
@@ -137,6 +130,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => LoginUserBloc()),
       ],
       child: MaterialApp.router(
+        
         debugShowCheckedModeBanner: false,
         title: 'Your App',
         theme: ThemeData(

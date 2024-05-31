@@ -43,7 +43,7 @@ let AuthService = class AuthService {
             role
         });
         const token = this.jwtService.sign({ id: user._id, role });
-        return { token };
+        return { userId: user._id.toString(), token, status: user.role };
     }
     async login(loginDto) {
         const { username, password } = loginDto;

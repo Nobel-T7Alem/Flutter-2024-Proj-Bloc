@@ -75,7 +75,8 @@ class LoginView extends StatelessWidget {
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
-                      BlocProvider.of<LoginBloc>(context).add(AdminLoginPressed());
+                      BlocProvider.of<LoginBloc>(context)
+                          .add(AdminLoginPressed());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightGreen.withOpacity(0.5),
@@ -97,7 +98,8 @@ class LoginView extends StatelessWidget {
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
-                      BlocProvider.of<LoginBloc>(context).add(UserLoginPressed());
+                      BlocProvider.of<LoginBloc>(context)
+                          .add(UserLoginPressed());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightGreen.withOpacity(0.5),
@@ -136,10 +138,12 @@ class LoginView extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          BlocProvider.of<LoginBloc>(context).add(SignUpPressed());
+                          BlocProvider.of<LoginBloc>(context)
+                              .add(SignUpPressed());
                         },
                         style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                          foregroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
                             (Set<MaterialState> states) {
                               if (states.contains(MaterialState.pressed)) {
                                 return Colors.green.shade800;

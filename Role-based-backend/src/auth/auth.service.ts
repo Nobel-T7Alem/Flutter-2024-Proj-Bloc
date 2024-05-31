@@ -15,7 +15,7 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
-    async signUp(signUpDto: SignUpDto) {
+    async signUp(signUpDto: SignUpDto): Promise<{ userId: string; token: string; status: string }> {
         const { name, username, email, password, role } = signUpDto; // Ensure role is included
 
         const existingUsername = await this.userModel.findOne({ username });
@@ -39,7 +39,7 @@ export class AuthService {
         });
 
         const token = this.jwtService.sign({ id: user._id, role }); // Include role in JWT payload
-        return { token };
+        return { userId: user._id.toString(), token, status: user.role };
     }
 
     // login method

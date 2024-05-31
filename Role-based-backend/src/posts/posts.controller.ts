@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards, Req, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards, Req, Query, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { MulterFile, PostsService } from './posts.service';
 import { CreatePostsDto } from './dto/create-posts.dto';
 import { UpdatePostsDto } from './dto/update-posts.dto'
@@ -23,7 +23,6 @@ export class PostsController {
     return createdPost;
   }
 
-
   @Get()
   async getAllPosts(@Query() query: any): Promise<Posts[]> {
     const posts = await this.postsService.findAll(query);
@@ -46,6 +45,15 @@ export class PostsController {
   @Delete(':id')
   async deletePosts(@Param('id') postsId: string): Promise<void> {
     return this.postsService.deletePosts(postsId);
+  }
+
+  @Get('myposts/:userId')
+  async findAllByUser(@Param('userId') userId: string): Promise<Posts[]> {
+    if (!userId) {
+      throw new BadRequestException('User ID must be provided');
+    }
+
+    return this.postsService.findAllByUser(userId);
   }
 
 }

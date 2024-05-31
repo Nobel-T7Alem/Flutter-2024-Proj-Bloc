@@ -1,101 +1,85 @@
+import 'package:Sebawi/data/models/validate_form.dart';
+import 'package:Sebawi/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/admin_login/admin_login_bloc.dart';
 import '../../application/admin_login/admin_login_event.dart';
 import '../../application/admin_login/admin_login_state.dart';
+import '../widgets/custom_button.dart';
 
-class AdminLoginPage extends StatefulWidget {
+class AdminLoginPage extends StatelessWidget {
   const AdminLoginPage({super.key});
-
-  @override
-  _AdminLoginPageState createState() => _AdminLoginPageState();
-}
-
-class _AdminLoginPageState extends State<AdminLoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AdminLoginBloc(),
+      create: (context) => AdminLoginBloc()..add(const AdminLoginInitialEvent()),
       child: BlocListener<AdminLoginBloc, AdminLoginState>(
         listener: (context, state) {
           if (state is AdminLoginSuccess) {
             context.go('/admin_page');
-          } else if (state is AdminLoginFailure) {
-            showDialog(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                title: const Text('Login Failed'),
-                content: const Text('Invalid username or password.'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Close'),
-                    onPressed: () {
-                      context.pop();
-                    },
-                  ),
-                ],
-              ),
-            );
           }
         },
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Admin Login'),
-            backgroundColor: Colors.lightGreen.withOpacity(0.5),
-          ),
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  TextField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Username',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.lock),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  ElevatedButton(
-                    onPressed: () {
-                      BlocProvider.of<AdminLoginBloc>(context).add(
-                        AdminLoginSubmitted(
-                          username: _usernameController.text,
-                          password: _passwordController.text,
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightGreen.withOpacity(0.5),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        side: BorderSide(color: Colors.green[800]!, width: 3),
-                      ),
-                      shadowColor: Colors.greenAccent,
-                    ),
-                    child: const Text('Login'),
-                  ),
-                ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  context.go('/');
+                },
+                icon: const Icon(Icons.arrow_back, color: Colors.white,),
               ),
+              title: const Text('Admin Login Page', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
+              backgroundColor: Colors.green[700],
             ),
+            body: BlocBuilder<AdminLoginBloc, AdminLoginState>(
+                builder: (context, state) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CustomTextFormField(
+                          labelText: "Enter Admin Username",
+                          obscureText: false,
+                          onChange: (val) {
+                            BlocProvider.of<AdminLoginBloc>(context).add(
+                                UsernameChangedEvent(
+                                    username: ValidateForm(value: val!)));
+                          }),
+                      CustomTextFormField(
+                          labelText: "Enter Admin Password",
+                          obscureText: true,
+                          onChange: (val) {
+                            BlocProvider.of<AdminLoginBloc>(context).add(
+                                PasswordChangedEvent(
+                                    password: ValidateForm(value: val!)));
+                          }),
+                      if (state.apiError != null)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                          child: Text(
+                            state.apiError!,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      const SizedBox(height: 40),
+                      CustomButton(
+                          buttonText: 'Login',
+                          buttonColor: const Color.fromARGB(255, 83, 171, 71),
+                          buttonTextColor: Colors.white,
+                          buttonAction: () {
+                            BlocProvider.of<AdminLoginBloc>(context)
+                                .add(const AdminLoginSubmitted());
+                          }),
+                    ],
+                  ),
+                ),
+              );
+            }),
           ),
         ),
       ),

@@ -25,7 +25,16 @@ class AgencySignup extends StatelessWidget {
         },
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: Scaffold(body: BlocBuilder<AgencySignupBloc, AgencySignupState>(
+          home: Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    context.go('/signup');
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                ),
+              ),
+              body: BlocBuilder<AgencySignupBloc, AgencySignupState>(
               builder: (context, state) {
             return SingleChildScrollView(
               child: Column(

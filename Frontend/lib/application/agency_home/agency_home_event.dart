@@ -27,8 +27,8 @@ class LoadMyPostsEvent extends AgencyHomeEvent {
 class NavigateToAgencyUpdateEvent extends AgencyHomeEvent {}
 
 class EditPostEvent extends AgencyHomeEvent {
-  final Post post;
-  const EditPostEvent(this.post);
+  final Post updatedPost;
+  const EditPostEvent(this.updatedPost);
 }
 
 class DeletePostEvent extends AgencyHomeEvent {

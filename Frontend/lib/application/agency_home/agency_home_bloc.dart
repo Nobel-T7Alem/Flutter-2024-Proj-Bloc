@@ -12,7 +12,6 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
   AgencyHomeBloc() : super(InitialAgencyHome()) {
-
     on<InitialAgencyHomeEvent>(_initState);
     on<LoadAgencyHomePageEvent>(_onLoadAgencyHomePage);
     on<NavigateToAgencyUpdateEvent>(_onNavigateToAgencyUpdate);
@@ -30,21 +29,21 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
   Future<void> _initState(
       InitialAgencyHomeEvent event, Emitter<AgencyHomeState> emit) async {
     emit(state.copyWith(formKey: _formKey));
-     add(LoadAgencyHomePageEvent());
+    add(LoadAgencyHomePageEvent());
   }
 
   Future<void> _onLoadMyPosts(
       LoadMyPostsEvent event, Emitter<AgencyHomeState> emit) async {
-      final myPosts = await RemoteService().getMyPosts();
-      try{
-        if (myPosts != null) {
-          emit(MyPostsLoaded(myPosts));
-        } else {
-          emit(const MyPostsError('Failed to load posts'));
-        }
-      } catch (error) {
-        emit(MyPostsError(error.toString()));
+    final myPosts = await RemoteService().getMyPosts();
+    try {
+      if (myPosts != null) {
+        emit(MyPostsLoaded(myPosts));
+      } else {
+        emit(const MyPostsError('Failed to load posts'));
       }
+    } catch (error) {
+      emit(MyPostsError(error.toString()));
+    }
   }
 
   Future<void> _onLoadAgencyHomePage(
@@ -79,7 +78,7 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
 
   void _onNavigateToAgencyUpdate(
       NavigateToAgencyUpdateEvent event, Emitter<AgencyHomeState> emit) {
-    emit(const AgencyHomeNavigationSuccess('/agency_update'));
+    emit(const AgencyHomeNavigationSuccess('/profile_update'));
   }
 
   Future<void> _onAddPostEvent(
@@ -99,14 +98,14 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
     if (nameError == null && descriptionError == null && contactError == null) {
       SharedPreferenceService sharedPrefService = SharedPreferenceService();
       String? userId = await sharedPrefService.readCache(key: "uId");
-      if(userId == null){
+      if (userId == null) {
         return;
       }
       Post post = Post(
-          name: nameController.text,
-          description: descriptionController.text,
-          contact: contactController.text,
-          user: userId,
+        name: nameController.text,
+        description: descriptionController.text,
+        contact: contactController.text,
+        user: userId,
       );
 
       final success = await RemoteService().addPost(json.encode(post.toJson()));
@@ -131,22 +130,34 @@ class AgencyHomeBloc extends Bloc<AgencyHomeEvent, AgencyHomeState> {
     }
   }
 
-  void _onEditPostEvent(EditPostEvent event, Emitter<AgencyHomeState> emit) {
-    // if (state is AgencyHomeLoaded) {
-    //   final loadedState = state as AgencyHomeLoaded;
-    //   final updatedPosts = loadedState.posts.map((post) {
-    //     return post == event.post ? event.post : post;
-    //   }).toList();
-    //   emit(AgencyHomeLoaded(updatedPosts));
-    // }
+  void _onEditPostEvent(
+      EditPostEvent event, Emitter<AgencyHomeState> emit) async {
+      var id = event.updatedPost.id;
+      Post post = Post(
+        id: event.updatedPost.id,
+        name: event.updatedPost.name,
+        description: event.updatedPost.description,
+        contact: event.updatedPost.contact,
+        user: event.updatedPost.user,
+      );
+
+      final success = await RemoteService().editPost(id, post);
+      try {
+        if (success == 200) {
+          emit(state.copyWith(
+            apiMessage: "Post edited successfully!",
+          ));
+        } else {
+          emit(state.copyWith(apiError: 'Failed to add post'));
+        }
+      } catch (error) {
+        emit(AgencyHomeError(error.toString()));
+      }
+    }
   }
 
   void _onDeletePostEvent(
-      DeletePostEvent event, Emitter<AgencyHomeState> emit) {
-    // if (state is AgencyHomeLoaded) {
-    //   final loadedState = state as AgencyHomeLoaded;
-    //   final updatedPosts = loadedState.posts.where((post) => post != event.post).toList();
-    //   emit(AgencyHomeLoaded(updatedPosts));
-    // }
-  }
+      DeletePostEvent event, Emitter<AgencyHomeState> emit) async{
+    var id = event.post.id;
+    await RemoteService().deletePost(id);
 }

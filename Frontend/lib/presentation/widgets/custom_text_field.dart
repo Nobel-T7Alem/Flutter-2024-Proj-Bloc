@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Function(String?)? onChange;
   final TextEditingController? controller;
+  final String? initialValue;
 
 
   const CustomTextFormField({super.key,
@@ -17,13 +18,16 @@ class CustomTextFormField extends StatelessWidget {
     this.onChange,
     this.validator,
     this.controller,
+    this.initialValue,
   }) ;
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 35.0),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(bottom: 4.0),
           focusedBorder: const UnderlineInputBorder(
@@ -51,6 +55,7 @@ class CustomTextFormField extends StatelessWidget {
         onChanged: onChange,
         validator: validator,
         controller: controller,
+        initialValue: initialValue,
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-
 import '../../data/models/validate_form.dart';
 
 class LoginUserState extends Equatable {
@@ -8,6 +7,7 @@ class LoginUserState extends Equatable {
   final ValidateForm password;
   final String? apiError;
   final GlobalKey<FormState>? formKey;
+
   const LoginUserState({
     this.username = const ValidateForm(error: null),
     this.password = const ValidateForm(error: null),

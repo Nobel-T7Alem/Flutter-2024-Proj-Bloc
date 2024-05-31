@@ -19,7 +19,8 @@ class AgencyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AgencyHomeBloc()..add(LoadAgencyHomePageEvent()),
+      create: (context) =>
+          AgencyHomeBloc()..add(const InitialAgencyHomeEvent()),
       child: BlocListener<AgencyHomeBloc, AgencyHomeState>(
         listener: (context, state) {
           if (state is AgencyHomeNavigationSuccess) {
@@ -32,6 +33,21 @@ class AgencyHomePage extends StatelessWidget {
             length: 3,
             child: Scaffold(
               appBar: AppBar(
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, right: 16.0),
+                    child: IconButton(
+                      onPressed: () {
+                        context.go('/profile_update');
+                        BlocProvider.of<AgencyHomeBloc>(context)
+                            .add(NavigateToAgencyUpdateEvent());
+                      },
+                      icon: const Icon(Icons.settings),
+                      color: Colors.green.shade800,
+                      iconSize: 27,
+                    ),
+                  )
+                ],
                 bottom: TabBar(
                   tabs: const [
                     Tab(
@@ -65,20 +81,6 @@ class AgencyHomePage extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                           color: Colors.green.shade800)),
                 ),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0, right: 16.0),
-                    child: IconButton(
-                      onPressed: () {
-                        BlocProvider.of<AgencyHomeBloc>(context)
-                            .add(LoadAgencyHomePageEvent());
-                      },
-                      icon: const Icon(Icons.settings),
-                      color: Colors.green.shade800,
-                      iconSize: 27,
-                    ),
-                  )
-                ],
               ),
               body: TabBarView(
                 children: [
@@ -141,7 +143,7 @@ class AgencyHomePage extends StatelessWidget {
                           },
                         );
                       }
-                      return  Container();
+                      return Container();
                     },
                   ),
                   BlocBuilder<AgencyHomeBloc, AgencyHomeState>(
@@ -212,7 +214,10 @@ class AgencyHomePage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            if (context.read<AgencyHomeBloc>().state.apiMessage !=
+                            if (context
+                                    .read<AgencyHomeBloc>()
+                                    .state
+                                    .apiMessage !=
                                 null)
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
@@ -332,7 +337,135 @@ class PostItem extends StatelessWidget {
                           color: Colors.grey.shade900,
                         ),
                         onPressed: () {
-                          openDialog(context, post);
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                String updatedName = post.name;
+                                String updatedDescription = post.description;
+                                String updatedContact = post.contact;
+                                final _formKeyy = GlobalKey<FormState>();
+                                bool formSubmitted = false;
+                                return AlertDialog(
+                                  title: const Text(
+                                    'Edit Post',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w700),
+                                  ),
+                                  content: BlocBuilder<AgencyHomeBloc,
+                                          AgencyHomeState>(
+                                      builder: (context, state) {
+                                    return Form(
+                                      key: _formKeyy,
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      child: SizedBox(
+                                        width: 300,
+                                        height: 250,
+                                        child: Column(
+                                          children: [
+                                            CustomTextFormField(
+                                              initialValue: post.name,
+                                              labelText: 'New Agency Name',
+                                              onChange: (val) {
+                                               updatedName = val!;
+                                              },
+                                              validator: (val) {
+                                                if (val == null || val.isEmpty) {
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                            CustomTextFormField(
+                                              initialValue: post.description,
+                                              labelText: 'New Description',
+                                              onChange: (val) {
+                                                updatedDescription = val!;
+                                              },
+                                              validator: (val) {
+                                                if (val == null || val.isEmpty) {
+
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                            CustomTextFormField(
+                                              initialValue: post.contact,
+                                              labelText: 'New Contact Info',
+                                              onChange: (val) {
+                                                updatedContact = val!;
+                                              },
+                                              validator: (val) {
+                                                if (val == null || val.isEmpty) {
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                  actions: [
+                                    TextButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.red),
+                                        shape: WidgetStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                20), // Border radius
+                                          ),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Discard',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      onPressed: () {
+                                        context.pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.green.shade800),
+                                        shape: WidgetStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                20), // Border radius
+                                          ),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Save Changes',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      onPressed: () {
+                                        if (_formKeyy.currentState!.validate()) {
+                                          final updatedPost = Post(
+                                            id: post.id,
+                                            name: updatedName,
+                                            description: updatedDescription,
+                                            contact: updatedContact,
+                                            user: post.user,
+                                            // Include other fields from the original post if necessary
+                                          );
+                                          BlocProvider.of<AgencyHomeBloc>(context).add(EditPostEvent(updatedPost));
+                                          Navigator.of(context).pop();
+                                        }
+                                        // context.pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
                         },
                       ),
                       IconButton(
@@ -353,9 +486,9 @@ class PostItem extends StatelessWidget {
                               actions: [
                                 TextButton(
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
+                                    backgroundColor: WidgetStateProperty.all(
                                         Colors.redAccent.shade700),
-                                    shape: MaterialStateProperty.all<
+                                    shape: WidgetStateProperty.all<
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
@@ -375,9 +508,9 @@ class PostItem extends StatelessWidget {
                                 ),
                                 TextButton(
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
+                                    backgroundColor: WidgetStateProperty.all(
                                         Colors.green.shade800),
-                                    shape: MaterialStateProperty.all<
+                                    shape: WidgetStateProperty.all<
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
@@ -412,76 +545,4 @@ class PostItem extends StatelessWidget {
       ),
     );
   }
-
-  Future openDialog(BuildContext context, Post post) => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text(
-            'Edit Post',
-            style: TextStyle(fontWeight: FontWeight.w900),
-          ),
-          content: const Column(
-            children: [
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Agency Name',
-                  hintText: 'Enter the name of the agency',
-                ),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Contact Info',
-                  hintText: 'Enter the contact information',
-                ),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Service Type',
-                  hintText: 'Enter the type of service',
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.redAccent.shade700),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // Border radius
-                  ),
-                ),
-              ),
-              child: const Text(
-                'Discard',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-              onPressed: () {
-                context.pop();
-              },
-            ),
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.green.shade800),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // Border radius
-                  ),
-                ),
-              ),
-              child: const Text(
-                'Save Changes',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-              onPressed: () {
-                context.pop();
-              },
-            ),
-          ],
-        ),
-      );
 }

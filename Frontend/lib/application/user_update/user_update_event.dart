@@ -1,3 +1,4 @@
+import 'package:Sebawi/data/models/validate_form.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class UserUpdateEvent extends Equatable {
@@ -7,11 +8,34 @@ abstract class UserUpdateEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SubmitUserUpdate extends UserUpdateEvent {
-  final Map<String, dynamic> userData;
+class SubmitUserUpdateEvent extends UserUpdateEvent {
+  const SubmitUserUpdateEvent();
+}
 
-  const SubmitUserUpdate(this.userData);
+class UserUpdateInitialEvent extends UserUpdateEvent {
+  const UserUpdateInitialEvent();
+}
 
-  @override
-  List<Object> get props => [userData];
+class NameChangedEvent extends UserUpdateEvent {
+  const NameChangedEvent({required this.name});
+  final ValidateForm name;
+}
+
+class EmailChangedEvent extends UserUpdateEvent {
+  const EmailChangedEvent({required this.email});
+  final ValidateForm email;
+}
+
+class UsernameChangedEvent extends UserUpdateEvent {
+  const UsernameChangedEvent({required this.username});
+  final ValidateForm username;
+}
+
+class PasswordChangedEvent extends UserUpdateEvent {
+  const PasswordChangedEvent({required this.password});
+  final ValidateForm password;
+}
+
+class DeleteAccountEvent extends UserUpdateEvent {
+  const DeleteAccountEvent();
 }
