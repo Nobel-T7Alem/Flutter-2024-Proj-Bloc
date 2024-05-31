@@ -9,7 +9,7 @@ abstract class AdminLoginEvent extends Equatable {
 }
 
 class AdminLoginSubmitted extends AdminLoginEvent {
-  const AdminLoginSubmitted();
+  const AdminLoginSubmitted({required String username, required String password});
 }
 
 class AdminLoginInitialEvent extends AdminLoginEvent{

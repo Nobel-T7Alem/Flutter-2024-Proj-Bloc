@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../../data/models/validate_form.dart';
 
- class VolunteerSignupState extends Equatable {
+class VolunteerSignupState extends Equatable {
   final ValidateForm name;
   final ValidateForm email;
   final ValidateForm username;
@@ -13,14 +12,14 @@ import '../../data/models/validate_form.dart';
   final String? apiError;
 
   const VolunteerSignupState({
-    this.name = const ValidateForm(error:null),
-    this.email = const ValidateForm(error:null),
-    this.username =const ValidateForm(error:null),
-    this.password = const ValidateForm(error:null),
-    this.confirmPassword = const ValidateForm(error:null),
+    this.name = const ValidateForm(error: null),
+    this.email = const ValidateForm(error: null),
+    this.username = const ValidateForm(error: null),
+    this.password = const ValidateForm(error: null),
+    this.confirmPassword = const ValidateForm(error: null),
     this.formKey,
     this.apiError,
-});
+  });
 
   VolunteerSignupState copyWith({
     ValidateForm? name,
@@ -41,6 +40,7 @@ import '../../data/models/validate_form.dart';
       apiError: apiError ?? this.apiError,
     );
   }
+
   @override
   List<Object?> get props => [name, email, username, password, confirmPassword, formKey, apiError];
 }
@@ -58,4 +58,7 @@ class SignupSuccess extends VolunteerSignupState {}
 class SignupFailure extends VolunteerSignupState {
   final String error;
   const SignupFailure({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }
