@@ -31,3 +31,16 @@ class UserHomeNavigationSuccess extends UserHomeState {
   @override
   List<Object> get props => [route];
 }
+
+class CalendarLoading extends UserHomeState {}
+
+class CalendarLoaded extends UserHomeState {
+  final List<Object> calendars;
+
+  const CalendarLoaded(this.calendars);
+
+  @override
+  List<Object> get props => [calendars];
+}
+
+class CalendarError extends UserHomeState {}

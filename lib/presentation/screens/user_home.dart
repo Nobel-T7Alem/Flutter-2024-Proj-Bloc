@@ -7,6 +7,10 @@ import 'package:Sebawi/blocs/user_home/user_home_bloc.dart';
 import 'package:Sebawi/blocs/user_home/user_home_state.dart';
 import 'package:Sebawi/blocs/user_home/user_home_event.dart';
 
+void main() {
+  runApp(const UserHomePage());
+}
+
 class UserHomePage extends StatelessWidget {
   const UserHomePage({super.key});
 
@@ -39,7 +43,8 @@ class UserHomePage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 16.0, right: 16.0),
                     child: IconButton(
                       onPressed: () {
-                        BlocProvider.of<UserHomeBloc>(context).add(NavigateToUserUpdateEvent());
+                        BlocProvider.of<UserHomeBloc>(context)
+                            .add(NavigateToUserUpdateEvent());
                       },
                       icon: const Icon(Icons.settings),
                       color: Colors.green.shade800,
@@ -98,22 +103,34 @@ class UserHomePage extends StatelessWidget {
                       return Container();
                     },
                   ),
-                  ListView.builder(
-                    itemCount: calendar.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text(calendar[index]),
-                          ),
-                          Divider(
-                            height: 10,
-                            thickness: 1,
-                            color: Colors.grey.shade200,
-                          ),
-                        ],
-                      );
-                    },
+                  BlocBuilder<UserHomeBloc, UserHomeState>(
+                      builder: (context, state) {
+                        if(state is CalendarLoading){
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (state is CalendarError){
+                          return const Center(child: Text("Error loading calendar"));
+                        }
+                        else if (state is CalendarLoaded) {
+                          return ListView.builder(
+                            itemCount: posts!.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(posts![index].contact),
+                                  ),
+                                  Divider(
+                                    height: 10,
+                                    thickness: 1,
+                                    color: Colors.grey.shade200,
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                        return Container();
+                  }
                   ),
                 ],
               ),
@@ -134,18 +151,12 @@ class UserHomePage extends StatelessWidget {
 
 List<Post>? posts;
 List<String> calendar = [];
-
-class PostItem extends StatefulWidget {
+class PostItem extends StatelessWidget {
+  final List? calendar;
   final Post post;
   final bool isMyPost;
-  PostItem({required this.post, required this.isMyPost, super.key});
+  const PostItem({required this.post, required this.isMyPost, this.calendar, super.key});
 
-  @override
-  PostItemState createState() => PostItemState();
-  final TextEditingController _dateController = TextEditingController();
-}
-
-class PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -165,7 +176,7 @@ class PostItemState extends State<PostItem> {
           title: Padding(
             padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
             child: Text(
-              widget.post.name,
+              post.name,
               style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
@@ -183,7 +194,7 @@ class PostItemState extends State<PostItem> {
                     " Contact: ",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
-                  Text(widget.post.contact),
+                  Text(post.contact),
                 ],
               ),
               Row(
@@ -194,10 +205,10 @@ class PostItemState extends State<PostItem> {
                     child: Text(
                       " Service Type: ",
                       style:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Text(widget.post.description),
+                  Text(post.description),
                 ],
               ),
               Padding(
@@ -205,16 +216,16 @@ class PostItemState extends State<PostItem> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (widget.isMyPost) ...[
+                    if (isMyPost) ...[
                       TextButton(
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(Colors.green.shade800),
+                              MaterialStateProperty.all(Colors.green.shade800),
                           shape:
-                          MaterialStateProperty.all<RoundedRectangleBorder>(
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius:
-                              BorderRadius.circular(20), // Border radius
+                                  BorderRadius.circular(20), // Border radius
                             ),
                           ),
                         ),
@@ -231,12 +242,12 @@ class PostItemState extends State<PostItem> {
                       TextButton(
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(Colors.green.shade800),
+                              MaterialStateProperty.all(Colors.green.shade800),
                           shape:
-                          MaterialStateProperty.all<RoundedRectangleBorder>(
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius:
-                              BorderRadius.circular(20), // Border radius
+                                  BorderRadius.circular(20), // Border radius
                             ),
                           ),
                         ),
@@ -246,7 +257,8 @@ class PostItemState extends State<PostItem> {
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                         onPressed: () {
-                          _selectDate();
+                          context.read<UserHomeBloc>().add(AddToCalendarEvent(
+                              DateTime.now().toString().split(" ")[0], post.id.toString()));
                         },
                       ),
                     ],
@@ -258,30 +270,5 @@ class PostItemState extends State<PostItem> {
         ),
       ),
     );
-  }
-
-  Future<void> _selectDate() async {
-    DateTime? picked = await showDatePicker(
-        context: context,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-        initialDate: DateTime.now());
-    if (picked != null) {
-      setState(() {
-        widget._dateController.text = picked.toString().split(" ")[0];
-        calendar.add(picked.toString().split(" ")[0]);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                "Date selected for ${widget.post.name}: ${widget._dateController.text}"),
-            action: SnackBarAction(
-              label: 'OK',
-              onPressed: () {},
-            ),
-            duration: const Duration(seconds: 5),
-          ),
-        );
-      });
-    }
   }
 }

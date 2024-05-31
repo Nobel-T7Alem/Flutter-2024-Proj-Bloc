@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../data/models/posts.dart';
+
 abstract class UserHomeEvent extends Equatable {
   const UserHomeEvent();
 
@@ -10,3 +12,15 @@ abstract class UserHomeEvent extends Equatable {
 class LoadPostsEvent extends UserHomeEvent {}
 
 class NavigateToUserUpdateEvent extends UserHomeEvent {}
+
+class AddToCalendarEvent extends UserHomeEvent {
+  final String date;
+  final String id;
+   const AddToCalendarEvent(this.date, this.id);
+
+  @override
+  List<Object> get props => [date, id];
+}
+
+class LoadCalendarEvent extends UserHomeEvent {}
+

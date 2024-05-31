@@ -10,24 +10,24 @@ class SharedPreferenceService {
   Future writeCache({
     required String key,
     required String value,
-}) async{
+  }) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    bool isSaved  = await pref.setString(key, value);
+    bool isSaved = await pref.setString(key, value);
     debugPrint(isSaved.toString());
   }
-Future readCache({required String key}) async {
-  final SharedPreferences pref = await SharedPreferences.getInstance();
-  String? value = pref.getString(key);
-  if (value != null) {
-    return value.toString();
-  } else {
-    return null;
+
+  Future readCache({required String key}) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String? value = pref.getString(key);
+    if (value != null) {
+      return value.toString();
+    } else {
+      return null;
+    }
   }
-}
 }
 
 class RemoteService {
-
   Future<int?> addPost(post) async {
     SharedPreferenceService sharedPrefService = SharedPreferenceService();
     String? token = await sharedPrefService.readCache(key: "token");
@@ -37,13 +37,15 @@ class RemoteService {
     var client = http.Client();
     var uri = Uri.parse('http://192.168.1.2:3000/posts');
     final response = await client.post(uri,
-        headers: {'Content-Type': 'application/json',
-        'Authorization':'Bearer $token'}, body: post);
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: post);
     final Map<String, dynamic> responseBody = jsonDecode(response.body);
     print(responseBody);
     return response.statusCode;
   }
-
 
   Future<String?> signUp(String fullName, String email, String username,
       String password, String role) async {
@@ -71,11 +73,12 @@ class RemoteService {
       return responseBody['message'] ?? 'Failed to sign up';
     }
   }
+
   Future<List<Post>?> getMyPosts() async {
     var client = http.Client();
     SharedPreferenceService sharedPrefService = SharedPreferenceService();
     String? userId = await sharedPrefService.readCache(key: "uId");
-    if(userId == null){
+    if (userId == null) {
       return null;
     }
     String url = 'http://192.168.1.2:3000/posts/$userId';
@@ -90,6 +93,53 @@ class RemoteService {
   }
 
 
+
+  Future<String?>? addToCalendar(String date, String id) async {
+    SharedPreferenceService sharedPrefService = SharedPreferenceService();
+    String? userId = await sharedPrefService.readCache(key: "uId");
+    String? token = await sharedPrefService.readCache(key: "token");
+    if (userId == null) {
+      return null;
+    }
+    var client = http.Client();
+    var uri = Uri.parse('http://192.168.1.2:3000/calendars/add/$id');
+    final response = await client.post(uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode(<String, String>{
+          'date': date,
+          'user': userId,
+        }));
+    if (response.statusCode == 201) {
+      return "Post Created";
+    } else {
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      return responseBody['message'] ?? 'Failed to add to calendar';
+    }
+  }
+
+  Future<List<Object>?> getCalendar() async {
+    SharedPreferenceService sharedPrefService = SharedPreferenceService();
+    String? token = await sharedPrefService.readCache(key: "token");
+    if (token == null) {
+      return null;
+    }
+    var client = http.Client();
+    var uri = Uri.parse('http://192.168.1.2:3000/calendars/mycalendar');
+    final response = await client.get(uri,
+        headers: {
+          'Authorization': 'Bearer $token'
+        });
+    if (response.statusCode == 200) {
+      print("yes");
+      var jsonString = response.body;
+      return postFromJson(jsonString);
+    } else {
+      return (null);
+    }
+  }
   Future<List<Post>?> getPosts() async {
     var client = http.Client();
     var uri = Uri.parse('http://192.168.1.2:3000/posts');
@@ -121,9 +171,9 @@ class RemoteService {
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       sharedPrefService.writeCache(key: "token", value: responseBody['token']);
       sharedPrefService.writeCache(key: "uId", value: responseBody['userId']);
-      if(responseBody['status'] == "user") {
+      if (responseBody['status'] == "user") {
         return "user";
-      } else if(responseBody['status'] == "agency") {
+      } else if (responseBody['status'] == "agency") {
         return "agency";
       }
     } else {

@@ -7,6 +7,8 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
   UserHomeBloc() : super(UserHomeInitial()) {
     on<LoadPostsEvent>(_onLoadPosts);
     on<NavigateToUserUpdateEvent>(_onNavigateToUserUpdate);
+    on<AddToCalendarEvent>(_onAddToCalendar);
+    on<LoadCalendarEvent>(_onLoadCalendar);
   }
 
   void _onLoadPosts(LoadPostsEvent event, Emitter<UserHomeState> emit) async {
@@ -16,6 +18,33 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
       emit(UserHomeLoaded(posts!));
     } catch (e) {
       emit(UserHomeError());
+    }
+  }
+
+  void _onAddToCalendar(AddToCalendarEvent event, Emitter<UserHomeState> emit) async {
+    print("date");
+    print(event.date);
+
+    print(event.id);
+    final post = await RemoteService().addToCalendar(event.date, event.id);
+    if (post != null) {
+      // emit(UserHomeLoaded(post);
+    } else {
+      emit(UserHomeError());
+    }
+  }
+
+  void _onLoadCalendar(LoadCalendarEvent event, Emitter<UserHomeState> emit) async {
+    emit(CalendarLoading());
+    try {
+      final calendars = await RemoteService().getCalendar();
+      if (calendars == null) {
+        emit(CalendarError());
+        return;
+      }
+      emit(CalendarLoaded(calendars));
+    } catch (e) {
+      emit(CalendarError());
     }
   }
 
