@@ -1,19 +1,17 @@
+// login_state.dart
 import 'package:equatable/equatable.dart';
 
-abstract class LoginPageState extends Equatable {
-  const LoginPageState();
+abstract class LoginState extends Equatable {
+  const LoginState();
 
   @override
   List<Object> get props => [];
 }
 
-class LoginPageInitial extends LoginPageState {}
+class LoginInitial extends LoginState {}
 
-class LoginPageNavigationSuccess extends LoginPageState {
-  final String route;
+class NavigateToAdminLogin extends LoginState {}
 
-  const LoginPageNavigationSuccess(this.route);
+class NavigateToUserLogin extends LoginState {}
 
-  @override
-  List<Object> get props => [route];
-}
+class NavigateToSignUp extends LoginState {}

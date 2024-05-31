@@ -1,14 +1,15 @@
+// login_event.dart
 import 'package:equatable/equatable.dart';
 
-abstract class LoginPageEvent extends Equatable {
-  const LoginPageEvent();
+abstract class LoginEvent extends Equatable {
+  const LoginEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class NavigateToAdminPage extends LoginPageEvent {}
+class AdminLoginPressed extends LoginEvent {}
 
-class NavigateToUserLogin extends LoginPageEvent {}
+class UserLoginPressed extends LoginEvent {}
 
-class NavigateToSignup extends LoginPageEvent {}
+class SignUpPressed extends LoginEvent {}
