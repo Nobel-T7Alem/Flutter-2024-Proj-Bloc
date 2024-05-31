@@ -34,11 +34,20 @@ let CalendarsService = class CalendarsService {
     findOne(id) {
         return `This action returns a #${id} calendar`;
     }
-    update(id, updateCalendarDto) {
-        return `This action updates a #${id} calendar`;
+    async updateCalendar(id, updateCalendarDto) {
+        const updatedCalendar = await this.calendarsModel
+            .findByIdAndUpdate(id, updateCalendarDto, { new: true, runValidators: true })
+            .exec();
+        if (!updatedCalendar) {
+            throw new common_1.NotFoundException("Calendar event with ID ${id} not found");
+        }
+        return updatedCalendar;
     }
-    remove(id) {
-        return `This action removes a #${id} calendar`;
+    async remove(id) {
+        const result = await this.calendarsModel.deleteOne({ _id: id }).exec();
+        if (result.deletedCount === 0) {
+            throw new common_1.NotFoundException('Calendar not found');
+        }
     }
 };
 exports.CalendarsService = CalendarsService;

@@ -11,7 +11,9 @@ import { CalendarsModule } from './calendars/calendars.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot("mongodb+srv://tayejoshua4:Qm*X!AR2XGJtUvd@sebawi-app.3xgf2rf.mongodb.net/?retryWrites=true&w=majority&appName=Sebawi-app"),
+    MongooseModule.forRoot("mongodb://127.0.0.1:27017", {
+      dbName: 'Sebawi-app',
+    }),
     AuthModule,
     PostsModule,
     UserModule,

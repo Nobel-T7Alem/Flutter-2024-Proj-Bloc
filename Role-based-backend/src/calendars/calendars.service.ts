@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCalendarDto } from './dto/create-calendar.dto';
 import { UpdateCalendarDto } from './dto/update-calendar.dto';
 import { Model } from 'mongoose';
@@ -12,7 +12,7 @@ export class CalendarsService {
     @InjectModel('calendars') private readonly calendarsModel: Model<Calendars>,
   ) { }
 
- async createEvent(createEventDto: CreateCalendarDto, postId: string, user: User): Promise<Calendars> {
+  async createEvent(createEventDto: CreateCalendarDto, postId: string, user: User): Promise<Calendars> {
     const createdEvent = new this.calendarsModel({
       ...createEventDto,
       post: postId,
@@ -24,16 +24,25 @@ export class CalendarsService {
   async findAllByUser(userId: string): Promise<Calendars[]> {
     return this.calendarsModel.find({ user: userId }).exec();
   }
-  
+
   findOne(id: number) {
     return `This action returns a #${id} calendar`;
   }
 
-  update(id: number, updateCalendarDto: UpdateCalendarDto) {
-    return `This action updates a #${id} calendar`;
+  async updateCalendar(id: string, updateCalendarDto: UpdateCalendarDto): Promise<Calendars> {
+    const updatedCalendar = await this.calendarsModel
+      .findByIdAndUpdate(id, updateCalendarDto, { new: true, runValidators: true })
+      .exec();
+    if (!updatedCalendar) {
+      throw new NotFoundException("Calendar event with ID ${id} not found");
+    }
+    return updatedCalendar;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} calendar`;
+  async remove(id: string) {
+    const result = await this.calendarsModel.deleteOne({ _id: id }).exec();
+    if (result.deletedCount === 0) {
+      throw new NotFoundException('Calendar not found');
+    }
   }
 }

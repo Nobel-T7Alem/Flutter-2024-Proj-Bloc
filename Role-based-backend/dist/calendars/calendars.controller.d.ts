@@ -8,6 +8,6 @@ export declare class CalendarsController {
     createEvent(postId: string, createEventDto: CreateCalendarDto, req: any): Promise<Calendars>;
     findAllByUser(req: any): Promise<Calendars[]>;
     findOne(id: string): string;
-    update(id: string, updateCalendarDto: UpdateCalendarDto): string;
-    remove(id: string): string;
+    update(id: string, updateCalendarDto: UpdateCalendarDto): Promise<Calendars>;
+    remove(id: string): Promise<void>;
 }

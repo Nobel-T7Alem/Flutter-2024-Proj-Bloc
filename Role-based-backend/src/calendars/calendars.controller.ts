@@ -7,12 +7,12 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('calendars')
 export class CalendarsController {
-  constructor(private readonly calendarsService: CalendarsService) {}
+  constructor(private readonly calendarsService: CalendarsService) { }
 
   @Post('add/:postId')
   @UseGuards(AuthGuard())
-  async createEvent(@Param('postId') postId: string,@Body() createEventDto: CreateCalendarDto, @Req() req): Promise<Calendars>  {
-    const user = req.user; 
+  async createEvent(@Param('postId') postId: string, @Body() createEventDto: CreateCalendarDto, @Req() req): Promise<Calendars> {
+    const user = req.user;
 
     const createdEvent = await this.calendarsService.createEvent(createEventDto, postId, user);
     createdEvent.user = user._id;
@@ -33,12 +33,12 @@ export class CalendarsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCalendarDto: UpdateCalendarDto) {
-    return this.calendarsService.update(+id, updateCalendarDto);
+  async update(@Param('id') id: string, @Body() updateCalendarDto: UpdateCalendarDto) {
+    return this.calendarsService.updateCalendar(id, updateCalendarDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.calendarsService.remove(+id);
+    return this.calendarsService.remove(id);
   }
 }

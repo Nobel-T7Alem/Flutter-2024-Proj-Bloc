@@ -35,11 +35,11 @@ let CalendarsController = class CalendarsController {
     findOne(id) {
         return this.calendarsService.findOne(+id);
     }
-    update(id, updateCalendarDto) {
-        return this.calendarsService.update(+id, updateCalendarDto);
+    async update(id, updateCalendarDto) {
+        return this.calendarsService.updateCalendar(id, updateCalendarDto);
     }
     remove(id) {
-        return this.calendarsService.remove(+id);
+        return this.calendarsService.remove(id);
     }
 };
 exports.CalendarsController = CalendarsController;
@@ -74,7 +74,7 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_calendar_dto_1.UpdateCalendarDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], CalendarsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),

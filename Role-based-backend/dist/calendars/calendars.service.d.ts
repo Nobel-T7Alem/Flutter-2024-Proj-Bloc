@@ -33,6 +33,6 @@ export declare class CalendarsService {
     createEvent(createEventDto: CreateCalendarDto, postId: string, user: User): Promise<Calendars>;
     findAllByUser(userId: string): Promise<Calendars[]>;
     findOne(id: number): string;
-    update(id: number, updateCalendarDto: UpdateCalendarDto): string;
-    remove(id: number): string;
+    updateCalendar(id: string, updateCalendarDto: UpdateCalendarDto): Promise<Calendars>;
+    remove(id: string): Promise<void>;
 }
